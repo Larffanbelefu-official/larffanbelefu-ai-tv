@@ -2,42 +2,106 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Larffanbelefu AI TV</title>
-<style>*{box-sizing:border-box}body{font-family:Arial;margin:0;background:#0a0a0a;color:#fff}header{background:#111;padding:15px;text-align:center;border-bottom:4px solid #FFA500}nav a{color:#FFA500;margin:0 7px;text-decoration:none;font-weight:bold;font-size:13px}.section{padding:15px;max-width:1100px;margin:auto}.card{background:#1e1e1e;padding:15px;border-radius:12px;margin-bottom:20px;border:1px solid #333}.btn{background:#FFA500;color:#000;padding:12px;border:none;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;margin:5px 0}input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:none;background:#2a2a2a;color:#fff}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal-day{background:#2a2a2a;padding:6px;text-align:center;border-radius:6px;min-height:65px;font-size:12px}.cal-day.holiday{background:#FFA500;color:#000;font-weight:bold}.footer{text-align:center;padding:20px;background:#111}.game-box{background:#000;border:2px solid #FFA500;border-radius:12px;padding:10px;text-align:center}</style>
+<title>LARFFAN BELEFU AI TV - Official</title>
+<meta name="description" content="Search YouTube LARFFAN BELEFU - LARFF AN BELEFU">
+<style>
+:root{--orange:#ff9f0a;--dark:#0f0f0f;--card:#1c1c1c}
+body{margin:0;background:var(--dark);color:#fff;font-family:system-ui,Arial}
+.top{background:#000;padding:12px;text-align:center;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:100}
+.top h1{margin:0;color:var(--orange)}
+.nav a{color:var(--orange);text-decoration:none;margin:0 8px;font-weight:bold}
+.card{background:var(--card);margin:14px;border-radius:14px;padding:16px;border:1px solid #333}
+.card h2{color:var(--orange);margin-top:0}
+input,textarea,select{width:95%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #444;background:#252525;color:#fff}
+button{background:var(--orange);color:#000;border:none;padding:11px 18px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px}
+iframe,video{width:100%;height:230px;border:none;border-radius:12px;background:#000}
+#aiBtn{position:fixed;bottom:20px;right:20px;background:var(--orange);width:60px;height:60px;border-radius:50%;font-size:28px;z-index:999}
+#aiBox{position:fixed;bottom:90px;right:20px;width:320px;max-height:420px;background:#111;border:2px solid var(--orange);border-radius:14px;padding:10px;display:none;z-index:999;overflow:auto}
+.pro-badge{background:lime;color:#000;padding:3px 8px;border-radius:20px;font-size:12px}
+</style>
 </head>
 <body>
-<header><h1>🎬 LARFFANBELEFU AI TV</h1><p>Edo | Abuja FCT | Lagos | @paulosawaru | 728 Videos</p><nav><a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a></nav></header>
-<div class="section">
-<div class="card"><h2>📺 YouTube - @paulosawaru - 728 Videos</h2><iframe width="100%" height="350" src="https://www.youtube.com/embed/videoseries?list=UUKtAYr5WRNmL2yZbUnJJjJA" style="border-radius:12px;border:none" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p style="font-size:12px;margin-top:8px"><a href="https://www.youtube.com/@paulosawaru" target="_blank" style="color:#FFA500">Open YouTube Channel Direct - If video no play, click here</a></p></div>
-<div class="card"><h2>💱 Money Converter</h2><div style="display:flex;gap:5px"><input id="moneyAmount" type="number" value="1000"><select id="fromCurr"><option value="NGN">NGN</option><option value="USD" selected>USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select><select id="toCurr"><option value="NGN" selected>NGN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></div><button class="btn" onclick="convertMoney()">CONVERT</button><div id="moneyResult" style="background:#000;padding:10px;border-radius:8px;margin-top:8px">Result here</div></div>
-<div class="card"><h2>🌍 Oxford Dictionary + Translator</h2><input id="transInput" placeholder="Type here"><select id="langSelect"><option value="fr">French</option><option value="es">Spanish</option><option value="de">German</option><option value="yo">Yoruba</option><option value="ig">Igbo</option><option value="ha">Hausa</option><option value="ar">Arabic</option><option value="zh">Chinese</option><option value="pt">Portuguese</option><option value="sw">Swahili</option><option value="en">English</option></select><button class="btn" onclick="doTranslate()">TRANSLATE + VOICE</button><button class="btn" style="background:#fff" onclick="doDictionary()">DICTIONARY</button><div id="transResult" style="background:#000;padding:10px;border-radius:8px;margin-top:8px">Result here</div></div>
-<div class="card"><h2>📅 Calendar 1960-2040</h2><div style="display:flex;gap:5px"><select id="yearSel" onchange="buildCalendar()"></select><select id="monthSel" onchange="buildCalendar()"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select></div><div id="calendarGrid" class="calendar" style="margin-top:10px"></div><div id="holidayInfo" style="color:#FFA500;margin-top:8px"></div></div>
-<div class="card"><h2>📻 Radio - Larffanbelefu Radio + 2 World Radios</h2><iframe src="https://zeno.fm/radio/larffanbelefu-radio-station" width="100%" height="220" style="border-radius:12px;border:none" allow="autoplay"></iframe><p style="font-size:11px;margin-top:10px">🌍 World Radios:</p><iframe src="https://zeno.fm/radio/bbc-world-service" width="100%" height="150" style="border-radius:12px;border:none;margin-top:5px"></iframe><iframe src="https://zeno.fm/radio/naija-fm-102-7" width="100%" height="150" style="border-radius:12px;border:none;margin-top:5px"></iframe></div>
-<div class="card" style="border:3px solid #FFA500"><h2>📢 MARY'S EMPIRE - 40 DAYS</h2><img src="mary1.jpg" style="width:100%;height:350px;object-fit:cover" onerror="this.src='https://via.placeholder.com/400x350?text=MARY+EMPIRE'"><div style="padding:10px"><h3 style="color:#FFA500;margin:0">MARY'S EMPIRE</h3><p>Shop 25 Gabano Complex Opp UBTH, Benin City, Edo<br>WhatsApp: 08150251122 | Email: falemaramary2@gmail.com<br>Location: Edo Benin + Nationwide</p><button class="btn" onclick="document.getElementById('adForm').style.display='block'">ADVERTISE YOUR BUSINESS - PAY WITH PAYSTACK</button><div id="adForm" style="display:none;margin-top:10px;background:#111;padding:10px;border-radius:8px"><input id="bizName" placeholder="Business Name"><input id="bizWhats" placeholder="WhatsApp Number"><input id="bizEmail" placeholder="Email"><input id="bizLocation" placeholder="Location"><input id="bizCover" placeholder="Places you cover"><input type="file" id="bizPics" multiple accept="image/*"><input id="bizVideo" placeholder="Drive Video Link"><select id="bizPlan"><option value="monthly">Monthly Plan</option><option value="yearly">Yearly Plan</option></select><button class="btn" onclick="payWithPaystack()">PAY & SUBMIT</button><p style="font-size:10px">After payment admin go post 5-10 pics, video, location visible. Auto 40 days.</p></div></div></div>
-<div class="card"><h2>🎮 Free Games - Football, Car Race, Fighting</h2>
-<div style="display:grid;grid-template-columns:1fr;gap:15px">
-<div class="game-box"><h3>⚽ Football Shoot</h3><canvas id="footballGame" width="300" height="200" style="background:#2a5a2a;border-radius:8px;width:100%"></canvas><br><button class="btn" style="width:48%" onclick="footballShoot()">SHOOT BALL</button><button class="btn" style="width:48%;background:#fff" onclick="footballReset()">RESET</button><p style="font-size:11px" id="footballScore">Score: 0</p></div>
-<div class="game-box"><h3>🏎️ Car Race</h3><canvas id="carGame" width="300" height="200" style="background:#333;border-radius:8px;width:100%"></canvas><br><button class="btn" style="width:32%" onclick="carLeft()">◀️ LEFT</button><button class="btn" style="width:32%" onclick="carRight()">RIGHT ▶️</button><button class="btn" style="width:32%;background:#fff" onclick="carStart()">START</button><p style="font-size:11px" id="carScore">Avoid red cars! Score: 0</p></div>
-<div class="game-box"><h3>🥊 Fighting Game</h3><canvas id="fightGame" width="300" height="200" style="background:#1a1a1a;border-radius:8px;width:100%"></canvas><br><button class="btn" style="width:32%" onclick="fightPunch()">👊 PUNCH</button><button class="btn" style="width:32%" onclick="fightKick()">🦵 KICK</button><button class="btn" style="width:32%;background:#fff" onclick="fightReset()">RESET</button><p style="font-size:11px" id="fightScore">Player HP: 100 | Enemy HP: 100</p></div>
+<div class="top">
+<h1>LARFFAN BELEFU AI TV <span class="pro-badge">PRO</span></h1>
+<p style="margin:4px;font-size:13px">Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU | @paulosawaru</p>
+<div class="nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></div>
 </div>
+
+<div class="card"><h2>📺 YouTube - LARFFAN BELEFU</h2>
+<input id="ytLink" placeholder="Paste YouTube link"><button onclick="ytPlay()">PLAY</button>
+<button onclick="document.getElementById('yt').src='https://www.youtube.com/embed?listType=user&list=paulosawaru'">My Channel 728 Videos</button>
+<iframe id="yt" src="https://www.youtube.com/embed/jNQXAC9IVRw" allowfullscreen></iframe>
+<p style="font-size:11px">Search: LARFFAN BELEFU = LARFF AN BELEFU</p>
 </div>
-<div class="card"><h2>🎁 Gift + AdSense</h2><button class="btn" onclick="giftPay()">GIFT VIA PAYSTACK</button><p style="font-size:11px">AdSense: paste ca-pub-XXX here | AdMob: ca-app-pub-XXX</p></div>
+
+<div class="card"><h2>📱 Play Link + Upload From Phone</h2>
+<input id="anyLink" placeholder="Facebook or direct video link"><button onclick="playAny()">PLAY LINK</button>
+<input type="file" id="upFile" accept="video/*" onchange="playFile(event)">
+<video id="vP" controls style="display:none"></video><iframe id="fP" style="display:none"></iframe>
 </div>
-<div class="footer"><a href="about.html" style="color:#FFA500">About Us</a> | <a href="contact.html" style="color:#FFA500">Contact Us</a> | <a href="privacy.html" style="color:#FFA500">Privacy Policy</a><p>© 2026 Larffanbelefu AI TV | larffanbelefu@gmail.com | 09151553060 | @paulosawaru</p></div>
+
+<div class="card"><h2>📻 Live Radio - LARFFAN BELEFU</h2>
+<input id="rLink" value="https://zeno.fm/player/larffanbelefu-radio-station"><button onclick="document.getElementById('radio').src=document.getElementById('rLink').value">PLAY RADIO</button>
+<iframe id="radio" src="https://zeno.fm/player/larffanbelefu-radio-station"></iframe>
+</div>
+
+<div class="card" style="border:2px solid lime"><h2>💰 Business Advert - 5 Videos</h2>
+<p>Need help? WhatsApp us on <b>09151553060</b> before you pay.</p>
+<input id="cName" placeholder="Business Name"><textarea id="cDesc" placeholder="Advert text + your phone"></textarea>
+<input id="c1" placeholder="Video 1"><input id="c2" placeholder="Video 2"><input id="c3" placeholder="Video 3"><input id="c4" placeholder="Video 4"><input id="c5" placeholder="Video 5">
+<select id="cPlan"><option value="1500">1 Month N1,500 - 5 Videos</option><option value="11000">12 Months N11,000 - 5 Videos BEST</option></select>
+<button onclick="payCust()" style="background:lime;width:100%">PAY WITH PAYSTACK</button><div id="cOut"></div>
+</div>
+
+<!-- CORRECTED COMEDY PRICE - N1000 40 DAYS, N10000 12 MONTHS -->
+<div class="card" style="border:2px solid orange"><h2>🎭 Post Comedy - LARFFAN BELEFU Style</h2>
+<p>Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU<br>WhatsApp us on 09151553060 if you need help before pay.</p>
+<input id="comName" placeholder="Comedy Title"><input id="comLink" placeholder="YouTube link"><input type="file" id="comFile" accept="video/*">
+<select id="comPlan">
+<option value="1000">40 Days - N1,000</option>
+<option value="10000">12 Months - N10,000 - BEST</option>
+</select>
+<button onclick="payComedy()" style="background:orange;width:100%">PAY TO POST COMEDY</button><div id="comOut"></div>
+</div>
+
+<div class="card" id="myStudio"><h2>🎥 My Studio (Owner Only - No Pay)</h2>
+<input id="myTitle" placeholder="Title"><input id="myLink" placeholder="YouTube link"><input type="file" id="myFile" accept="video/*"><button onclick="postMine()">POST TO TV</button><div id="myOut"></div>
+</div>
+
+<div class="card"><h2>💱 Money Converter - Voice</h2><p>Say: "Convert 100 dollar to naira"</p><input id="amt" type="number" value="100"><select><option>USD</option><option>GBP</option></select> to <select><option>NGN</option></select><button onclick="convertM()">CONVERT</button><button onclick="startVoice('money')">🎤 VOICE</button><div id="mRes"></div></div>
+<div class="card"><h2>🧮 Calculator - Voice</h2><input id="calcIn" placeholder="e.g 100+200"><button onclick="calcNow()">CALCULATE</button><button onclick="startVoice('calc')">🎤 VOICE</button><div id="calcRes"></div></div>
+<div class="card"><h2>🌍 Translator - Voice</h2><input id="transIn" placeholder="Type or speak"><select id="transLang"><option value="yo">Yoruba</option><option value="ig">Igbo</option><option value="ha">Hausa</option><option value="fr">French</option></select><button onclick="translateNow()">TRANSLATE</button><button onclick="startVoice('trans')">🎤 VOICE</button><div id="transRes"></div></div>
+<div class="card"><h2>📅 Calendar 1960-2040</h2><select id="yS"></select><select id="mS"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9" selected>Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><button onclick="showCal()">SHOW</button><div id="calOut"></div></div>
+
+<div style="text-align:center;padding:18px;background:#000">
+<p>Email: larffanbelefu@gmail.com | WhatsApp us on: 09151553060</p><p>Search YouTube: LARFFAN BELEFU</p>
+<p><a href="about.html" style="color:orange">About</a> | <a href="contact.html" style="color:orange">Contact</a> | <a href="privacy.html" style="color:orange">Privacy</a></p>
+</div>
+
+<button id="aiBtn" onclick="toggleAI()">🤖</button>
+<div id="aiBox"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><div id="aiChat" style="font-size:13px;margin:8px 0;height:200px;overflow:auto;border:1px solid #333;padding:6px;border-radius:8px">Hi! I be Larffan AI. Search YouTube LARFF AN BELEFU. I fit help you. Owner say "Admin Larffan" to control me.</div>
+<input id="aiInput" placeholder="Type or speak..." style="width:68%"><button onclick="aiSend()">Send</button><button onclick="startVoice('ai')">🎤</button>
+</div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-const holidays={"0-1":"🎌 Jan1 New Year 🌍","4-1":"👷 May1 Workers Day 🌍","9-1":"🇳🇬 Oct1 Independence 🇳🇬","11-25":"🎄 Dec25 Christmas ✝️"};
-function initYear(){let y=document.getElementById('yearSel');if(!y)return;for(let i=1960;i<=2040;i++){let o=document.createElement('option');o.value=i;o.text=i;if(i==2026)o.selected=true;y.appendChild(o);}buildCalendar();}
-function buildCalendar(){let yrEl=document.getElementById('yearSel');let moEl=document.getElementById('monthSel');if(!yrEl||!moEl)return;let yr=parseInt(yrEl.value);let mo=parseInt(moEl.value);let first=new Date(yr,mo,1).getDay();let days=new Date(yr,mo+1,0).getDate();let g=document.getElementById('calendarGrid');g.innerHTML="";for(let i=0;i<first;i++)g.innerHTML+='<div class="cal-day"></div>';for(let d=1;d<=days;d++){let k=mo+'-'+d;let h=holidays[k]||"";g.innerHTML+=`<div class="${h?'cal-day holiday':'cal-day'}">${d}<br><small>${h}</small></div>`;}let list="";for(let k in holidays){if(k.startsWith(mo+'-'))list+=holidays[k]+"<br>";}document.getElementById('holidayInfo').innerHTML=list;}
-function doTranslate(){let t=document.getElementById('transInput').value;let l=document.getElementById('langSelect').value;if(!t)return alert("Type");document.getElementById('transResult').innerHTML="Translating...";fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(t)}&langpair=en|${l}`).then(r=>r.json()).then(d=>{let tr=d.responseData.translatedText;document.getElementById('transResult').innerHTML=`${tr} <br><button class='btn' onclick="speak('${tr.replace(/'/g,'')}')">🔊 Voice</button>`;});}
-function doDictionary(){let w=document.getElementById('transInput').value.split(" ")[0];fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${w}`).then(r=>r.json()).then(d=>{try{document.getElementById('transResult').innerHTML=d[0].meanings[0].definitions[0].definition;}catch(e){document.getElementById('transResult').innerHTML="Not found";}});}
-function speak(t){let u=new SpeechSynthesisUtterance(t);speechSynthesis.speak(u);}
-function convertMoney(){let a=document.getElementById('moneyAmount').value;let f=document.getElementById('fromCurr').value;let t=document.getElementById('toCurr').value;fetch(`https://api.exchangerate-api.com/v4/latest/${f}`).then(r=>r.json()).then(d=>{let rate=d.rates[t];document.getElementById('moneyResult').innerHTML=`${a} ${f} = ${(a*rate).toFixed(2)} ${t}`;});}
-function payWithPaystack(){alert("Paystack: Add pk_live_... key - Day1,30,39 notify, Day40 remove");}
-function giftPay(){alert("Paystack gift - Thanks!");}
-let fScore=0;function drawFootball(){let fCtx=document.getElementById('footballGame');if(!fCtx)return;let fC=fCtx.getContext('2d');fC.clearRect(0,0,300,200);fC.fillStyle="#fff";fC.fillRect(130,10,40,30);fC.fillStyle="#FFA500";fC.beginPath();fC.arc(150,100,15,0,Math.PI*2);fC.fill();}function footballShoot(){if(Math.random()>0.3){fScore++;document.getElementById('footballScore').innerText="GOAL! Score: "+fScore;}else{document.getElementById('footballScore').innerText="MISS! Score: "+fScore;}drawFootball();}function footballReset(){fScore=0;document.getElementById('footballScore').innerText="Score: 0";drawFootball();}
-let carX=130,carScore=0,carRun=false,carObs=[];function drawCar(){let carCtx=document.getElementById('carGame');if(!carCtx)return;let carC=carCtx.getContext('2d');carC.clearRect(0,0,300,200);carC.fillStyle="#FFA500";carC.fillRect(carX,150,40,30);carC.fillStyle="red";carObs.forEach(o=>{carC.fillRect(o.x,o.y,30,20);});}function carLeft(){carX=Math.max(0,carX-20);drawCar();}function carRight(){carX=Math.min(260,carX+20);drawCar();}function carStart(){carRun=true;carScore=0;carObs=[];let iv=setInterval(()=>{if(!carRun){clearInterval(iv);return;}carObs.push({x:Math.random()*270,y:0});carObs.forEach(o=>o.y+=5);carObs=carObs.filter(o=>o.y<200);carScore++;document.getElementById('carScore').innerText="Score: "+carScore;let hit=carObs.some(o=>Math.abs(o.x-carX)<35 && o.y>130);if(hit){carRun=false;document.getElementById('carScore').innerText="CRASH! Final Score: "+carScore;}drawCar();},100);}
-let pHP=100,eHP=100;function drawFight(){let fightCtx=document.getElementById('fightGame');if(!fightCtx)return;let fightC=fightCtx.getContext('2d');fightC.clearRect(0,0,300,200);fightC.fillStyle="#44aaff";fightC.fillRect(50,80,40,80);fightC.fillStyle="#ff4444";fightC.fillRect(210,80,40,80);fightC.fillStyle="#fff";fightC.fillText("YOU",55,70);fightC.fillText("ENEMY",210,70);}function fightPunch(){eHP-=15;if(eHP<=0)eHP=0;fightUpdate();}function fightKick(){eHP-=25;if(eHP<=0)eHP=0;fightUpdate();}function fightUpdate(){pHP-=Math.floor(Math.random()*10);if(pHP<0)pHP=0;document.getElementById('fightScore').innerText=`Player HP: ${pHP} | Enemy HP: ${eHP} ${eHP==0?"YOU WIN!":""} ${pHP==0?"YOU LOSE!":""}`;drawFight();if(eHP==0||pHP==0){setTimeout(fightReset,1500);}}function fightReset(){pHP=100;eHP=100;document.getElementById('fightScore').innerText="Player HP: 100 | Enemy HP: 100";drawFight();}
-window.onload=function(){drawFootball();drawCar();drawFight();initYear();};
+function safe(t){return t.replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function getID(u){let m=u.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);return m&&m[2].length==11?m[2]:u}
+function ytPlay(){let l=document.getElementById('ytLink').value;if(l)document.getElementById('yt').src='https://www.youtube.com/embed/'+getID(safe(l))}
+function playAny(){let l=safe(document.getElementById('anyLink').value);if(!l)return;if(l.includes('facebook')){document.getElementById('fP').style.display='block';document.getElementById('vP').style.display='none';document.getElementById('fP').src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(l)}else{let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=l;v.play()}}
+function playFile(e){let f=e.target.files[0];if(f){let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=URL.createObjectURL(f);v.play()}}
+function postMine(){let t=safe(document.getElementById('myTitle').value||'My Video');let l=document.getElementById('myLink').value;let f=document.getElementById('myFile').files[0];let h='<div class=card style=background:#222><h3>'+t+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';else{alert('Add link');return}h+='</div>';document.getElementById('myOut').innerHTML+=h}
+const PK='pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38';
+function payCust(){let name=safe(document.getElementById('cName').value);if(!name){alert('Enter name');return}let plan=document.getElementById('cPlan').value;PaystackPop.setup({key:PK,email:'customer@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let links=[1,2,3,4,5].map(i=>document.getElementById('c'+i).value).filter(v=>v);let d=safe(document.getElementById('cDesc').value);let h='<div class=card style=border:1px solid lime><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+'</h3><p>'+d+'</p>';links.forEach(l=>{h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>'});h+='</div>';document.getElementById('cOut').innerHTML+=h}}).openIframe()}
+function payComedy(){let name=safe(document.getElementById('comName').value||'Comedy');let plan=document.getElementById('comPlan').value;PaystackPop.setup({key:PK,email:'comedy@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let l=document.getElementById('comLink').value;let f=document.getElementById('comFile').files[0];let h='<div class=card style=border:1px solid orange><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+' '+(plan==1000?'40 Days':'12 Months')+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';h+='</div>';document.getElementById('comOut').innerHTML+=h}}).openIframe()}
+function convertM(){let a=document.getElementById('amt').value;document.getElementById('mRes').innerHTML=a+' USD = '+(a*1600)+' NGN'}
+function calcNow(){try{let v=eval(document.getElementById('calcIn').value);document.getElementById('calcRes').innerHTML='= '+v}catch(e){document.getElementById('calcRes').innerHTML='Invalid'}}
+function translateNow(){let t=document.getElementById('transIn').value;document.getElementById('transRes').innerHTML='Translating "'+safe(t)+'" (AI)'}
+let yS=document.getElementById('yS');for(let y=1960;y<=2040;y++){let o=document.createElement('option');o.value=y;o.text=y;if(y==2026)o.selected=true;yS.appendChild(o)}function showCal(){let y=yS.value,m=document.getElementById('mS').value,d=new Date(y,parseInt(m)+1,0).getDate();document.getElementById('calOut').innerHTML=y+' has '+d+' days'}
+function toggleAI(){let b=document.getElementById('aiBox');b.style.display=b.style.display=='none'?'block':'none'}
+function aiReply(m){let c=document.getElementById('aiChat');c.innerHTML+='<div><b>AI:</b> '+m+'</div>';c.scrollTop=c.scrollHeight}
+function aiSend(){let i=document.getElementById('aiInput');let t=i.value.toLowerCase();if(!t)return;document.getElementById('aiChat').innerHTML+='<div><b>You:</b> '+safe(t)+'</div>';i.value='';if(t.includes('admin larffan')){aiReply('Oga admin yes! Opening studio. You control me only.')}else if(t.includes('advert')){aiReply('Business: N1500 1 month 5 videos, N11000 12 months. Comedy: N1000 40 days, N10000 12 months. WhatsApp 09151553060')}else{aiReply('I fit help you play video, advertise, convert money with voice.')}}
+function startVoice(type){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let r=new Rec();r.lang='en-NG';r.onresult=function(e){let txt=e.results[0][0].transcript;if(type=='money'){let num=txt.match(/\d+/);if(num)document.getElementById('amt').value=num[0];convertM()}else if(type=='calc'){document.getElementById('calcIn').value=txt.replace('plus','+');calcNow()}else if(type=='trans'){document.getElementById('transIn').value=txt;translateNow()}else if(type=='ai'){document.getElementById('aiInput').value=txt;aiSend()}};r.start()}
 </script>
 </body>
 </html>
