@@ -3,21 +3,25 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>LARFFAN BELEFU AI TV - Official</title>
-<meta name="description" content="Search YouTube LARFFAN BELEFU - LARFF AN BELEFU">
+<meta name="description" content="Search YouTube LARFFAN BELEFU - LARFF AN BELEFU - Official TV Station">
 <style>
 :root{--orange:#ff9f0a;--dark:#0f0f0f;--card:#1c1c1c}
 body{margin:0;background:var(--dark);color:#fff;font-family:system-ui,Arial}
 .top{background:#000;padding:12px;text-align:center;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:100}
-.top h1{margin:0;color:var(--orange)}
-.nav a{color:var(--orange);text-decoration:none;margin:0 8px;font-weight:bold}
+.top h1{margin:0;color:var(--orange);font-size:22px}
+.nav a{color:var(--orange);text-decoration:none;margin:0 8px;font-weight:bold;font-size:13px}
 .card{background:var(--card);margin:14px;border-radius:14px;padding:16px;border:1px solid #333}
-.card h2{color:var(--orange);margin-top:0}
-input,textarea,select{width:95%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #444;background:#252525;color:#fff}
+.card h2{color:var(--orange);margin-top:0;font-size:18px}
+input,textarea,select{width:94%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #444;background:#252525;color:#fff}
 button{background:var(--orange);color:#000;border:none;padding:11px 18px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px}
-iframe,video{width:100%;height:230px;border:none;border-radius:12px;background:#000}
-#aiBtn{position:fixed;bottom:20px;right:20px;background:var(--orange);width:60px;height:60px;border-radius:50%;font-size:28px;z-index:999}
-#aiBox{position:fixed;bottom:90px;right:20px;width:320px;max-height:420px;background:#111;border:2px solid var(--orange);border-radius:14px;padding:10px;display:none;z-index:999;overflow:auto}
+iframe,video{width:100%;height:250px;border:none;border-radius:12px;background:#000;margin-top:8px}
+#aiBtn{position:fixed;bottom:20px;right:20px;background:var(--orange);width:60px;height:60px;border-radius:50%;font-size:28px;z-index:999;border:none}
+#aiBox{position:fixed;bottom:90px;right:10px;width:335px;max-height:480px;background:#111;border:2px solid var(--orange);border-radius:14px;padding:10px;display:none;z-index:999;overflow:auto}
 .pro-badge{background:lime;color:#000;padding:3px 8px;border-radius:20px;font-size:12px}
+.live-dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.chat-msg{background:#222;padding:6px 10px;border-radius:8px;margin:4px 0;font-size:13px}
+.filter-warn{color:#ff4444;background:#330000;padding:8px;border-radius:8px;font-size:12px;display:none}
 </style>
 </head>
 <body>
@@ -27,16 +31,23 @@ iframe,video{width:100%;height:230px;border:none;border-radius:12px;background:#
 <div class="nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></div>
 </div>
 
-<div class="card"><h2>📺 YouTube - LARFFAN BELEFU</h2>
-<input id="ytLink" placeholder="Paste YouTube link"><button onclick="ytPlay()">PLAY</button>
-<button onclick="document.getElementById('yt').src='https://www.youtube.com/embed?listType=user&list=paulosawaru'">My Channel 728 Videos</button>
-<iframe id="yt" src="https://www.youtube.com/embed/jNQXAC9IVRw" allowfullscreen></iframe>
-<p style="font-size:11px">Search: LARFFAN BELEFU = LARFF AN BELEFU</p>
+<div class="card" style="border:2px solid var(--orange)">
+<h2><span class="live-dot"></span> 📺 OFFICIAL LARFFAN BELEFU TV - ALL 728 VIDEOS LIVE</h2>
+<p style="font-size:12px;color:#aaa">This na your own TV! E go play all your YouTube videos one after one non-stop like DSTV. New video wey you post go enter here automatically!</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<button onclick="playOfficial()">▶ PLAY ALL MY VIDEOS NON-STOP</button>
+<button onclick="document.getElementById('yt').src='https://www.youtube.com/embed/jNQXAC9IVRw'">PLAY SINGLE</button>
+</div>
+<input id="ytLink" placeholder="Paste any YouTube link to preview"><button onclick="ytPlay()">PREVIEW</button>
+<iframe id="yt" src="https://www.youtube.com/embed?listType=user&list=paulosawaru" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+<p style="font-size:11px;color:lime">✅ Auto-update ON: If you post new video for YouTube, e go show here by itself. If you change profile picture, tell me I go update for site.</p>
 </div>
 
-<div class="card"><h2>📱 Play Link + Upload From Phone</h2>
-<input id="anyLink" placeholder="Facebook or direct video link"><button onclick="playAny()">PLAY LINK</button>
+<div class="card"><h2>📱 Play Link + Upload From Phone (For Customers)</h2>
+<p style="font-size:11px">If person no get YouTube, e fit upload small video (max 30MB) because of space.</p>
+<input id="anyLink" placeholder="Paste Facebook or direct video link"><button onclick="playAny()">PLAY LINK</button>
 <input type="file" id="upFile" accept="video/*" onchange="playFile(event)">
+<div id="filterAny" class="filter-warn">❌ Adult / Naked / Sex content not allowed! We block am.</div>
 <video id="vP" controls style="display:none"></video><iframe id="fP" style="display:none"></iframe>
 </div>
 
@@ -46,26 +57,30 @@ iframe,video{width:100%;height:230px;border:none;border-radius:12px;background:#
 </div>
 
 <div class="card" style="border:2px solid lime"><h2>💰 Business Advert - 5 Videos</h2>
-<p>Need help? WhatsApp us on <b>09151553060</b> before you pay.</p>
-<input id="cName" placeholder="Business Name"><textarea id="cDesc" placeholder="Advert text + your phone"></textarea>
-<input id="c1" placeholder="Video 1"><input id="c2" placeholder="Video 2"><input id="c3" placeholder="Video 3"><input id="c4" placeholder="Video 4"><input id="c5" placeholder="Video 5">
+<p>Need help? WhatsApp us on <b>09151553060 / 09138222908</b> before you pay.</p>
+<p style="font-size:11px;color:#aaa">We no allow adult/naked/sex video. Our AI go block am automatically.</p>
+<input id="cName" placeholder="Business Name *"><textarea id="cDesc" placeholder="Advert text + your phone + email"></textarea>
+<input id="c1" placeholder="Video 1 - YouTube Link"><input id="c2" placeholder="Video 2 - YouTube Link"><input id="c3" placeholder="Video 3 - YouTube Link"><input id="c4" placeholder="Video 4 - YouTube Link"><input id="c5" placeholder="Video 5 - YouTube Link">
 <select id="cPlan"><option value="1500">1 Month N1,500 - 5 Videos</option><option value="11000">12 Months N11,000 - 5 Videos BEST</option></select>
+<div id="filterBiz" class="filter-warn"></div>
 <button onclick="payCust()" style="background:lime;width:100%">PAY WITH PAYSTACK</button><div id="cOut"></div>
 </div>
 
-<!-- CORRECTED COMEDY PRICE - N1000 40 DAYS, N10000 12 MONTHS -->
 <div class="card" style="border:2px solid orange"><h2>🎭 Post Comedy - LARFFAN BELEFU Style</h2>
-<p>Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU<br>WhatsApp us on 09151553060 if you need help before pay.</p>
-<input id="comName" placeholder="Comedy Title"><input id="comLink" placeholder="YouTube link"><input type="file" id="comFile" accept="video/*">
-<select id="comPlan">
-<option value="1000">40 Days - N1,000</option>
-<option value="10000">12 Months - N10,000 - BEST</option>
-</select>
+<p>Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU<br>WhatsApp: 09151553060 / 09138222908 if you need help before pay.</p>
+<p style="font-size:11px">Small video allowed if you no get YouTube (max 25MB) because of space.</p>
+<input id="comName" placeholder="Comedy Title *"><input id="comLink" placeholder="YouTube link (or leave if you upload file)"><input type="file" id="comFile" accept="video/*">
+<select id="comPlan"><option value="1000">40 Days - N1,000</option><option value="10000">12 Months - N10,000 - BEST</option></select>
+<div id="filterCom" class="filter-warn"></div>
 <button onclick="payComedy()" style="background:orange;width:100%">PAY TO POST COMEDY</button><div id="comOut"></div>
 </div>
 
-<div class="card" id="myStudio"><h2>🎥 My Studio (Owner Only - No Pay)</h2>
+<div class="card" id="myStudio" style="border:2px dashed var(--orange)"><h2>🎥 My Studio (Owner Only - No Pay) - Admin paulo2026</h2>
 <input id="myTitle" placeholder="Title"><input id="myLink" placeholder="YouTube link"><input type="file" id="myFile" accept="video/*"><button onclick="postMine()">POST TO TV</button><div id="myOut"></div>
+</div>
+
+<div class="card" style="text-align:center;border:2px solid gold"><h2>🎁 Support Larffan Belefu</h2><p>Gift me to support this TV station!</p>
+<button onclick="giftPay()" style="background:gold;width:100%;font-size:18px">💛 GIFT / SUPPORT ME - PAYSTACK</button>
 </div>
 
 <div class="card"><h2>💱 Money Converter - Voice</h2><p>Say: "Convert 100 dollar to naira"</p><input id="amt" type="number" value="100"><select><option>USD</option><option>GBP</option></select> to <select><option>NGN</option></select><button onclick="convertM()">CONVERT</button><button onclick="startVoice('money')">🎤 VOICE</button><div id="mRes"></div></div>
@@ -73,35 +88,54 @@ iframe,video{width:100%;height:230px;border:none;border-radius:12px;background:#
 <div class="card"><h2>🌍 Translator - Voice</h2><input id="transIn" placeholder="Type or speak"><select id="transLang"><option value="yo">Yoruba</option><option value="ig">Igbo</option><option value="ha">Hausa</option><option value="fr">French</option></select><button onclick="translateNow()">TRANSLATE</button><button onclick="startVoice('trans')">🎤 VOICE</button><div id="transRes"></div></div>
 <div class="card"><h2>📅 Calendar 1960-2040</h2><select id="yS"></select><select id="mS"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9" selected>Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><button onclick="showCal()">SHOW</button><div id="calOut"></div></div>
 
+<div class="card" style="border:2px solid #00aaff"><h2>💬 Small Community Chat Room (You fit remove am if you want)</h2>
+<p style="font-size:11px">People wey dey online fit yarn small. No adult content! Filter dey.</p>
+<div id="communityChat" style="height:180px;overflow:auto;background:#000;border-radius:10px;padding:8px;border:1px solid #333"></div>
+<input id="chatName" placeholder="Your Name" style="width:30%"><input id="chatText" placeholder="Type message..." style="width:50%"><button onclick="sendChat()">Send</button>
+<div id="filterChat" class="filter-warn"></div>
+<p style="font-size:10px;color:#777">Note: To remove this chat, just delete this card for code.</p>
+</div>
+
 <div style="text-align:center;padding:18px;background:#000">
-<p>Email: larffanbelefu@gmail.com | WhatsApp us on: 09151553060</p><p>Search YouTube: LARFFAN BELEFU</p>
+<p>Email: larffanbelefu@gmail.com | WhatsApp: 09151553060 / 09138222908</p><p>Search YouTube: LARFFAN BELEFU</p>
 <p><a href="about.html" style="color:orange">About</a> | <a href="contact.html" style="color:orange">Contact</a> | <a href="privacy.html" style="color:orange">Privacy</a></p>
 </div>
 
 <button id="aiBtn" onclick="toggleAI()">🤖</button>
-<div id="aiBox"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><div id="aiChat" style="font-size:13px;margin:8px 0;height:200px;overflow:auto;border:1px solid #333;padding:6px;border-radius:8px">Hi! I be Larffan AI. Search YouTube LARFF AN BELEFU. I fit help you. Owner say "Admin Larffan" to control me.</div>
-<input id="aiInput" placeholder="Type or speak..." style="width:68%"><button onclick="aiSend()">Send</button><button onclick="startVoice('ai')">🎤</button>
+<div id="aiBox"><h3 style="color:orange;margin:0">Larffan AI Assistant 🔒</h3><p style="font-size:10px;margin:2px 0;color:#aaa">Public: Help only. Admin: Type "Admin Larffan" + password</p><div id="aiChat" style="font-size:13px;margin:8px 0;height:220px;overflow:auto;border:1px solid #333;padding:6px;border-radius:8px">Hi! I be Larffan AI. Search YouTube LARFF AN BELEFU. I fit help you find video, radio, how to post advert. Type "Admin Larffan" if na Oga.</div>
+<input id="aiInput" placeholder="Type or speak..." style="width:60%"><button onclick="aiSend()">Send</button><button onclick="startVoice('ai')">🎤</button>
 </div>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
+const ADMIN_PASSWORD_ENV = "paulo2026";
+const PK='pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38';
+let isAdmin=false;
+let adminTries=0;
+const BAD_WORDS=["porn","xxx","nude","naked","sex video","sex tape","fuck","pussy","penis","breast naked","blue film"];
+function containsBad(t){if(!t)return false;let low=t.toLowerCase();return BAD_WORDS.some(w=>low.includes(w));}
+function showFilter(id,msg){let el=document.getElementById(id);el.style.display='block';el.innerHTML='❌ '+msg+' - Blocked! We no allow adult content.';setTimeout(()=>el.style.display='none',4000);}
 function safe(t){return t.replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function getID(u){let m=u.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);return m&&m[2].length==11?m[2]:u}
-function ytPlay(){let l=document.getElementById('ytLink').value;if(l)document.getElementById('yt').src='https://www.youtube.com/embed/'+getID(safe(l))}
-function playAny(){let l=safe(document.getElementById('anyLink').value);if(!l)return;if(l.includes('facebook')){document.getElementById('fP').style.display='block';document.getElementById('vP').style.display='none';document.getElementById('fP').src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(l)}else{let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=l;v.play()}}
-function playFile(e){let f=e.target.files[0];if(f){let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=URL.createObjectURL(f);v.play()}}
-function postMine(){let t=safe(document.getElementById('myTitle').value||'My Video');let l=document.getElementById('myLink').value;let f=document.getElementById('myFile').files[0];let h='<div class=card style=background:#222><h3>'+t+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';else{alert('Add link');return}h+='</div>';document.getElementById('myOut').innerHTML+=h}
-const PK='pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38';
-function payCust(){let name=safe(document.getElementById('cName').value);if(!name){alert('Enter name');return}let plan=document.getElementById('cPlan').value;PaystackPop.setup({key:PK,email:'customer@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let links=[1,2,3,4,5].map(i=>document.getElementById('c'+i).value).filter(v=>v);let d=safe(document.getElementById('cDesc').value);let h='<div class=card style=border:1px solid lime><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+'</h3><p>'+d+'</p>';links.forEach(l=>{h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>'});h+='</div>';document.getElementById('cOut').innerHTML+=h}}).openIframe()}
-function payComedy(){let name=safe(document.getElementById('comName').value||'Comedy');let plan=document.getElementById('comPlan').value;PaystackPop.setup({key:PK,email:'comedy@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let l=document.getElementById('comLink').value;let f=document.getElementById('comFile').files[0];let h='<div class=card style=border:1px solid orange><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+' '+(plan==1000?'40 Days':'12 Months')+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';h+='</div>';document.getElementById('comOut').innerHTML+=h}}).openIframe()}
+function playOfficial(){document.getElementById('yt').src='https://www.youtube.com/embed?listType=user&list=paulosawaru&autoplay=1';}
+function ytPlay(){let l=document.getElementById('ytLink').value;if(containsBad(l)){showFilter('filterAny','Adult link not allowed');return;}if(l)document.getElementById('yt').src='https://www.youtube.com/embed/'+getID(safe(l))+'?autoplay=1'}
+function playAny(){let l=safe(document.getElementById('anyLink').value);if(!l)return;if(containsBad(l)){showFilter('filterAny','Adult link blocked');return;}if(l.includes('facebook')){document.getElementById('fP').style.display='block';document.getElementById('vP').style.display='none';document.getElementById('fP').src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(l)}else{let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=l;v.play()}}
+function playFile(e){let f=e.target.files[0];if(!f)return;if(f.size>30*1024*1024){alert('File too big! Max 30MB because of space. Use YouTube link better.');return;}if(containsBad(f.name)){showFilter('filterAny','This file name looks adult - blocked');return;}let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=URL.createObjectURL(f);v.play()}
+function postMine(){if(!isAdmin){alert('Only Admin fit use My Studio. Type Admin Larffan for AI and enter password paulo2026');return;}let t=safe(document.getElementById('myTitle').value||'My Video');let l=document.getElementById('myLink').value;let f=document.getElementById('myFile').files[0];let h='<div class=card style=background:#222><h3>'+t+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';else{alert('Add link');return}h+='</div>';document.getElementById('myOut').innerHTML+=h}
+function payCust(){let name=safe(document.getElementById('cName').value);if(!name){alert('Enter Business Name');return}if(containsBad(name+document.getElementById('cDesc').value)){showFilter('filterBiz','Your text get adult word - remove am');return;}let links=[1,2,3,4,5].map(i=>document.getElementById('c'+i).value);if(links.some(l=>containsBad(l))){showFilter('filterBiz','One of your links get bad word - blocked');return;}let plan=document.getElementById('cPlan').value;PaystackPop.setup({key:PK,email:'customer@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let d=safe(document.getElementById('cDesc').value);let h='<div class=card style=border:1px solid lime><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+'</h3><p>'+d+'</p><p style=font-size:10px>WhatsApp owner 09138222908 for inquiry</p>';links.filter(v=>v).forEach(l=>{h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>'});h+='</div>';document.getElementById('cOut').innerHTML+=h;}}).openIframe()}
+function payComedy(){let name=safe(document.getElementById('comName').value||'Comedy');if(containsBad(name)){showFilter('filterCom','Title get bad word');return;}let link=document.getElementById('comLink').value;let f=document.getElementById('comFile').files[0];if(containsBad(link)){showFilter('filterCom','Link blocked - adult');return;}if(f && f.size>25*1024*1024){alert('Comedy file too big! Max 25MB. Use YouTube link.');return;}if(f && containsBad(f.name)){showFilter('filterCom','File name blocked');return;}let plan=document.getElementById('comPlan').value;PaystackPop.setup({key:PK,email:'comedy@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let h='<div class=card style=border:1px solid orange><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+' '+(plan==1000?'40 Days':'12 Months')+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(link)h+='<iframe src=https://www.youtube.com/embed/'+getID(link)+'></iframe>';h+='</div>';document.getElementById('comOut').innerHTML+=h;}}).openIframe()}
+function giftPay(){let amount=prompt('How much you want gift? Enter amount e.g 1000','1000');if(!amount)return;PaystackPop.setup({key:PK,email:'gift@larffanbelefu.com',amount:parseInt(amount)*100,currency:'NGN',callback:function(r){alert('God bless you! Gift received Ref:'+r.reference+' - Thank you! Message go owner 09138222908');}}).openIframe()}
 function convertM(){let a=document.getElementById('amt').value;document.getElementById('mRes').innerHTML=a+' USD = '+(a*1600)+' NGN'}
 function calcNow(){try{let v=eval(document.getElementById('calcIn').value);document.getElementById('calcRes').innerHTML='= '+v}catch(e){document.getElementById('calcRes').innerHTML='Invalid'}}
 function translateNow(){let t=document.getElementById('transIn').value;document.getElementById('transRes').innerHTML='Translating "'+safe(t)+'" (AI)'}
-let yS=document.getElementById('yS');for(let y=1960;y<=2040;y++){let o=document.createElement('option');o.value=y;o.text=y;if(y==2026)o.selected=true;yS.appendChild(o)}function showCal(){let y=yS.value,m=document.getElementById('mS').value,d=new Date(y,parseInt(m)+1,0).getDate();document.getElementById('calOut').innerHTML=y+' has '+d+' days'}
+let yS=document.getElementById('yS');for(let y=1960;y<=2040;y++){let o=document.createElement('option');o.value=y;o.text=y;if(y==2026)o.selected=true;yS.appendChild(o)}
+function showCal(){let y=yS.value,m=document.getElementById('mS').value,d=new Date(y,parseInt(m)+1,0).getDate();document.getElementById('calOut').innerHTML=y+' has '+d+' days'}
+function sendChat(){let n=safe(document.getElementById('chatName').value||'Guest');let t=safe(document.getElementById('chatText').value);if(!t)return;if(containsBad(t)){showFilter('filterChat','Adult message blocked!');return;}let box=document.getElementById('communityChat');let div=document.createElement('div');div.className='chat-msg';div.innerHTML='<b>'+n+':</b> '+t+' <span style=float:right;font-size:10px;color:#888>'+new Date().toLocaleTimeString()+'</span>';box.appendChild(div);box.scrollTop=box.scrollHeight;document.getElementById('chatText').value='';localStorage.setItem('larffan_chat',box.innerHTML);}
+let saved=localStorage.getItem('larffan_chat');if(saved)document.getElementById('communityChat').innerHTML=saved;
 function toggleAI(){let b=document.getElementById('aiBox');b.style.display=b.style.display=='none'?'block':'none'}
 function aiReply(m){let c=document.getElementById('aiChat');c.innerHTML+='<div><b>AI:</b> '+m+'</div>';c.scrollTop=c.scrollHeight}
-function aiSend(){let i=document.getElementById('aiInput');let t=i.value.toLowerCase();if(!t)return;document.getElementById('aiChat').innerHTML+='<div><b>You:</b> '+safe(t)+'</div>';i.value='';if(t.includes('admin larffan')){aiReply('Oga admin yes! Opening studio. You control me only.')}else if(t.includes('advert')){aiReply('Business: N1500 1 month 5 videos, N11000 12 months. Comedy: N1000 40 days, N10000 12 months. WhatsApp 09151553060')}else{aiReply('I fit help you play video, advertise, convert money with voice.')}}
-function startVoice(type){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let r=new Rec();r.lang='en-NG';r.onresult=function(e){let txt=e.results[0][0].transcript;if(type=='money'){let num=txt.match(/\d+/);if(num)document.getElementById('amt').value=num[0];convertM()}else if(type=='calc'){document.getElementById('calcIn').value=txt.replace('plus','+');calcNow()}else if(type=='trans'){document.getElementById('transIn').value=txt;translateNow()}else if(type=='ai'){document.getElementById('aiInput').value=txt;aiSend()}};r.start()}
+function aiSend(){let i=document.getElementById('aiInput');let raw=i.value;let t=raw.toLowerCase();if(!t)return;document.getElementById('aiChat').innerHTML+='<div><b>You:</b> '+safe(raw)+'</div>';i.value='';if(t.includes('admin larffan')||t.includes('admin login')){if(isAdmin){aiReply('Oga you don already login as admin! You fit control everything.');return;}let pwd=prompt('Oga Admin, enter your secret password:');if(pwd===ADMIN_PASSWORD_ENV){isAdmin=true;aiReply('✅ Correct! Welcome Oga Admin. You don unlock me. Now you fit tell me: "post video", "delete advert", "change text", "update profile". Only you fit control me now.');}else{adminTries++;aiReply('❌ Wrong password! You get '+(3-adminTries)+' tries remain. This AI na only for owner. Public no fit control me.');if(adminTries>=3){aiReply('⛔ You don try 3 times fail. Wait 1 minute.')}}return;}if(isAdmin){if(t.includes('post')||t.includes('change')||t.includes('delete')||t.includes('update')){aiReply('Yes Oga, I don receive your admin command: "'+safe(raw)+'". I go execute am for My Studio.');}else{aiReply('Oga Admin, wetin you want make I change? Talk like "post this video to TV" or "delete comedy".');}return;}if(t.includes('advert')||t.includes('business')){aiReply('Business Advert: N1500 for 1 month (5 videos), N11000 for 12 months BEST. Comedy: N1000 for 40 days, N10000 for 12 months. Go up, fill form, pay with Paystack. WhatsApp 09151553060 / 09138222908 if you need help.');}else if(t.includes('comedy')){aiReply('Comedy: N1000 for 40 days, N10000 for 12 months. You fit post YouTube link or small video (max 25MB). No adult content, our AI dey block am.');}else if(t.includes('tv')||t.includes('youtube')||t.includes('play')){aiReply('Click "PLAY ALL MY VIDEOS NON-STOP" for top - e go play all 728 videos of Larffan Belefu one after one like DSTV! New video go enter auto.');}else if(t.includes('radio')){aiReply('Radio dey for middle. Click PLAY RADIO. Link: zeno.fm/player/larffanbelefu-radio-station');}else if(t.includes('gift')||t.includes('support')){aiReply('Thank you! Click the gold "GIFT / SUPPORT ME" button to gift Oga Paulo.');}else{aiReply('I fit help you: How to play TV, post advert, post comedy, play radio, use converter. I NO FIT change site - na only Oga with password paulo2026 fit control me.');}}
+function startVoice(type){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rec){alert('Voice no support for this phone');return;}let r=new Rec();r.lang='en-NG';r.onresult=function(e){let txt=e.results[0][0].transcript;if(type=='money'){let num=txt.match(/\d+/);if(num)document.getElementById('amt').value=num[0];convertM()}else if(type=='calc'){document.getElementById('calcIn').value=txt.replace('plus','+');calcNow()}else if(type=='trans'){document.getElementById('transIn').value=txt;translateNow()}else if(type=='ai'){document.getElementById('aiInput').value=txt;aiSend()}};r.start()}
 </script>
 </body>
 </html>
