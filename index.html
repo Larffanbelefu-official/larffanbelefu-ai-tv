@@ -135,3 +135,14 @@ function aiReply(msg){ let b=document.getElementById("aiChat"); b.innerHTML+='<d
 function sendAI(){ let inp=document.getElementById("aiIn"); let raw=inp.value.trim(); if(!raw) return; let low=raw.toLowerCase(); document.getElementById("aiChat").innerHTML+='<div><b>You:</b> '+raw+'</div>'; inp.value=""; if(low.includes("admin larffan")||low==="admin"||low.includes("admin login")){ if(isAdmin){ aiReply("Owner already logged in. Rooms unlocked."); return; } let pwd=prompt("Owner verification: Enter password"); if(!pwd) return; try{ if(btoa(pwd)===ADMIN_B64){ isAdmin=true; aiReply("Verified. Welcome Owner. Full control unlocked. Rooms 1-4 editable."); document.getElementById("roomStatus").textContent="Owner verified - editable"; } else { adminTries++; aiReply("Wrong password. "+(3-adminTries)+" tries left."); } }catch(e){} return; } if(isAdmin){ aiReply('Admin command received: "'+raw+'". Executed.'); return; } if(low.includes("play")||low.includes("tv")){ aiReply("Use Engine 1 for all 728 videos auto-play like DSTV. Use Engine 2 for 64 best videos. Paste link and Preview. Next for next video."); } else if(low.includes("advert")){ aiReply("Business Advert N1,500 for 1 month, N11,000 for 12 months. Fill form and pay."); } else if(low.includes("comedy")){ aiReply("Post Comedy N1,000 for 40 days, N10,000 for 12 months. Upload or YouTube link."); } else if(low.includes("calculator")){ aiReply("Scientific calculator: sin cos tan log sqrt. Type or speak."); } else { aiReply("I can help: Play TV, post advert, post comedy, calculator, converter, translator, chat, gift. Ask me."); } }
 function voiceAI(){ let R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R){alert("Voice not supported");return;} let r=new R(); r.onresult=e=>{ document.getElementById("aiIn").value=e.results[0][0].transcript; sendAI(); }; r.start(); }
 </script></body></html>
+<footer style="background:#0f172a; padding:30px; text-align:center; margin-top:50px; border-top:2px solid #facc15;">
+<p style="color:#e2e8f0; font-size:16px;">
+<a href="about.html" style="color:#facc15; margin:0 10px; text-decoration:none;">About Us</a> |
+<a href="contact.html" style="color:#facc15; margin:0 10px; text-decoration:none;">Contact Us</a> |
+<a href="privacy.html" style="color:#facc15; margin:0 10px; text-decoration:none;">Privacy Policy</a>
+</p>
+<p style="color:#94a3b8; font-size:14px; margin-top:10px;">
+© 2026 LARFFAN BELEFU AI TV / Radio Station - All Rights Reserved<br>
+Larffanbelefu-ai-tv | larffanbelefu@gmail.com | 09138222908
+</p>
+</footer>
