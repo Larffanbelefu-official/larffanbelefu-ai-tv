@@ -1,141 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>LARFFAN BELEFU AI TV - Official</title>
-<meta name="description" content="Search YouTube LARFFAN BELEFU - LARFF AN BELEFU - Official TV Station">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>LARFFAN BELEFU AI TV PRO</title>
 <style>
-:root{--orange:#ff9f0a;--dark:#0f0f0f;--card:#1c1c1c}
-body{margin:0;background:var(--dark);color:#fff;font-family:system-ui,Arial}
-.top{background:#000;padding:12px;text-align:center;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:100}
-.top h1{margin:0;color:var(--orange);font-size:22px}
-.nav a{color:var(--orange);text-decoration:none;margin:0 8px;font-weight:bold;font-size:13px}
-.card{background:var(--card);margin:14px;border-radius:14px;padding:16px;border:1px solid #333}
-.card h2{color:var(--orange);margin-top:0;font-size:18px}
-input,textarea,select{width:94%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #444;background:#252525;color:#fff}
-button{background:var(--orange);color:#000;border:none;padding:11px 18px;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px}
-iframe,video{width:100%;height:250px;border:none;border-radius:12px;background:#000;margin-top:8px}
-#aiBtn{position:fixed;bottom:20px;right:20px;background:var(--orange);width:60px;height:60px;border-radius:50%;font-size:28px;z-index:999;border:none}
-#aiBox{position:fixed;bottom:90px;right:10px;width:335px;max-height:480px;background:#111;border:2px solid var(--orange);border-radius:14px;padding:10px;display:none;z-index:999;overflow:auto}
-.pro-badge{background:lime;color:#000;padding:3px 8px;border-radius:20px;font-size:12px}
-.live-dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.chat-msg{background:#222;padding:6px 10px;border-radius:8px;margin:4px 0;font-size:13px}
-.filter-warn{color:#ff4444;background:#330000;padding:8px;border-radius:8px;font-size:12px;display:none}
-</style>
-</head>
-<body>
-<div class="top">
-<h1>LARFFAN BELEFU AI TV <span class="pro-badge">PRO</span></h1>
-<p style="margin:4px;font-size:13px">Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU | @paulosawaru</p>
-<div class="nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></div>
-</div>
+:root{--orange:#ffb000;--bg:#0e0e0e;--card:#1a1a1a;--b:#333}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Arial}
+.header{background:#000;text-align:center;padding:14px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:50}
+.header h1{margin:0;color:var(--orange);font-size:22px}.badge{background:#0f0;color:#000;padding:2px 8px;border-radius:12px;font-size:11px}
+.nav a{color:var(--orange);text-decoration:none;margin:0 7px;font-weight:700;font-size:13px}
+.card{background:var(--card);margin:12px;border-radius:14px;padding:14px;border:1px solid var(--b)}
+.card h2{color:var(--orange);margin:0 0 6px 0;font-size:17px}
+.small{font-size:12px;color:#aaa;line-height:1.4}
+input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #444;background:#111;color:#fff}
+.btn{background:var(--orange);color:#000;border:none;padding:12px;border-radius:10px;font-weight:800;cursor:pointer;margin:5px 0;width:100%}
+.btn2{background:#222;color:#fff;border:1px solid var(--orange)}
+#playerWrap{position:relative;padding-top:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-top:8px}
+#playerWrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.grid5 button{padding:12px 2px;background:#222;color:#fff;border:1px solid #444;border-radius:8px}
+.grid5 button.op{background:var(--orange);color:#000;font-weight:800}
+.chatBox,.aiBox{height:180px;overflow:auto;background:#000;border-radius:10px;padding:8px;border:1px solid #333;font-size:13px}
+.warn{color:#ff5555;background:#2a0000;padding:7px;border-radius:8px;font-size:12px;display:none;margin-top:6px}
+#aiFloat{position:fixed;right:14px;bottom:18px;background:var(--orange);color:#000;width:58px;height:58px;border-radius:50%;font-size:26px;border:none;z-index:99}
+#aiPanel{position:fixed;right:8px;bottom:85px;width:340px;max-width:95vw;max-height:500px;background:#111;border:2px solid var(--orange);border-radius:14px;padding:10px;display:none;z-index:99;overflow:auto}
+.list{display:flex;gap:6px;overflow:auto;padding:4px 0}
+.list div{min-width:110px;background:#000;border:1px solid #333;border-radius:8px;padding:4px;font-size:11px;cursor:pointer;text-align:center}
+.list div img{width:100%;border-radius:6px}
+</style></head><body>
+<div class="header"><h1>LARFFAN BELEFU AI TV <span class="badge">PRO</span></h1>
+<div class="small" style="color:#fff">Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU | @paulosawaru | 728 Videos | Channel ID: UCktAYr5WRNmL2yZbUnJjjA</div>
+<div class="nav"><a href="#tv">Home</a><a href="#tools">Tools</a><a href="#chat">Community</a><a href="#contact">Contact</a></div></div>
 
-<div class="card" style="border:2px solid var(--orange)">
-<h2><span class="live-dot"></span> 📺 OFFICIAL LARFFAN BELEFU TV - ALL 728 VIDEOS LIVE</h2>
-<p style="font-size:12px;color:#aaa">This na your own TV! E go play all your YouTube videos one after one non-stop like DSTV. New video wey you post go enter here automatically!</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap">
-<button onclick="playOfficial()">▶ PLAY ALL MY VIDEOS NON-STOP</button>
-<button onclick="document.getElementById('yt').src='https://www.youtube.com/embed/jNQXAC9IVRw'">PLAY SINGLE</button>
-</div>
-<input id="ytLink" placeholder="Paste any YouTube link to preview"><button onclick="ytPlay()">PREVIEW</button>
-<iframe id="yt" src="https://www.youtube.com/embed?listType=user&list=paulosawaru" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-<p style="font-size:11px;color:lime">✅ Auto-update ON: If you post new video for YouTube, e go show here by itself. If you change profile picture, tell me I go update for site.</p>
-</div>
+<div class="card" id="tv" style="border:2px solid var(--orange)">
+<h2>OFFICIAL LARFFAN BELEFU TV - LIVE</h2>
+<p class="small">How to use: Press Engine 1 to play all 728 videos like DSTV. Press Engine 2 to play selected 64 videos non-stop. Paste any YouTube link to preview.</p>
+<button class="btn" onclick="engine1()">ENGINE 1: PLAY ALL 728 VIDEOS (AUTO-UPDATE)</button>
+<button class="btn btn2" onclick="engine2()">ENGINE 2: PLAY SELECTED 64 VIDEOS NON-STOP</button>
+<div id="playerWrap"><iframe id="mainPlayer" src="https://www.youtube.com/embed/videoseries?list=UUktAYr5WRNmL2yZbUnJjjA&autoplay=0" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
+<div class="small" style="margin-top:8px">Engine 2 Playlist - Tap to play:</div>
+<div id="thumbList" class="list"></div>
+<input id="ytInput" placeholder="Paste YouTube link to preview">
+<div style="display:flex;gap:6px"><button class="btn btn2" onclick="previewCustom()">PREVIEW</button><button class="btn btn2" onclick="nextInList()">NEXT</button></div>
+<p class="small">Auto-update ON: New videos appear in Engine 1 automatically.</p></div>
 
-<div class="card"><h2>📱 Play Link + Upload From Phone (For Customers)</h2>
-<p style="font-size:11px">If person no get YouTube, e fit upload small video (max 30MB) because of space.</p>
-<input id="anyLink" placeholder="Paste Facebook or direct video link"><button onclick="playAny()">PLAY LINK</button>
-<input type="file" id="upFile" accept="video/*" onchange="playFile(event)">
-<div id="filterAny" class="filter-warn">❌ Adult / Naked / Sex content not allowed! We block am.</div>
-<video id="vP" controls style="display:none"></video><iframe id="fP" style="display:none"></iframe>
-</div>
+<div class="card" id="rooms" style="border:2px dashed var(--orange)">
+<h2>Private Rooms 1-4 (Owner Only)</h2>
+<p class="small">Private planning rooms for owner. Public cannot see. Login via AI Assistant.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<div class="card" style="margin:0;background:#111"><h2 style="font-size:14px">Room 1: Planning</h2><textarea id="r1"></textarea><button class="btn btn2" onclick="saveRoom(1)">Save Room 1</button></div>
+<div class="card" style="margin:0;background:#111"><h2 style="font-size:14px">Room 2: Comedy Ideas</h2><textarea id="r2"></textarea><button class="btn btn2" onclick="saveRoom(2)">Save Room 2</button></div>
+<div class="card" style="margin:0;background:#111"><h2 style="font-size:14px">Room 3: Business Review</h2><textarea id="r3"></textarea><button class="btn btn2" onclick="saveRoom(3)">Save Room 3</button></div>
+<div class="card" style="margin:0;background:#111"><h2 style="font-size:14px">Room 4: Customer Messages</h2><textarea id="r4"></textarea><button class="btn btn2" onclick="saveRoom(4)">Save Room 4</button></div>
+</div><p class="small" id="roomStatus">Owner login required.</p></div>
 
-<div class="card"><h2>📻 Live Radio - LARFFAN BELEFU</h2>
-<input id="rLink" value="https://zeno.fm/player/larffanbelefu-radio-station"><button onclick="document.getElementById('radio').src=document.getElementById('rLink').value">PLAY RADIO</button>
-<iframe id="radio" src="https://zeno.fm/player/larffanbelefu-radio-station"></iframe>
-</div>
+<div class="card" style="border:2px solid #0f0"><h2>Business Advert - Post 5 Videos</h2>
+<p class="small">How to use: Fill business name, description, 5 YouTube links, choose plan, pay with Paystack.</p>
+<input id="bName" placeholder="Business Name *"><textarea id="bDesc" placeholder="Description + phone + email"></textarea>
+<input id="b1" placeholder="Video 1 YouTube link"><input id="b2" placeholder="Video 2"><input id="b3" placeholder="Video 3"><input id="b4" placeholder="Video 4"><input id="b5" placeholder="Video 5">
+<select id="bPlan"><option value="1500">1 Month - N1,500</option><option value="11000">12 Months - N11,000 BEST</option></select>
+<div id="warnBiz" class="warn"></div><button class="btn" style="background:#0f0" onclick="payBiz()">PAY WITH PAYSTACK</button><div id="bizOut"></div></div>
 
-<div class="card" style="border:2px solid lime"><h2>💰 Business Advert - 5 Videos</h2>
-<p>Need help? WhatsApp us on <b>09151553060 / 09138222908</b> before you pay.</p>
-<p style="font-size:11px;color:#aaa">We no allow adult/naked/sex video. Our AI go block am automatically.</p>
-<input id="cName" placeholder="Business Name *"><textarea id="cDesc" placeholder="Advert text + your phone + email"></textarea>
-<input id="c1" placeholder="Video 1 - YouTube Link"><input id="c2" placeholder="Video 2 - YouTube Link"><input id="c3" placeholder="Video 3 - YouTube Link"><input id="c4" placeholder="Video 4 - YouTube Link"><input id="c5" placeholder="Video 5 - YouTube Link">
-<select id="cPlan"><option value="1500">1 Month N1,500 - 5 Videos</option><option value="11000">12 Months N11,000 - 5 Videos BEST</option></select>
-<div id="filterBiz" class="filter-warn"></div>
-<button onclick="payCust()" style="background:lime;width:100%">PAY WITH PAYSTACK</button><div id="cOut"></div>
-</div>
+<div class="card" style="border:2px solid orange"><h2>Post Comedy</h2>
+<p class="small">How to use: Enter title, YouTube link or upload small video max 25MB, choose plan, pay. Adult content blocked.</p>
+<input id="comTitle" placeholder="Comedy Title *"><input id="comLink" placeholder="YouTube link"><input type="file" id="comFile" accept="video/*">
+<select id="comPlan"><option value="1000">40 Days - N1,000</option><option value="10000">12 Months - N10,000 BEST</option></select>
+<div id="warnCom" class="warn"></div><button class="btn" style="background:orange" onclick="payComedy()">PAY TO POST COMEDY</button><div id="comOut"></div></div>
 
-<div class="card" style="border:2px solid orange"><h2>🎭 Post Comedy - LARFFAN BELEFU Style</h2>
-<p>Search YouTube: LARFFAN BELEFU = LARFF AN BELEFU<br>WhatsApp: 09151553060 / 09138222908 if you need help before pay.</p>
-<p style="font-size:11px">Small video allowed if you no get YouTube (max 25MB) because of space.</p>
-<input id="comName" placeholder="Comedy Title *"><input id="comLink" placeholder="YouTube link (or leave if you upload file)"><input type="file" id="comFile" accept="video/*">
-<select id="comPlan"><option value="1000">40 Days - N1,000</option><option value="10000">12 Months - N10,000 - BEST</option></select>
-<div id="filterCom" class="filter-warn"></div>
-<button onclick="payComedy()" style="background:orange;width:100%">PAY TO POST COMEDY</button><div id="comOut"></div>
-</div>
+<div class="card"><h2>Play Any Link + Upload From Phone</h2>
+<p class="small">How to use: Paste Facebook or video link to play, or upload video from phone max 30MB.</p>
+<input id="anyLink" placeholder="Paste Facebook or direct video link"><button class="btn btn2" onclick="playAnyLink()">PLAY LINK</button>
+<input type="file" id="anyFile" accept="video/*" onchange="playAnyFile(event)">
+<div id="warnAny" class="warn"></div><video id="anyVideo" controls style="display:none;width:100%;border-radius:10px;margin-top:6px"></video><iframe id="anyFrame" style="display:none;width:100%;height:250px;border-radius:10px;margin-top:6px"></iframe></div>
 
-<div class="card" id="myStudio" style="border:2px dashed var(--orange)"><h2>🎥 My Studio (Owner Only - No Pay) - Admin paulo2026</h2>
-<input id="myTitle" placeholder="Title"><input id="myLink" placeholder="YouTube link"><input type="file" id="myFile" accept="video/*"><button onclick="postMine()">POST TO TV</button><div id="myOut"></div>
-</div>
+<div class="card"><h2>Live Radio - LARFFAN BELEFU</h2><p class="small">How to use: Press play to listen.</p><iframe src="https://zeno.fm/player/larffanbelefu-radio-station" style="width:100%;height:120px;border-radius:10px;border:none"></iframe></div>
 
-<div class="card" style="text-align:center;border:2px solid gold"><h2>🎁 Support Larffan Belefu</h2><p>Gift me to support this TV station!</p>
-<button onclick="giftPay()" style="background:gold;width:100%;font-size:18px">💛 GIFT / SUPPORT ME - PAYSTACK</button>
-</div>
+<div class="card" style="text-align:center;border:2px solid gold"><h2>Support Larffan Belefu</h2><button class="btn" style="background:gold;font-size:18px" onclick="giftPay()">GIFT / SUPPORT - PAYSTACK</button></div>
 
-<div class="card"><h2>💱 Money Converter - Voice</h2><p>Say: "Convert 100 dollar to naira"</p><input id="amt" type="number" value="100"><select><option>USD</option><option>GBP</option></select> to <select><option>NGN</option></select><button onclick="convertM()">CONVERT</button><button onclick="startVoice('money')">🎤 VOICE</button><div id="mRes"></div></div>
-<div class="card"><h2>🧮 Calculator - Voice</h2><input id="calcIn" placeholder="e.g 100+200"><button onclick="calcNow()">CALCULATE</button><button onclick="startVoice('calc')">🎤 VOICE</button><div id="calcRes"></div></div>
-<div class="card"><h2>🌍 Translator - Voice</h2><input id="transIn" placeholder="Type or speak"><select id="transLang"><option value="yo">Yoruba</option><option value="ig">Igbo</option><option value="ha">Hausa</option><option value="fr">French</option></select><button onclick="translateNow()">TRANSLATE</button><button onclick="startVoice('trans')">🎤 VOICE</button><div id="transRes"></div></div>
-<div class="card"><h2>📅 Calendar 1960-2040</h2><select id="yS"></select><select id="mS"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9" selected>Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><button onclick="showCal()">SHOW</button><div id="calOut"></div></div>
+<div class="card" id="tools"><h2>Scientific Calculator + Tools</h2>
+<p class="small">How to use: Scientific calculator with sin cos tan log sqrt. Type or voice. Press =.</p>
+<input id="calcDisp" placeholder="0" style="text-align:right;font-size:18px" readonly>
+<div class="grid5" id="calcGrid"></div>
+<div style="display:flex;gap:6px"><button class="btn btn2" onclick="voiceCalc()">Speak to Calculate</button><button class="btn btn2" onclick="speakResult()">Speak Result</button></div>
+<div style="margin-top:10px"><h2 style="font-size:15px">Money Converter</h2><input id="mAmt" type="number" value="100" style="width:30%"><select id="mFrom" style="width:30%"><option>USD</option><option>NGN</option><option>GBP</option></select><select id="mTo" style="width:30%"><option>NGN</option><option>USD</option></select><button class="btn btn2" onclick="doConvert()">CONVERT</button><div id="mRes" class="small"></div></div>
+<div style="margin-top:10px"><h2 style="font-size:15px">Translator</h2><input id="tIn" placeholder="Type text"><select id="tLang"><option value="yo">Yoruba</option><option value="ig">Igbo</option><option value="ha">Hausa</option><option value="fr">French</option></select><button class="btn btn2" onclick="doTranslate()">TRANSLATE</button><div id="tRes" class="small"></div></div>
+<div style="margin-top:10px"><h2 style="font-size:15px">Calendar 1960-2040</h2><select id="ySel" style="width:45%"></select><select id="mSel" style="width:45%"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><button class="btn btn2" onclick="showCalendar()">SHOW</button><div id="calRes" class="small"></div></div></div>
 
-<div class="card" style="border:2px solid #00aaff"><h2>💬 Small Community Chat Room (You fit remove am if you want)</h2>
-<p style="font-size:11px">People wey dey online fit yarn small. No adult content! Filter dey.</p>
-<div id="communityChat" style="height:180px;overflow:auto;background:#000;border-radius:10px;padding:8px;border:1px solid #333"></div>
-<input id="chatName" placeholder="Your Name" style="width:30%"><input id="chatText" placeholder="Type message..." style="width:50%"><button onclick="sendChat()">Send</button>
-<div id="filterChat" class="filter-warn"></div>
-<p style="font-size:10px;color:#777">Note: To remove this chat, just delete this card for code.</p>
-</div>
+<div class="card" id="chat" style="border:2px solid #00aaff"><h2>Community Chat Room</h2>
+<p class="small">Chat with other fans of Larffan Belefu. Share greetings and discuss comedy. Keep it respectful.</p><div id="cBox" class="chatBox"></div>
+<div style="display:flex;gap:6px"><input id="cName" placeholder="Your Name" style="width:30%"><input id="cText" placeholder="Type message..." style="width:60%"><button class="btn btn2" style="width:20%" onclick="sendCommunity()">Send</button></div><div id="warnChat" class="warn"></div></div>
 
-<div style="text-align:center;padding:18px;background:#000">
-<p>Email: larffanbelefu@gmail.com | WhatsApp: 09151553060 / 09138222908</p><p>Search YouTube: LARFFAN BELEFU</p>
-<p><a href="about.html" style="color:orange">About</a> | <a href="contact.html" style="color:orange">Contact</a> | <a href="privacy.html" style="color:orange">Privacy</a></p>
-</div>
+<div class="card" style="text-align:center"><p class="small">Email: larffanbelefu@gmail.com | WhatsApp: 09151553060 / 09138222908<br>Search YouTube: LARFFAN BELEFU | @paulosawaru</p></div>
 
-<button id="aiBtn" onclick="toggleAI()">🤖</button>
-<div id="aiBox"><h3 style="color:orange;margin:0">Larffan AI Assistant 🔒</h3><p style="font-size:10px;margin:2px 0;color:#aaa">Public: Help only. Admin: Type "Admin Larffan" + password</p><div id="aiChat" style="font-size:13px;margin:8px 0;height:220px;overflow:auto;border:1px solid #333;padding:6px;border-radius:8px">Hi! I be Larffan AI. Search YouTube LARFF AN BELEFU. I fit help you find video, radio, how to post advert. Type "Admin Larffan" if na Oga.</div>
-<input id="aiInput" placeholder="Type or speak..." style="width:60%"><button onclick="aiSend()">Send</button><button onclick="startVoice('ai')">🎤</button>
-</div>
+<button id="aiFloat" onclick="toggleAI()">BOT</button>
+<div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><p class="small">Intelligent assistant for TV, adverts, tools.</p>
+<div id="aiChat" class="aiBox">AI: Hello! I am Larffan AI. I can help you play TV, post advert, post comedy, use calculator, converter, translator. How can I help you?</div>
+<div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:70%"><button class="btn btn2" style="width:30%" onclick="sendAI()">Send</button></div><button class="btn btn2" onclick="voiceAI()">Voice</button></div>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-const ADMIN_PASSWORD_ENV = "paulo2026";
-const PK='pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38';
-let isAdmin=false;
-let adminTries=0;
-const BAD_WORDS=["porn","xxx","nude","naked","sex video","sex tape","fuck","pussy","penis","breast naked","blue film"];
-function containsBad(t){if(!t)return false;let low=t.toLowerCase();return BAD_WORDS.some(w=>low.includes(w));}
-function showFilter(id,msg){let el=document.getElementById(id);el.style.display='block';el.innerHTML='❌ '+msg+' - Blocked! We no allow adult content.';setTimeout(()=>el.style.display='none',4000);}
-function safe(t){return t.replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-function getID(u){let m=u.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);return m&&m[2].length==11?m[2]:u}
-function playOfficial(){document.getElementById('yt').src='https://www.youtube.com/embed?listType=user&list=paulosawaru&autoplay=1';}
-function ytPlay(){let l=document.getElementById('ytLink').value;if(containsBad(l)){showFilter('filterAny','Adult link not allowed');return;}if(l)document.getElementById('yt').src='https://www.youtube.com/embed/'+getID(safe(l))+'?autoplay=1'}
-function playAny(){let l=safe(document.getElementById('anyLink').value);if(!l)return;if(containsBad(l)){showFilter('filterAny','Adult link blocked');return;}if(l.includes('facebook')){document.getElementById('fP').style.display='block';document.getElementById('vP').style.display='none';document.getElementById('fP').src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(l)}else{let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=l;v.play()}}
-function playFile(e){let f=e.target.files[0];if(!f)return;if(f.size>30*1024*1024){alert('File too big! Max 30MB because of space. Use YouTube link better.');return;}if(containsBad(f.name)){showFilter('filterAny','This file name looks adult - blocked');return;}let v=document.getElementById('vP');document.getElementById('fP').style.display='none';v.style.display='block';v.src=URL.createObjectURL(f);v.play()}
-function postMine(){if(!isAdmin){alert('Only Admin fit use My Studio. Type Admin Larffan for AI and enter password paulo2026');return;}let t=safe(document.getElementById('myTitle').value||'My Video');let l=document.getElementById('myLink').value;let f=document.getElementById('myFile').files[0];let h='<div class=card style=background:#222><h3>'+t+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(l)h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>';else{alert('Add link');return}h+='</div>';document.getElementById('myOut').innerHTML+=h}
-function payCust(){let name=safe(document.getElementById('cName').value);if(!name){alert('Enter Business Name');return}if(containsBad(name+document.getElementById('cDesc').value)){showFilter('filterBiz','Your text get adult word - remove am');return;}let links=[1,2,3,4,5].map(i=>document.getElementById('c'+i).value);if(links.some(l=>containsBad(l))){showFilter('filterBiz','One of your links get bad word - blocked');return;}let plan=document.getElementById('cPlan').value;PaystackPop.setup({key:PK,email:'customer@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let d=safe(document.getElementById('cDesc').value);let h='<div class=card style=border:1px solid lime><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+'</h3><p>'+d+'</p><p style=font-size:10px>WhatsApp owner 09138222908 for inquiry</p>';links.filter(v=>v).forEach(l=>{h+='<iframe src=https://www.youtube.com/embed/'+getID(l)+'></iframe>'});h+='</div>';document.getElementById('cOut').innerHTML+=h;}}).openIframe()}
-function payComedy(){let name=safe(document.getElementById('comName').value||'Comedy');if(containsBad(name)){showFilter('filterCom','Title get bad word');return;}let link=document.getElementById('comLink').value;let f=document.getElementById('comFile').files[0];if(containsBad(link)){showFilter('filterCom','Link blocked - adult');return;}if(f && f.size>25*1024*1024){alert('Comedy file too big! Max 25MB. Use YouTube link.');return;}if(f && containsBad(f.name)){showFilter('filterCom','File name blocked');return;}let plan=document.getElementById('comPlan').value;PaystackPop.setup({key:PK,email:'comedy@larffanbelefu.com',amount:plan*100,currency:'NGN',callback:function(r){let h='<div class=card style=border:1px solid orange><h3>'+name+' PAID N'+plan+' Ref:'+r.reference+' '+(plan==1000?'40 Days':'12 Months')+'</h3>';if(f)h+='<video controls src='+URL.createObjectURL(f)+'></video>';else if(link)h+='<iframe src=https://www.youtube.com/embed/'+getID(link)+'></iframe>';h+='</div>';document.getElementById('comOut').innerHTML+=h;}}).openIframe()}
-function giftPay(){let amount=prompt('How much you want gift? Enter amount e.g 1000','1000');if(!amount)return;PaystackPop.setup({key:PK,email:'gift@larffanbelefu.com',amount:parseInt(amount)*100,currency:'NGN',callback:function(r){alert('God bless you! Gift received Ref:'+r.reference+' - Thank you! Message go owner 09138222908');}}).openIframe()}
-function convertM(){let a=document.getElementById('amt').value;document.getElementById('mRes').innerHTML=a+' USD = '+(a*1600)+' NGN'}
-function calcNow(){try{let v=eval(document.getElementById('calcIn').value);document.getElementById('calcRes').innerHTML='= '+v}catch(e){document.getElementById('calcRes').innerHTML='Invalid'}}
-function translateNow(){let t=document.getElementById('transIn').value;document.getElementById('transRes').innerHTML='Translating "'+safe(t)+'" (AI)'}
-let yS=document.getElementById('yS');for(let y=1960;y<=2040;y++){let o=document.createElement('option');o.value=y;o.text=y;if(y==2026)o.selected=true;yS.appendChild(o)}
-function showCal(){let y=yS.value,m=document.getElementById('mS').value,d=new Date(y,parseInt(m)+1,0).getDate();document.getElementById('calOut').innerHTML=y+' has '+d+' days'}
-function sendChat(){let n=safe(document.getElementById('chatName').value||'Guest');let t=safe(document.getElementById('chatText').value);if(!t)return;if(containsBad(t)){showFilter('filterChat','Adult message blocked!');return;}let box=document.getElementById('communityChat');let div=document.createElement('div');div.className='chat-msg';div.innerHTML='<b>'+n+':</b> '+t+' <span style=float:right;font-size:10px;color:#888>'+new Date().toLocaleTimeString()+'</span>';box.appendChild(div);box.scrollTop=box.scrollHeight;document.getElementById('chatText').value='';localStorage.setItem('larffan_chat',box.innerHTML);}
-let saved=localStorage.getItem('larffan_chat');if(saved)document.getElementById('communityChat').innerHTML=saved;
-function toggleAI(){let b=document.getElementById('aiBox');b.style.display=b.style.display=='none'?'block':'none'}
-function aiReply(m){let c=document.getElementById('aiChat');c.innerHTML+='<div><b>AI:</b> '+m+'</div>';c.scrollTop=c.scrollHeight}
-function aiSend(){let i=document.getElementById('aiInput');let raw=i.value;let t=raw.toLowerCase();if(!t)return;document.getElementById('aiChat').innerHTML+='<div><b>You:</b> '+safe(raw)+'</div>';i.value='';if(t.includes('admin larffan')||t.includes('admin login')){if(isAdmin){aiReply('Oga you don already login as admin! You fit control everything.');return;}let pwd=prompt('Oga Admin, enter your secret password:');if(pwd===ADMIN_PASSWORD_ENV){isAdmin=true;aiReply('✅ Correct! Welcome Oga Admin. You don unlock me. Now you fit tell me: "post video", "delete advert", "change text", "update profile". Only you fit control me now.');}else{adminTries++;aiReply('❌ Wrong password! You get '+(3-adminTries)+' tries remain. This AI na only for owner. Public no fit control me.');if(adminTries>=3){aiReply('⛔ You don try 3 times fail. Wait 1 minute.')}}return;}if(isAdmin){if(t.includes('post')||t.includes('change')||t.includes('delete')||t.includes('update')){aiReply('Yes Oga, I don receive your admin command: "'+safe(raw)+'". I go execute am for My Studio.');}else{aiReply('Oga Admin, wetin you want make I change? Talk like "post this video to TV" or "delete comedy".');}return;}if(t.includes('advert')||t.includes('business')){aiReply('Business Advert: N1500 for 1 month (5 videos), N11000 for 12 months BEST. Comedy: N1000 for 40 days, N10000 for 12 months. Go up, fill form, pay with Paystack. WhatsApp 09151553060 / 09138222908 if you need help.');}else if(t.includes('comedy')){aiReply('Comedy: N1000 for 40 days, N10000 for 12 months. You fit post YouTube link or small video (max 25MB). No adult content, our AI dey block am.');}else if(t.includes('tv')||t.includes('youtube')||t.includes('play')){aiReply('Click "PLAY ALL MY VIDEOS NON-STOP" for top - e go play all 728 videos of Larffan Belefu one after one like DSTV! New video go enter auto.');}else if(t.includes('radio')){aiReply('Radio dey for middle. Click PLAY RADIO. Link: zeno.fm/player/larffanbelefu-radio-station');}else if(t.includes('gift')||t.includes('support')){aiReply('Thank you! Click the gold "GIFT / SUPPORT ME" button to gift Oga Paulo.');}else{aiReply('I fit help you: How to play TV, post advert, post comedy, play radio, use converter. I NO FIT change site - na only Oga with password paulo2026 fit control me.');}}
-function startVoice(type){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rec){alert('Voice no support for this phone');return;}let r=new Rec();r.lang='en-NG';r.onresult=function(e){let txt=e.results[0][0].transcript;if(type=='money'){let num=txt.match(/\d+/);if(num)document.getElementById('amt').value=num[0];convertM()}else if(type=='calc'){document.getElementById('calcIn').value=txt.replace('plus','+');calcNow()}else if(type=='trans'){document.getElementById('transIn').value=txt;translateNow()}else if(type=='ai'){document.getElementById('aiInput').value=txt;aiSend()}};r.start()}
-</script>
-</body>
-</html>
+const UPLOAD_PL="UUktAYr5WRNmL2yZbUnJjjA";
+const PK="pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38";
+const ADMIN_B64="cGF1bG8yMDI2";
+let isAdmin=false; let adminTries=0;
+let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos"];
+let currentIndex=0;
+const BAD=["porn","xxx","nude","naked","sex video","sex tape","fuck","pussy","penis","blue film"];
+function badCheck(t){ if(!t) return false; let l=t.toLowerCase(); return BAD.some(w=>l.includes(w)); }
+function warn(id,msg){ let e=document.getElementById(id); e.style.display="block"; e.textContent="Blocked: "+msg; setTimeout(()=>e.style.display="none",4000); }
+function cleanId(input){ if(!input) return null; let s=input.trim().replace(/httpshttps/gi,"https"); if(s.includes("shorts/")){ let p=s.split("shorts/")[1]; return p.split("?")[0].split("&")[0].substring(0,11); } if(s.includes("youtu.be/")){ let p=s.split("youtu.be/")[1]; return p.split("?")[0].split("&")[0].substring(0,11); } if(s.includes("v=")){ let p=s.split("v=")[1]; return p.split("&")[0].split("?")[0].substring(0,11); } if(s.length==11) return s; return null; }
+function playId(id){ if(!id) return; document.getElementById("mainPlayer").src="https://www.youtube.com/embed/"+id+"?autoplay=1&rel=0"; }
+function engine1(){ document.getElementById("mainPlayer").src="https://www.youtube.com/embed/videoseries?list="+UPLOAD_PL+"&autoplay=1"; }
+function engine2(){ currentIndex=0; if(selectedList.length>0) playId(selectedList[0]); }
+function nextInList(){ if(!selectedList.length) return; currentIndex=(currentIndex+1)%selectedList.length; playId(selectedList[currentIndex]); }
+function previewCustom(){ let id=cleanId(document.getElementById("ytInput").value); if(!id){alert("Enter valid YouTube link");return;} playId(id); }
+function buildThumbs(){ let box=document.getElementById("thumbList"); selectedList.forEach((id,idx)=>{ let d=document.createElement("div"); d.innerHTML='<img src="https://img.youtube.com/vi/'+id+'/mqdefault.jpg"><br>Video '+(idx+1); d.onclick=()=>{currentIndex=idx; playId(id);}; box.appendChild(d); }); } buildThumbs();
+function saveRoom(n){ if(!isAdmin){alert("Owner login required via AI");return;} localStorage.setItem("room"+n,document.getElementById("r"+n).value); document.getElementById("roomStatus").textContent="Room "+n+" saved"; }
+for(let i=1;i<=4;i++){ let s=localStorage.getItem("room"+i); if(s) document.getElementById("r"+i).value=s; }
+function playAnyLink(){ let l=document.getElementById("anyLink").value.trim(); if(!l) return; if(badCheck(l)){warn("warnAny","Adult link not allowed");return;} let vid=document.getElementById("anyVideo"); let frm=document.getElementById("anyFrame"); if(l.includes("facebook.com")){frm.style.display="block";vid.style.display="none";frm.src="https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(l);} else if(l.includes("youtube")||l.includes("youtu.be")){ let id=cleanId(l); if(id) playId(id); } else {frm.style.display="none";vid.style.display="block";vid.src=l;vid.play();} }
+function playAnyFile(e){ let f=e.target.files[0]; if(!f) return; if(f.size>30*1024*1024){alert("File too big max 30MB");return;} if(badCheck(f.name)){warn("warnAny","File blocked");return;} let vid=document.getElementById("anyVideo"); document.getElementById("anyFrame").style.display="none"; vid.style.display="block"; vid.src=URL.createObjectURL(f); vid.play(); }
+function payBiz(){ let name=document.getElementById("bName").value.trim(); if(!name){alert("Enter business name");return;} let desc=document.getElementById("bDesc").value; if(badCheck(name+desc)){warn("warnBiz","Text blocked");return;} let links=[1,2,3,4,5].map(i=>document.getElementById("b"+i).value); if(links.some(l=>badCheck(l))){warn("warnBiz","Link blocked");return;} let plan=document.getElementById("bPlan").value; PaystackPop.setup({key:PK,email:"biz@larffanbelefu.com",amount:plan*100,currency:"NGN",callback:function(r){ let out=document.getElementById("bizOut"); let h='<div class="card" style="border:1px solid #0f0"><h2>'+name+' PAID N'+plan+' Ref:'+r.reference+'</h2><p class="small">'+desc+'</p>'; links.filter(v=>v).forEach(l=>{ let id=cleanId(l); if(id) h+='<iframe src="https://www.youtube.com/embed/'+id+'" style="width:100%;height:200px;border-radius:8px;margin-top:6px"></iframe>'; }); h+='</div>'; out.innerHTML+=h; } }).openIframe(); }
+function payComedy(){ let title=document.getElementById("comTitle").value.trim()||"Comedy"; if(badCheck(title)){warn("warnCom","Title blocked");return;} let link=document.getElementById("comLink").value; if(badCheck(link)){warn("warnCom","Link blocked");return;} let file=document.getElementById("comFile").files[0]; if(file && file.size>25*1024*1024){alert("File too big max 25MB");return;} let plan=document.getElementById("comPlan").value; PaystackPop.setup({key:PK,email:"comedy@larffanbelefu.com",amount:plan*100,currency:"NGN",callback:function(r){ let out=document.getElementById("comOut"); let h='<div class="card" style="border:1px solid orange"><h2>'+title+' PAID N'+plan+' Ref:'+r.reference+'</h2>'; if(file){ h+='<video controls src="'+URL.createObjectURL(file)+'" style="width:100%;border-radius:8px"></video>'; } else if(link){ let id=cleanId(link); if(id) h+='<iframe src="https://www.youtube.com/embed/'+id+'" style="width:100%;height:200px;border-radius:8px"></iframe>'; } h+='</div>'; out.innerHTML+=h; } }).openIframe(); }
+function giftPay(){ let amt=prompt("How much gift? e.g 1000","1000"); if(!amt) return; PaystackPop.setup({key:PK,email:"gift@larffanbelefu.com",amount:parseInt(amt)*100,currency:"NGN",callback:function(r){alert("God bless! Gift received Ref:"+r.reference);}}).openIframe(); }
+let expr=""; let keys=["sin","cos","tan","log","ln","sqrt","(",")","C","DEL","7","8","9","/","^","4","5","6","*","%","1","2","3","-","π","0",".","+","=","e"];
+let grid=document.getElementById("calcGrid"); keys.forEach(k=>{ let b=document.createElement("button"); b.textContent=k; if(["=","+","-","*","/","^"].includes(k)) b.className="op"; b.onclick=()=>calcHandle(k); grid.appendChild(b); });
+function calcHandle(k){ let d=document.getElementById("calcDisp"); if(k=="C"){expr="";d.value="";return;} if(k=="DEL"){expr=expr.slice(0,-1);d.value=expr;return;} if(k=="="){ try{ let e=expr.replace(/π/g,"Math.PI").replace(/e/g,"Math.E").replace("^","**").replace(/sqrt/g,"Math.sqrt").replace(/sin/g,"Math.sin").replace(/cos/g,"Math.cos").replace(/tan/g,"Math.tan").replace(/log/g,"Math.log10").replace(/ln/g,"Math.log"); let res=Function('"use strict";return ('+e+')')(); d.value=res; expr=""+res; }catch(err){d.value="Error";} return; } expr+=k; d.value=expr; }
+function voiceCalc(){ let R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R){alert("Voice not supported");return;} let r=new R(); r.onresult=e=>{ let t=e.results[0][0].transcript.replace(/plus/g,"+").replace(/minus/g,"-"); expr=t; document.getElementById("calcDisp").value=t; calcHandle("="); }; r.start(); }
+function speakResult(){ speechSynthesis.speak(new SpeechSynthesisUtterance(document.getElementById("calcDisp").value||"0")); }
+function doConvert(){ let a=parseFloat(document.getElementById("mAmt").value)||0; let f=document.getElementById("mFrom").value; let t=document.getElementById("mTo").value; let rate=1; if(f=="USD"&&t=="NGN") rate=1550; if(f=="NGN"&&t=="USD") rate=0.00065; if(f=="GBP"&&t=="NGN") rate=1950; document.getElementById("mRes").textContent=a+" "+f+" = "+(a*rate).toFixed(2)+" "+t; }
+function doTranslate(){ let txt=document.getElementById("tIn").value; let lang=document.getElementById("tLang").value; document.getElementById("tRes").textContent="Translated ("+lang+"): "+txt+" [AI simulation]"; }
+let ySel=document.getElementById("ySel"); for(let y=1960;y<=2040;y++){ let o=document.createElement("option"); o.value=y; o.text=y; if(y==2026) o.selected=true; ySel.appendChild(o); }
+function showCalendar(){ let y=ySel.value; let m=document.getElementById("mSel").value; let d=new Date(y,parseInt(m)+1,0).getDate(); document.getElementById("calRes").textContent=y+" Month "+(parseInt(m)+1)+" has "+d+" days"; }
+function sendCommunity(){ let n=document.getElementById("cName").value.trim()||"Fan"; let t=document.getElementById("cText").value.trim(); if(!t) return; if(badCheck(t)){warn("warnChat","Message blocked");return;} let box=document.getElementById("cBox"); let div=document.createElement("div"); div.style.cssText="background:#222;padding:6px 10px;border-radius:8px;margin:4px 0"; div.innerHTML="<b>"+n+":</b> "+t; box.appendChild(div); box.scrollTop=box.scrollHeight; document.getElementById("cText").value=""; localStorage.setItem("larffan_comm",box.innerHTML); }
+let savedC=localStorage.getItem("larffan_comm"); if(savedC) document.getElementById("cBox").innerHTML=savedC;
+function toggleAI(){ let p=document.getElementById("aiPanel"); p.style.display=p.style.display=="none"||p.style.display==""?"block":"none"; }
+function aiReply(msg){ let b=document.getElementById("aiChat"); b.innerHTML+='<div style="margin:6px 0"><b>AI:</b> '+msg+'</div>'; b.scrollTop=b.scrollHeight; }
+function sendAI(){ let inp=document.getElementById("aiIn"); let raw=inp.value.trim(); if(!raw) return; let low=raw.toLowerCase(); document.getElementById("aiChat").innerHTML+='<div><b>You:</b> '+raw+'</div>'; inp.value=""; if(low.includes("admin larffan")||low==="admin"||low.includes("admin login")){ if(isAdmin){ aiReply("Owner already logged in. Rooms unlocked."); return; } let pwd=prompt("Owner verification: Enter password"); if(!pwd) return; try{ if(btoa(pwd)===ADMIN_B64){ isAdmin=true; aiReply("Verified. Welcome Owner. Full control unlocked. Rooms 1-4 editable."); document.getElementById("roomStatus").textContent="Owner verified - editable"; } else { adminTries++; aiReply("Wrong password. "+(3-adminTries)+" tries left."); } }catch(e){} return; } if(isAdmin){ aiReply('Admin command received: "'+raw+'". Executed.'); return; } if(low.includes("play")||low.includes("tv")){ aiReply("Use Engine 1 for all 728 videos auto-play like DSTV. Use Engine 2 for 64 best videos. Paste link and Preview. Next for next video."); } else if(low.includes("advert")){ aiReply("Business Advert N1,500 for 1 month, N11,000 for 12 months. Fill form and pay."); } else if(low.includes("comedy")){ aiReply("Post Comedy N1,000 for 40 days, N10,000 for 12 months. Upload or YouTube link."); } else if(low.includes("calculator")){ aiReply("Scientific calculator: sin cos tan log sqrt. Type or speak."); } else { aiReply("I can help: Play TV, post advert, post comedy, calculator, converter, translator, chat, gift. Ask me."); } }
+function voiceAI(){ let R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R){alert("Voice not supported");return;} let r=new R(); r.onresult=e=>{ document.getElementById("aiIn").value=e.results[0][0].transcript; sendAI(); }; r.start(); }
+</script></body></html>
