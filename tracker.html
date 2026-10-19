@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaffanBellefu Tracker - Find My Phone</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
+body{background:#0a0a0f;color:#fff}
+.header{background:#111;padding:15px;text-align:center;border-bottom:2px solid #ffcc00}
+.header h1{color:#ffcc00}
+#map{height:50vh;width:100%}
+.panel{padding:15px;background:#15151f;margin:10px;border-radius:12px}
+.btn{padding:12px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:5px}
+.btn-yellow{background:#ffcc00;color:#000}
+.btn-dark{background:#222;color:#fff;border:1px solid #444}
+.btn-green{background:#00c853;color:#fff}
+.ai-box{background:#1e1e2e;border-left:4px solid #ffcc00;padding:12px;border-radius:8px;margin:10px 0;min-height:60px}
+.distance{font-size:28px;color:#ffcc00;font-weight:bold;text-align:center;margin:10px 0}
+input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:#fff}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🎤 LaffanBellefu Tracker v3</h1>
+<p>AI-Powered Phone Finder</p>
+</div>
+
+<div id="map"></div>
+
+<div class="panel">
+<div class="ai-box" id="aiText">Hi! I'm your Tracker AI. Login with Gmail to start. I will guide you step by step.</div>
+<div style="text-align:center">
+<button class="btn btn-dark" onclick="toggleVoice()" id="voiceBtn">🔊 VOICE: ON</button>
+<button class="btn btn-yellow" onclick="speakAI('Where is my phone')">WHERE IS MY PHONE?</button>
+<button class="btn btn-dark" onclick="speakAI('Repeat')">REPEAT LOCATION</button>
+<button class="btn btn-dark" onclick="speakAI('Distance')">TELL ME DISTANCE</button>
+</div>
+<div class="distance" id="distanceText">-- km away</div>
+</div>
+
+<div class="panel">
+<h3>Step 1: Login</h3>
+<input type="email" id="userEmail" placeholder="Enter your Gmail e.g paul@gmail.com">
+<input type="text" id="userName" placeholder="Your First Name e.g Paul">
+<button class="btn btn-yellow" onclick="loginUser()">Save & Continue</button>
+
+<h3 style="margin-top:20px">Step 2: Your Phones (4 Max)</h3>
+<div id="phoneList"></div>
+<input type="text" id="newPhoneName" placeholder="Phone Name e.g My Samsung">
+<button class="btn btn-green" onclick="addPhone()">+ Save This Device As My Phone</button>
+
+<div style="margin-top:15px">
+<button class="btn btn-yellow" onclick="ringPhone()">🔔 RING PHONE (If ON)</button>
+<button class="btn btn-dark" onclick="getLastLocation()">📍 LAST LOCATION (If OFF)</button>
+</div>
+</div>
+
+<script>
+let map = L.map('map').setView([6.5244, 3.3792], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let marker = L.marker([6.5244, 3.3792]).addTo(map);
+let voiceOn = true;
+let userData = JSON.parse(localStorage.getItem('laffan_tracker_user')||'{}');
+let phones = JSON.parse(localStorage.getItem('laffan_phones')||'[]');
+let paystackKey = "pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38";
+
+function speak(text){
+  document.getElementById('aiText').innerText = text;
+  if(!voiceOn) return;
+  let utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US'; utter.rate = 0.95;
+  speechSynthesis.cancel(); speechSynthesis.speak(utter);
+}
+
+function toggleVoice(){
+  voiceOn = !voiceOn;
+  document.getElementById('voiceBtn').innerText = voiceOn ? "🔊 VOICE: ON" : "🔇 VOICE: OFF";
+  speak(voiceOn ? "Voice is now on" : "Voice muted, you will see text only");
+}
+
+function loginUser(){
+  let email = document.getElementById('userEmail').value.trim();
+  let name = document.getElementById('userName').value.trim();
+  if(!email || !name){ alert("Put Gmail and First Name"); return; }
+  userData = {email, name}; localStorage.setItem('laffan_tracker_user', JSON.stringify(userData));
+  speak(`Hi ${name}, welcome! Your account is saved. Now click Save This Device to track your phone. I will watch it every 10 minutes for you.`);
+  renderPhones();
+}
+
+function renderPhones(){
+  let html = "";
+  phones.forEach((p,i)=>{
+    html += `<div style="background:#222;padding:10px;border-radius:8px;margin:5px 0">📱 ${p.name} - ${p.lastSeen || 'Not tracked yet'} <span style="float:right">${i==0?'FREE':'PAID'}</span></div>`;
+  });
+  document.getElementById('phoneList').innerHTML = html || "No phone yet";
+}
+
+function addPhone(){
+  let name = document.getElementById('newPhoneName').value || "My Phone "+(phones.length+1);
+  if(phones.length >= 4){ alert("Max 4 phones"); return; }
+  if(phones.length >= 1){
+    // Pay for extra
+    let handler = PaystackPop.setup({
+      key: paystackKey,
+      email: userData.email || "user@example.com",
+      amount: 200000, // 2000 Naira
+      currency: "NGN",
+      ref: "TRK_"+Date.now(),
+      callback: function(res){
+        savePhone(name);
+        speak(`Payment successful ${userData.name}. Your phone ${name} is now added.`);
+      },
+      onClose: function(){ speak("Payment cancelled"); }
+    });
+    handler.openIframe();
+  } else {
+    savePhone(name);
+  }
+}
+
+function savePhone(name){
+  navigator.geolocation.getCurrentPosition(pos=>{
+    let p = {name, lat: pos.coords.latitude, lng: pos.coords.longitude, lastSeen: new Date().toLocaleString()};
+    phones.push(p); localStorage.setItem('laffan_phones', JSON.stringify(phones));
+    updateMap(p.lat, p.lng);
+    renderPhones();
+    speak(`Perfect ${userData.name}, I have saved ${name}. Your phone is safe. I will tell you the distance anytime you ask.`);
+  });
+}
+
+function updateMap(lat,lng){
+  marker.setLatLng([lat,lng]); map.setView([lat,lng], 16);
+  calculateDistance(lat,lng);
+}
+
+function calculateDistance(lat,lng){
+  navigator.geolocation.getCurrentPosition(myPos=>{
+    let d = getDistance(myPos.coords.latitude, myPos.coords.longitude, lat, lng);
+    document.getElementById('distanceText').innerText = d.toFixed(2) + " km away";
+  });
+}
+
+function getDistance(lat1,lon1,lat2,lon2){
+  let R=6371; let dLat=(lat2-lat1)*Math.PI/180; let dLon=(lon2-lon1)*Math.PI/180;
+  let a=Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function ringPhone(){
+  if(!phones.length){ alert("Save phone first"); return; }
+  speak(`Hi ${userData.name}, I am ringing ${phones[0].name} now. If it is on, it will make sound.`);
+  // Vibrate + sound simulation
+  if(navigator.vibrate) navigator.vibrate([500,200,500]);
+}
+
+function getLastLocation(){
+  if(!phones.length){ alert("No phone saved"); return; }
+  let p = phones[0];
+  updateMap(p.lat,p.lng);
+  speak(`Hi ${userData.name}, last location of ${p.name} was at latitude ${p.lat.toFixed(4)}, longitude ${p.lng.toFixed(4)}. It was seen ${p.lastSeen}. It is ${document.getElementById('distanceText').innerText} from you.`);
+}
+
+function speakAI(type){
+  if(!userData.name){ speak("Please login first with your Gmail and first name"); return; }
+  if(type.includes('Where')) getLastLocation();
+  else if(type.includes('Repeat')) getLastLocation();
+  else if(type.includes('Distance')){
+    speak(`Hi ${userData.name}, your phone is ${document.getElementById('distanceText').innerText} away from your current location.`);
+  }
+}
+
+// Auto update every 10 mins
+setInterval(()=>{
+  if(phones.length){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      phones[0].lat=pos.coords.latitude; phones[0].lng=pos.coords.longitude; phones[0].lastSeen=new Date().toLocaleString();
+      localStorage.setItem('laffan_phones', JSON.stringify(phones));
+    });
+  }
+}, 600000);
+
+// Init
+if(userData.name){
+  document.getElementById('userEmail').value=userData.email;
+  document.getElementById('userName').value=userData.name;
+  speak(`Welcome back ${userData.name}! I still remember your phones.`);
+  renderPhones();
+  if(phones.length) updateMap(phones[0].lat, phones[0].lng);
+}
+</script>
+</body>
+</html>
