@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Larffan Belefu Comedy 20</title>
+<style>
+body{font-family:Arial;background:#111;color:#fff;padding:15px;max-width:800px;margin:auto;line-height:1.6}
+h1{text-align:center;color:gold;border:2px solid gold;padding:10px;border-radius:10px;font-size:19px}
+article{background:#1a1a1a;border-left:4px solid gold;margin:15px 0;padding:12px;border-radius:8px}
+h2{color:gold;font-size:16px;margin:0}
+p{font-size:15px}
+.btn{background:gold;color:#000;border:none;padding:7px 12px;border-radius:15px;font-weight:bold;cursor:pointer;margin:3px}
+#voiceBox{background:#222;border:2px dashed gold;padding:15px;text-align:center;border-radius:10px;margin:20px 0}
+.listening{background:#00ff00 !important}
+.reading{border-left-color:#00ff00 !important}
+.trackerLink{display:block;background:#ffcc00;color:#000;text-align:center;padding:12px;margin:20px 0;border-radius:10px;font-weight:bold;text-decoration:none}
+</style>
+</head>
+<body>
+<h1>LARFFAN BELEFU - 20 JOKES<br><small>Say: "Read number 1" or "Read next"</small></h1>
+
+<div id="voiceBox">
+<button class="btn" id="micBtn" onclick="startListen()" style="background:#ff4444;color:#fff;padding:12px 20px">🎤 TAP AND TALK</button>
+<p id="youSaid" style="color:#aaa;font-size:13px">Try: "Read number 1", "Read next joke", "Stop"</p>
+</div>
+
+<div id="aiText" style="background:#222;border:1px solid gold;padding:10px;border-radius:8px;text-align:center;color:#ffcc00">🤖 AI Robot is ready...</div>
+
+<article id="c1"><h2>1. DANFO CONDUCTOR</h2><p>In Lagos, you do not need to go to the gym. The bus conductor will shout, enter with your change. He already knows you do not have change. It is a trap.</p><button class="btn" onclick="readOne('c1')">🔊 Read</button></article>
+<article id="c2"><h2>2. NEIGHBOR GENERATOR</h2><p>In Nigeria, we do not need an alarm clock. My neighbor's generator will wake you by five in the morning. It is saying, I have electricity and you do not.</p><button class="btn" onclick="readOne('c2')">🔊 Read</button></article>
+<article id="c3"><h2>3. CHARGING PHONE</h2><p>We have five power banks, two generators, and one small solar panel. And still, the phone battery is at two percent. We are professional phone chargers.</p><button class="btn" onclick="readOne('c3')">🔊 Read</button></article>
+<article id="c4"><h2>4. NIGERIAN MOTHER CALL</h2><p>If your mother calls you once and you do not answer, she will call ten times. The eleventh call will be from your father. You are in serious trouble.</p><button class="btn" onclick="readOne('c4')">🔊 Read</button></article>
+<article id="c5"><h2>5. POWER BANK TRAVELED</h2><p>My friend borrowed my power bank last year. He is now in Canada. The power bank is also in Canada. I am still in Lagos.</p><button class="btn" onclick="readOne('c5')">🔊 Read</button></article>
+<article id="c6"><h2>6. BUYING LAPTOP</h2><p>I asked the seller, what is the last price? He said, last price is three hundred thousand. I begged him. He said, okay, two hundred and ninety nine thousand. We negotiated for two hours for one thousand naira.</p><button class="btn" onclick="readOne('c6')">🔊 Read</button></article>
+<article id="c7"><h2>7. I AM COMING LIE</h2><p>If a Nigerian says, I am coming in two minutes, he is still in bed. If he says, I am close, he just left his house. It is our culture.</p><button class="btn" onclick="readOne('c7')">🔊 Read</button></article>
+<article id="c8"><h2>8. SMALL CHILD TIKTOK</h2><p>My three year old son knows how to scroll TikTok. He even knows how to skip my video. He said, daddy, this one is not funny.</p><button class="btn" onclick="readOne('c8')">🔊 Read</button></article>
+<article id="c9"><h2>9. WIFI LIKE RELATIONSHIP</h2><p>Sometimes it connects. Sometimes it does not. Sometimes it says, connected, no internet. Just like my former relationship.</p><button class="btn" onclick="readOne('c9')">🔊 Read</button></article>
+<article id="c10"><h2>10. RICE AND GAS</h2><p>I put rice on the fire. The gas finished. I put it on electric cooker. Electricity went off. At the end, we ate bread. The rice is still in the pot.</p><button class="btn" onclick="readOne('c10')">🔊 Read</button></article>
+<article id="c11"><h2>11. OKADA MAN PRICE</h2><p>I asked the motorcycle rider, how much to Stadium Road? He said, five hundred naira. I said, two hundred. He said, enter. After two minutes, he said, fuel is expensive, add three hundred naira.</p><button class="btn" onclick="readOne('c11')">🔊 Read</button></article>
+<article id="c12"><h2>12. CHURCH CONTRIBUTION</h2><p>In church, when they say, bring your offering, everybody brings big money. When they say, bring money for building project, everybody looks at the ceiling. They think the Holy Ghost will build it.</p><button class="btn" onclick="readOne('c12')">🔊 Read</button></article>
+<article id="c13"><h2>13. MY BARBER AND NETWORK</h2><p>My barber said, I will give you a fine haircut. Electricity went off. He brought out phone torchlight. Network went off. He said, sir, this is a spiritual haircut. Please close your eyes.</p><button class="btn" onclick="readOne('c13')">🔊 Read</button></article>
+<article id="c14"><h2>14. HOW WE GREET IN PORT HARCOURT</h2><p>In Port Harcourt, we do not say, how are you? We say, how far? Have you eaten? If you say you have not eaten, they will say, it is your pocket that is hungry, not you.</p><button class="btn" onclick="readOne('c14')">🔊 Read</button></article>
+<article id="c15"><h2>15. RADIO SHOW AND ELECTRICITY</h2><p>I started my live radio show, Larffan Belefu Live. I shouted, good evening Port Harcourt. Electricity was cut off. My listeners heard, good evening Port Harcourt and then silence. Darkness everywhere.</p><button class="btn" onclick="readOne('c15')">🔊 Read</button></article>
+
+<article id="c16"><h2>16. BIG BIRD ON THE ROOF</h2><p>Early in the morning, a big bird landed on my roof. My neighbor shouted, are you okay? I said, I am not okay. This bird wants to take my roof. The bird looked at me and said, sir, you have not paid your house rent, so I am now the landlord.</p><button class="btn" onclick="readOne('c16')">🔊 Read</button></article>
+<article id="c17"><h2>17. THE SMOKER QUESTION</h2><p>A man was smoking at the junction. Another man asked him, are you okay? The smoker said, yes, I am okay. The man asked again, are you really okay? The smoker said, I said yes. If I am not okay, will you give me your lungs?</p><button class="btn" onclick="readOne('c17')">🔊 Read</button></article>
+<article id="c18"><h2>18. MONEY HIDING JOKE</h2><p>Nigerian money plays hide and seek. When you need it, it hides. When you do not need it, it appears. My account balance always says, I will come later. That later has not come since January.</p><button class="btn" onclick="readOne('c18')">🔊 Read</button></article>
+<article id="c19"><h2>19. BANK TRANSFER JOKE</h2><p>I sent money to my friend and I said, I have transferred. He said, I have not seen it. I checked my bank, they have removed the money. He checked his bank, they have not added the money. So where is the money? It is in the air having a honeymoon.</p><button class="btn" onclick="readOne('c19')">🔊 Read</button></article>
+<article id="c20"><h2>20. RICH MAN AND POOR MAN</h2><p>A rich man sleeps with air conditioner, a poor man sleeps in heat. But when electricity is cut off, both of them sweat in darkness. Money cannot buy electricity in Nigeria. Only God can provide electricity.</p><button class="btn" onclick="readOne('c20')">🔊 Read</button></article>
+
+<div style="text-align:center">
+<button class="btn" onclick="readAll()" style="background:#00ff00">▶️ READ ALL 20</button>
+<button class="btn" onclick="stopAll()" style="background:#ff4444;color:#fff">⏹ STOP</button>
+</div>
+
+<a href="tracker.html" class="trackerLink">📍 I can take you to the tracker where you can find your lost phone. Click here.</a>
+
+<script>
+let synth=window.speechSynthesis;let currentId=1;let recog;
+function readOne(id){stopAll();let el=document.getElementById(id);currentId=parseInt(id.replace('c',''));el.classList.add('reading');let t=el.querySelector('h2').innerText+'. '+el.querySelector('p').innerText;let u=new SpeechSynthesisUtterance(t);u.rate=0.9;u.onend=()=>el.classList.remove('reading');synth.speak(u);}
+function readAll(){stopAll();let txt='';document.querySelectorAll('article p').forEach((p,i)=>{txt+='Joke '+(i+1)+'. '+p.innerText+'. Next. '});synth.speak(new SpeechSynthesisUtterance(txt));}
+function stopAll(){synth.cancel();document.querySelectorAll('article').forEach(a=>a.classList.remove('reading'));}
+function startListen(){
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){alert('Use Chrome browser');return;}
+ recog=new SR();recog.lang='en-US';recog.start();
+ let btn=document.getElementById('micBtn');btn.innerText='🎧 LISTENING...';btn.classList.add('listening');
+ recog.onresult=(e)=>{
+   let said=e.results[0][0].transcript.toLowerCase();
+   document.getElementById('youSaid').innerText='You said: "'+said+'"';
+   btn.innerText='🎤 TAP AGAIN';btn.classList.remove('listening');
+   if(said.includes('stop')){stopAll();return;}
+   if(said.includes('next')){currentId++;if(currentId>20)currentId=1;readOne('c'+currentId);return;}
+   if(said.includes('previous')||said.includes('last joke')){currentId--;if(currentId<1)currentId=20;readOne('c'+currentId);return;}
+   for(let i=1;i<=20;i++){if(said.includes(i.toString())){readOne('c'+i);return;}}
+   if(said.includes('all')){readAll();return;}
+ };
+}
+setTimeout(()=>{
+  let aiText = document.getElementById('aiText');
+  aiText.innerHTML = `🔎 <a href='tracker.html' style='color:#000;background:gold;padding:5px 10px;border-radius:10px;text-decoration:none;font-weight:bold'>I can take you to the tracker where you can find your lost phone. Click here.</a>`;
+  if(window.speechSynthesis){
+    let u = new SpeechSynthesisUtterance("Hello! I can take you to the tracker where you can find your lost phone. Click here to go to tracker.");
+    u.rate=0.9;
+    speechSynthesis.speak(u);
+  }
+}, 5000);
+</script>
+</body>
+ </html>
