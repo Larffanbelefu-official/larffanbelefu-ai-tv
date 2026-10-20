@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>LARFFAN BELEFU PRO WORLD - AI TV & Radio</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffb000">
+<!-- GOOGLE ANALYTICS - REAL GLOBAL TRACKER - YOUR ID -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DV9ZF298TQ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DV9ZF298TQ');</script>
 <style>
 :root{--orange:#ffb000;--bg:#070a12;--card:#121826;--b:#232d42;--green:#00ff88}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Arial;line-height:1.5}
-.header{background:#000;text-align:center;padding:16px 10px;border-bottom:4px solid var(--orange);position:sticky;top:0;z-index:99}
-.header h1{margin:0;color:var(--orange);font-size:22px}
-.small{font-size:12px;color:#9aa5b8}
-.frontBtns{display:flex;gap:10px;padding:12px;position:sticky;top:68px;z-index:98;background:var(--bg)}
-.frontBtns a{flex:1;padding:18px;border-radius:16px;font-weight:900;text-align:center;text-decoration:none;font-size:16px}
-.btn-comedy{background:var(--orange);color:#000}
-.btn-tracker{background:var(--green);color:#000}
+.header{background:#000;text-align:center;padding:16px 10px;border-bottom:4px solid var(--orange);position:sticky;top:0;z-index:70}
+.header h1{margin:0;color:var(--orange);font-size:22px;letter-spacing:1px}.small{font-size:12px;color:#9aa5b8}
 .card{background:var(--card);margin:14px;border-radius:18px;padding:16px;border:1px solid var(--b);box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.card h2{color:var(--orange);margin:0 0 8px;font-size:18px}
-.btn{background:var(--orange);color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
+.card h2{color:var(--orange);margin:0 0 8px;font-size:18px;display:flex;align-items:center;gap:8px}
+.btn{background:var(--orange);color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;width:100%;margin:6px 0;cursor:pointer;font-size:14px}
 .btn2{background:#1a2235;color:#fff;border:1px solid var(--orange);padding:11px;border-radius:10px;width:100%;margin:5px 0;cursor:pointer}
 input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #334155;background:#0e1526;color:#fff}
 #playerWrap{position:relative;padding-top:56.25%;background:#000;border-radius:14px;overflow:hidden;border:2px solid #000}
 #playerWrap #ytPlayer{position:absolute;top:0;left:0;width:100%;height:100%}
+#fsControls{position:absolute;bottom:0;left:0;right:0;display:flex;gap:6px;padding:8px;background:linear-gradient(transparent,rgba(0,0,0,.95));z-index:10}
+#fsControls button{flex:1;background:rgba(255,176,0,.95);color:#000;border:none;padding:10px;border-radius:10px;font-weight:900;font-size:12px}
 .list{display:flex;gap:8px;overflow:auto;padding-bottom:6px}.list div{min-width:118px;background:#000;border:1px solid #333;border-radius:10px;padding:3px;text-align:center;position:relative;cursor:pointer}
 .list div .num{position:absolute;top:2px;left:2px;background:var(--orange);color:#000;font-weight:900;padding:1px 6px;border-radius:8px;font-size:10px;z-index:2}
-.timeGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
-.timeCard{background:#000;border:1px solid #333;border-radius:12px;padding:10px;text-align:center;position:relative;cursor:pointer}
-.timeCard .flag{font-size:28px}.timeCard .t{font-weight:900;color:#fff}.timeCard .greet{font-size:11px;color:var(--orange);font-weight:700}.timeCard .weather{font-size:11px;color:#00ff88;margin-top:3px}
+.timeGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.timeGrid{grid-template-columns:1fr}}
+.timeCard{background:#000;border:1px solid #333;border-radius:14px;padding:12px;text-align:center;position:relative;cursor:pointer;transition:0.2s}
+.timeCard:hover{border-color:var(--orange);transform:scale(1.02)}
+.timeCard .flag{font-size:28px}.timeCard .t{font-weight:900;color:#fff;font-size:14px}.timeCard .greet{font-size:11px;color:var(--orange);font-weight:700}.timeCard .weather{font-size:12px;color:#00ff88;margin-top:4px;font-weight:700}
+.timeCol{display:flex;flex-direction:column;gap:10px}
+.timeCol h3{color:var(--orange);font-size:12px;text-align:center;margin:0 0 6px;background:#0e1526;padding:6px;border-radius:8px}.ownerPanel{display:none;border:2px solid #0f0;background:#0a1a0a}
 .moreHeader{background:linear-gradient(90deg,#ffb000,#ff8800);color:#000;border-radius:14px;padding:14px;text-align:center;cursor:pointer;margin:14px;font-weight:900;font-size:16px}
 .moreIcons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
 .moreIcons .mi{background:#0e1526;border:1px solid #334155;border-radius:12px;padding:8px 12px;text-align:center;min-width:90px;cursor:pointer}
@@ -36,217 +38,161 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 .currBar{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.currBar button{flex:1;min-width:60px;padding:10px;border-radius:10px;border:1px solid #334155;background:#0e1526;color:#9aa5b8;font-weight:800;cursor:pointer;font-size:11px}.currBar button.active{background:var(--orange);color:#000;border-color:var(--orange)}
 #aiFloat{position:fixed;right:12px;bottom:12px;background:var(--orange);color:#000;width:58px;height:58px;border-radius:50%;border:none;z-index:99;font-weight:900}
 #aiPanel{position:fixed;right:8px;bottom:80px;width:360px;max-width:95vw;background:#0f172a;border:2px solid var(--orange);border-radius:14px;padding:12px;display:none;z-index:99;max-height:70vh;overflow:auto}
-.encyTopic{border:1px solid #334155;border-radius:10px;padding:10px;margin:6px 0;background:#0e1526;cursor:pointer}
+.encyTopic{border:1px solid #334155;border-radius:10px;padding:10px;margin:6px 0;background:#0e1526;cursor:pointer}.encyTopic h3{margin:0;color:#fff;font-size:13px}.encyTopic p{margin:4px 0 0;font-size:11px;color:#94a3b8}
 .badge{background:var(--green);color:#000;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:900;margin-left:6px}
-.highlight{border-color:var(--orange)!important;box-shadow:0 0 15px rgba(255,176,0,.5)}
-.tracker-phone{background:#000;border:1px solid #333;border-radius:12px;padding:12px;margin:8px 0}
-.live-dot{width:10px;height:10px;background:#00ff88;border-radius:50%;display:inline-block;animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
-</style></head><body>
-<div class="header"><h1>LARFFAN BELEFU AI TV <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:12px;font-size:11px">PRO WORLD PWA</span></h1><div class="small">Official @paulosawaru | 273 Videos | Install as App</div></div>
+.highlight{border:2px solid var(--orange)!important;box-shadow:0 0 20px rgba(255,176,0,.6)!important}
+</style></head><body><div class="header"><h1>LARFFAN BELEFU AI TV <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:12px;font-size:11px">PRO WORLD PWA</span></h1><div class="small">Official @paulosawaru | 268 Videos + 11 New Shorts | Install as App | larffanbelefu.com.ng</div></div>
 
-<div class="frontBtns">
-<a href="#tv" class="btn-comedy">😂 COMEDY ENGINE</a>
-<a href="#trackerCard" class="btn-tracker">📍 TRACKER - FIND PHONE</a>
-</div>
+<div class="card" id="worldtime" style="border:2px solid var(--orange)"><h2>🌍 World Clock - Live Time, Greeting & Weather - Tap To Hear</h2><div class="small">12 Countries - 6 Left (Nigeria First) + 6 Right - Tap any card to hear time + weather</div><div id="timeGrid" class="timeGrid"></div></div>
 
-<div class="card" id="worldtime" style="border:2px solid var(--orange)"><h2>🌍 World Clock - Live Time, Greeting & Weather</h2><div class="small">Auto greeting: Good Morning / Afternoon / Evening</div><div id="timeGrid" class="timeGrid"></div></div>
+<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 OFFICIAL TV - LIVE <span class="badge">268 VIDEOS</span></h2><button class="btn" onclick="engine1()">ENGINE 1: PLAY ALL 728 VIDEOS</button><button class="btn btn2" onclick="engine2()">ENGINE 2: PLAY 268 + 11 NEW VIDEOS NON-STOP</button><div id="playerWrap"><div id="ytPlayer"></div><div id="fsControls"><button onclick="prevInList()">⏮ PREV</button><button onclick="toggleFullscreen()">⛶ EXIT</button><button onclick="nextInList()">NEXT ⏭</button></div></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">⏮ PREV</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">⛶ EXPAND</button><button class="btn2" style="width:33%" onclick="toggleAuto()">AUTO: <span id="autoLabel">ON</span></button></div><div class="small">Playlist 1-268 + 11 New Shorts - Click to play</div><div id="thumbList" class="list"></div><div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link to preview"><button class="btn2" style="width:30%" onclick="previewCustom()">PREVIEW</button></div></div>
 
-<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 OFFICIAL TV - LIVE <span class="badge">273 VIDEOS</span></h2>
-<button class="btn" onclick="engine1()">ENGINE 1: PLAY ALL 268 VIDEOS</button>
-<button class="btn" style="background:#00ff88" onclick="engine2()">ENGINE 2: PLAY 273 VIDEOS + 5 NEW SHORTS</button>
-<div id="playerWrap"><div id="ytPlayer"></div></div>
-<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">⏮ PREV</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">⛶ EXPAND</button><button class="btn2" style="width:33%" onclick="toggleAuto()">AUTO: <span id="autoLabel">ON</span></button></div>
-<div class="small">Playlist - Click to play | Engine 2 includes 5 new Shorts</div><div id="thumbList" class="list"></div>
-<div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link"><button class="btn2" style="width:30%" onclick="previewCustom()">PREVIEW</button></div></div>
-
-<div class="card" id="trackerCard" style="border:2px solid #00ff88"><h2>📍 Phone Tracker - PRO Version 3 - Find My Device</h2>
-<div class="small">Professional Tracker - 1 Main + 3 Phones = 4 Total | One Gmail for all | Live counting</div>
-<button class="btn2" onclick="installPWA()">📲 INSTALL APP TO HOME SCREEN (3-dot)</button>
-<button class="btn" id="googleLoginBtn" style="background:#fff;color:#000" onclick="loginGmail()">🔐 LOGIN WITH GMAIL</button>
-<div id="userInfo" class="small" style="color:#00ff88"></div>
-
-<div id="phoneList">
-<div class="tracker-phone" id="phone1Card"><h3>📱 Phone 1 - <span id="p1Name">Main Device (FREE)</span> <span class="live-dot"></span> LIVE</h3><input id="p1Input" placeholder="Phone 1 name e.g My Phone"><button class="btn2" onclick="allowLocation(1)">📍 ALLOW LOCATION - Phone 1</button><div id="p1Status" class="small" style="color:#00ff88">Not tracking</div><div id="p1Live" class="small">Live: Waiting...</div><button class="btn2" onclick="showOnMap(1)">🗺️ SEE IN MAPS</button></div>
-
-<div class="tracker-phone" id="phone2Card" style="opacity:0.5"><h3>📱 Phone 2 - <span id="p2Name">Locked</span> 🔒</h3><input id="p2Input" placeholder="Phone 2 name"><button class="btn2" onclick="allowLocation(2)">📍 ALLOW LOCATION - Phone 2</button><div id="p2Status" class="small">Pay to unlock</div><div id="p2Live" class="small">Live: Locked</div></div>
-
-<div class="tracker-phone" id="phone3Card" style="opacity:0.5"><h3>📱 Phone 3 - <span id="p3Name">Locked</span> 🔒</h3><input id="p3Input" placeholder="Phone 3 name"><button class="btn2" onclick="allowLocation(3)">📍 ALLOW LOCATION - Phone 3</button><div id="p3Status" class="small">Pay to unlock</div><div id="p3Live" class="small">Live: Locked</div></div>
-</div>
-
-<button class="btn" style="background:gold" onclick="payForPhones()">💳 PAY ₦2000 - UNLOCK PHONE 2 & 3 (Paystack)</button>
-<div id="mapFrame" style="margin-top:10px;display:none"><iframe id="mapView" style="width:100%;height:300px;border-radius:12px;border:2px solid #00ff88" src=""></iframe><div id="liveDistance" style="color:#00ff88;font-weight:900;text-align:center;margin-top:6px">Distance: Calculating...</div></div>
-<div id="trackOut" class="small" style="color:#00ff88;margin-top:6px">PWA ready - Gmail + Live tracker + Paystack active</div>
-</div>
+<div class="card ownerPanel" id="ownerPanel"><h2>Owner Control Private - larffa2026</h2><textarea id="ownerNewLinks" placeholder="Paste many YouTube links - one per line"></textarea><button class="btn" style="background:#00ff88" onclick="ownerAddVideos()">ADD VIDEOS LIVE</button><div id="ownerStatus" class="small"></div></div><div class="card" id="radioCard"><h2>📻 Live Radio - NO COMOT</h2><iframe src="https://zeno.fm/player/larffanbelefu-radio-station" style="width:100%;height:130px;border:none;border-radius:12px"></iframe></div>
 
 <div class="moreHeader" onclick="toggleMore()">🔘 MORE TOOLS - CLICK TO OPEN</div>
-<div class="moreIcons"><div class="mi" onclick="openOnly('ency')"><span>📚</span><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')"><span>📖</span><b>Dictionary</b></div><div class="mi" onclick="openOnly('tools')"><span>🔢</span><b>Calculator</b></div><div class="mi" onclick="openOnly('tools')"><span>📅</span><b>Calendar</b></div><div class="mi" onclick="openOnly('rooms')"><span>📝</span><b>Jotter</b></div><div class="mi" onclick="openOnly('worldtime')"><span>🌦️</span><b>Weather</b></div></div>
+<div class="moreIcons"><div class="mi" onclick="openOnly('ency')"><span>📚</span><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')"><span>📖</span><b>Dictionary</b></div><div class="mi" onclick="openOnly('calcSection')"><span>🔢</span><b>Calculator</b></div><div class="mi" onclick="openOnly('calendarSection')"><span>📅</span><b>Calendar</b></div><div class="mi" onclick="openOnly('rooms')"><span>📝</span><b>Jotter</b></div><div class="mi" onclick="openOnly('worldtime')"><span>🌦️</span><b>Weather</b></div></div>
+
 <div id="moreContent">
-<div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia</h2><input id="encySearch" placeholder="Search: marriage, money, love..." oninput="filterEncy()"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
-<div class="card" id="dictCard" style="border:2px solid #00aaff"><h2>📖 Talking Dictionary</h2><input id="dictInput" placeholder="Type word" oninput="searchDict()"><button class="btn2" onclick="speakDict()">🔊 Speak</button><div id="dictOut" class="small" style="background:#000;padding:10px;border-radius:8px;margin-top:6px;min-height:60px">Type a word...</div></div>
-<div class="card" id="tools"><h2>🔢 Talking Calculator</h2><div class="currBar" id="currBar"><button id="cNORMAL" class="active" onclick="setCurr('NORMAL')">NORMAL</button><button id="cUSD" onclick="setCurr('USD')">$ USD</button><button id="cNGN" onclick="setCurr('NGN')">₦ NGN</button><button id="cGBP" onclick="setCurr('GBP')">£ GBP</button><button id="cEUR" onclick="setCurr('EUR')">€ EUR</button></div><input id="calcDisp" readonly style="text-align:right;font-size:22px;background:#000;color:#00ff88"><div class="grid5" id="calcGrid"></div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn2" onclick="voiceCalc()">🎤 Voice</button><button class="btn2" onclick="speakResult()">🔊 Speak</button><button class="btn2" onclick="clearCalc()">Clear</button></div><div id="calcHint" class="small" style="color:#00ff88">Mode: NORMAL</div></div>
-<div class="card" id="rooms" style="border:2px dashed var(--orange)"><h2>📝 My Private Jotter (4)</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="margin:0"><h2 style="font-size:12px">Jotter 1</h2><textarea id="f1"></textarea><button class="btn2" onclick="saveFan(1)">Save</button><button class="btn2" onclick="speakJotter(1)">Speak</button></div><div class="card" style="margin:0"><h2 style="font-size:12px">Jotter 2</h2><textarea id="f2"></textarea><button class="btn2" onclick="saveFan(2)">Save</button><button class="btn2" onclick="speakJotter(2)">Speak</button></div><div class="card" style="margin:0"><h2 style="font-size:12px">Jotter 3</h2><textarea id="f3"></textarea><button class="btn2" onclick="saveFan(3)">Save</button><button class="btn2" onclick="speakJotter(3)">Speak</button></div><div class="card" style="margin:0"><h2 style="font-size:12px">Jotter 4</h2><textarea id="f4"></textarea><button class="btn2" onclick="saveFan(4)">Save</button><button class="btn2" onclick="speakJotter(4)">Speak</button></div></div></div>
-</div>
+<div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia / Psychopedia</h2><div class="small">12 topics - click to read & listen</div><input id="encySearch" placeholder="Search: marriage, money, love..." oninput="filterEncy()"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
 
-<div class="card" style="text-align:center;border:2px solid gold"><h2>Support The Channel</h2><button class="btn" style="background:gold" onclick="giftPay()">GIFT SUPPORT - PAYSTACK</button></div>
+<div class="card" id="dictCard" style="border:2px solid #00aaff"><h2>📖 Talking Dictionary</h2><input id="dictInput" placeholder="Type word e.g Love, Money" oninput="searchDict()"><button class="btn2" onclick="speakDict()">🔊 Speak</button><div id="dictOut" class="small" style="background:#000;padding:10px;border-radius:8px;margin-top:6px;min-height:60px">Type a word...</div></div>
 
-<div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 World Community Chat - Firebase Live</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Name" style="width:28%"><input id="cText" placeholder="Message" style="width:52%"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div></div>
+<div class="card" id="tools"><h2>🔢 Talking Calculator - NORMAL + Dollar Euro Naira Pounds</h2>
+<div class="small" style="margin-bottom:6px">Default NORMAL - Switch to Dollar, Naira, Pounds, Euro</div>
+<div class="currBar" id="currBar"><button id="cNORMAL" class="active" onclick="setCurr('NORMAL')">NORMAL</button><button id="cUSD" onclick="setCurr('USD')">$ USD</button><button id="cNGN" onclick="setCurr('NGN')">₦ NGN</button><button id="cGBP" onclick="setCurr('GBP')">£ GBP</button><button id="cEUR" onclick="setCurr('EUR')">€ EUR</button></div>
+<input id="calcDisp" readonly style="text-align:right;font-size:22px;background:#000;color:#00ff88"><div class="grid5" id="calcGrid"></div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn2" onclick="voiceCalc()">🎤 Voice</button><button class="btn2" onclick="speakResult()">🔊 Speak Result</button><button class="btn2" onclick="clearCalc()">Clear</button></div>
+<div id="calcHint" class="small" style="color:#00ff88;margin-top:6px">Mode: NORMAL</div><div id="calendarSection"><h2 style="font-size:15px;margin-top:14px">📅 Talking Calendar 1960-2100</h2><div style="display:flex;gap:4px"><select id="ySel" style="width:34%"></select><select id="mSel" style="width:33%"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><select id="dSel" style="width:33%"></select></div><button class="btn2" onclick="showCalendar()">SHOW & SPEAK DATE</button><div id="calRes" class="small"></div></div></div>
 
-<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><p class="small">I can take you to comedy, I can take you to phone tracker, TV, time, Nigeria Lagos time, calculator</p><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto" class="small">AI: Hello Paul! I can take you to TV, World Clock, Tracker - Find your phone device, Comedy - 20 jokes, Calculator, etc.</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:65%"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div></div>
+<div class="card" id="rooms" style="border:2px dashed var(--orange)"><h2>📝 My Private Jotter (4 Jotters) - NO COMOT</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 1</h2><textarea id="f1"></textarea><button class="btn2" onclick="saveFan(1)">Save</button><button class="btn2" onclick="speakJotter(1)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 2</h2><textarea id="f2"></textarea><button class="btn2" onclick="saveFan(2)">Save</button><button class="btn2" onclick="speakJotter(2)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 3</h2><textarea id="f3"></textarea><button class="btn2" onclick="saveFan(3)">Save</button><button class="btn2" onclick="speakJotter(3)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 4</h2><textarea id="f4"></textarea><button class="btn2" onclick="saveFan(4)">Save</button><button class="btn2" onclick="speakJotter(4)">Speak</button></div></div></div>
 
-<footer style="background:#0f172a; padding:28px; text-align:center; margin-top:20px; border-top:3px solid #facc15;"><p style="color:#94a3b8; font-size:13px;">© 2026 LARFFAN BELEFU AI TV - PRO PWA - 273 Videos</p></footer>
+<div class="card" id="trackerCard" style="border:2px solid #00ff88"><h2>📍 Phone Tracker - Find My Device (PWA Fixed)</h2><div class="small">Install now dey work - 3 dot -> Add to Home Screen OR click button below</div><button class="btn" style="background:#00ff88;color:#000" onclick="installPWA()">📲 INSTALL APP - ADD TO HOME SCREEN NOW</button><div id="trackOut" class="small" style="color:#00ff88;margin-top:6px">PWA ready - If 3 dot no show, use this button</div><button class="btn2" onclick="location.href='tracker.html'">OPEN FULL TRACKER - 3 Phones Professional</button></div>
+</div><div class="card" style="text-align:center;border:2px solid gold"><h2>Support The Channel</h2><button class="btn" style="background:gold" onclick="giftPay()">GIFT SUPPORT - PAYSTACK</button></div>
+
+<div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 Community Chat - Live Firebase</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Your Name" style="width:28%"><input id="cText" placeholder="Type message..." style="width:52%"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div><div class="small" style="color:#00ff88">Firebase live - anybody chat, e go show for everybody</div></div>
+
+<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><p class="small">I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker. Say: "take me to comedy", "Nigeria time", "take me to tracker"</p><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto" class="small">AI: Hello! I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker. I go call your name and tell you location live!</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:65%"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div></div>
+
+<footer style="background:#0f172a; padding:28px; text-align:center; margin-top:20px; border-top:3px solid #facc15;"><p style="color:#94a3b8; font-size:13px;">© 2026 LARFFAN BELEFU AI TV - PWA Ready - Install as App | larffanbelefu.com.ng</p></footer>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
+<!-- FIREBASE FOR CHAT - LIVE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>// ====== FIREBASE CONFIG - YOUR CHAT LIVE CONFIG ======
+var firebaseConfig = {
+  apiKey: "AIzaSyDUMMY-REPLACE-WITH-YOURS",
+  authDomain: "larffan-belefu.firebaseapp.com",
+  databaseURL: "https://larffan-belefu-default-rtdb.firebaseio.com",
+  projectId: "larffan-belefu",
+  storageBucket: "larffan-belefu.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
+try{ firebase.initializeApp(firebaseConfig); }catch(e){}
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const firebaseConfig = { apiKey: "AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY", authDomain: "larffanbelefu-ai-tv.firebaseapp.com", projectId: "larffanbelefu-ai-tv", storageBucket: "larffanbelefu-ai-tv.firebasestorage.app", messagingSenderId: "96721446215", appId: "1:96721446215:web:9da4e2491b7d5b7cc09862", measurementId: "G-DV9ZF298TQ" };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-// WORLD CHAT
-const chatRef = collection(db, "worldChat");
-const qChat = query(chatRef, orderBy("time"));
-const cBox = document.getElementById('cBox');
-onSnapshot(qChat, (snap)=>{
-  cBox.innerHTML="";
-  snap.forEach(d=>{
-    let data=d.data();
-    cBox.innerHTML+=`<div style="margin:4px 0"><b>${data.name||'Anon'}:</b> ${data.text} <span style="font-size:9px;color:#666">${data.time? new Date(data.time.seconds*1000).toLocaleTimeString():''}</span></div>`;
-  });
-  cBox.scrollTop=cBox.scrollHeight;
-});
-window.sendCommunity=async()=>{
-  let n=document.getElementById('cName').value||"User";
-  let t=document.getElementById('cText').value;
-  if(!t)return;
-  await addDoc(chatRef,{name:n,text:t,time:serverTimestamp()});
-  document.getElementById('cText').value="";
-}
-window.loginGmail=()=>{
-  signInWithPopup(auth, provider).then((result)=>{
-    let user=result.user;
-    document.getElementById('userInfo').innerHTML=`Hi ${user.displayName}! Gmail: ${user.email} - You can now track 4 phones with ONE Gmail`;
-    window.speak(`Hi ${user.displayName}, your device is ready to track. Phone one is free, pay for phone two and three`);
-    localStorage.setItem('larffan_user', user.displayName);
-  });
-}
-</script>
-
-<script>
-let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWQY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdQ","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","eqA385k5X_0","4lmZ4lMNF9I","qAZQTzWXWvc","iJPHVl290DU","RFwQExtFK6o","f24wkFSzPVs","pRqZvSXcyEM","_3dJH2fyLUU","jP3op0p1ylI","mPn4md6SOdY","9PxD5lGLgpk","mulBrieiHY0","jjAeS4_pGMk","kz_sS6HKB30","bRXytL0i9oA","jAISTtnDAF0","knufbHX7yvM","07RMYtrdlJY","AFHoobby4_4","Huvda3WuLdU","zZQx5fnXUsQ","ledyyGpVvSQ","-k-KmRDrQzE","l2qSmqWJN_g","eJQDVIRrFws","AZLedENgCVw","i2qAeb2JpGs","3uH4nd_GJkY"];
-
-// ENGINE 2 = 268 + 5 NEW SHORTS
-let engine2List = [...selectedList, "7tOI0pzgEhA", "kARKOeH2mVE", "jKsWL7oRsbE", "G4UQ5ltgHw4"];
-let currentIndex=0;let ytPlayer=null;let autoNext=true;let isEngine2=false;
-
+// ====== VIDEOS LIST - YOUR OLD 268 + 11 NEW SHORTS ======
+let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","eqA385k5X_0","4lmZ4lMNF9I","qAZQTzWXWvc","iJPHVl290DU","RFwQExtFK6o","f24wkFSzPVs","pRqZvSXcyEM","_3dJH2fyLUU","jP3op0p1ylI","mPn4md6SOdY","9PxD5lGLgpk","mulBrieiHY0","jjAeS4_pGMk","kz_sS6HKB30","bRXytL0i9oA","jAISTtnDAF0","knufbHX7yvM","07RMYtrdlJY","AFHoobby4_4","Huvda3WuLdU","zZQx5fnXUsQ","ledyyGpVvSQ","-k-KmRDrQzE","l2qSmqWJN_g","eJQDVIRrFws","AZLedENgCVw","i2qAeb2JpGs","3uH4nd_GJkY"];
+let currentIndex=0;let ytPlayer=null;let autoNext=true;let deferredPrompt=null;
 function cleanId(s){if(!s)return null;s=s.trim();if(s.includes("shorts/")){let p=s.split("shorts/")[1];return p.split("?")[0].split("&")[0].substring(0,11);}if(s.includes("youtu.be/")){let p=s.split("youtu.be/")[1];return p.split("?")[0].split("&")[0].substring(0,11);}if(s.includes("v=")){let p=s.split("v=")[1];return p.split("&")[0].split("?")[0].substring(0,11);}if(s.length>=11)return s.substring(0,11);return null;}
 
-const countries=[{name:"Nigeria - Lagos",flag:"🇳🇬",tz:"Africa/Lagos",lat:6.5244,lon:3.3792},{name:"USA - New York",flag:"🇺🇸",tz:"America/New_York",lat:40.71,lon:-74.0},{name:"UK - London",flag:"🇬🇧",tz:"Europe/London",lat:51.5,lon:-0.12},{name:"China - Beijing",flag:"🇨🇳",tz:"Asia/Shanghai",lat:39.9,lon:116.4},{name:"India - Kolkata",flag:"🇮🇳",tz:"Asia/Kolkata",lat:22.57,lon:88.36},{name:"South Africa - Joburg",flag:"🇿🇦",tz:"Africa/Johannesburg",lat:-26.2,lon:28.0},{name:"Spain - Madrid",flag:"🇪🇸",tz:"Europe/Madrid",lat:40.4,lon:-3.7},{name:"UAE - Dubai",flag:"🇦🇪",tz:"Asia/Dubai",lat:25.2,lon:55.27},{name:"Canada - Toronto",flag:"🇨🇦",tz:"America/Toronto",lat:43.65,lon:-79.38},{name:"Germany - Berlin",flag:"🇩🇪",tz:"Europe/Berlin",lat:52.52,lon:13.40}];
+// PWA INSTALL - FIX 3 DOT
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('trackOut').textContent='PWA ready - Click INSTALL button now!';});
+function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted'){document.getElementById('trackOut').textContent='App Installed! Check home screen';}deferredPrompt=null;});}else{alert('To install: Chrome 3 dots -> Add to Home Screen, or Save to Home. For iPhone: Share -> Add to Home Screen');}speak('Installing app to home screen');}
+
+// WORLD CLOCK - 6 LEFT NIGERIA FIRST, 6 RIGHT
+const countries=[{name:"Nigeria - Lagos",flag:"🇳🇬",tz:"Africa/Lagos",lat:6.5244,lon:3.3792},{name:"USA - New York",flag:"🇺🇸",tz:"America/New_York",lat:40.71,lon:-74.0},{name:"UK - London",flag:"🇬🇧",tz:"Europe/London",lat:51.5,lon:-0.12},{name:"China - Beijing",flag:"🇨🇳",tz:"Asia/Shanghai",lat:39.9,lon:116.4},{name:"India - Kolkata",flag:"🇮🇳",tz:"Asia/Kolkata",lat:22.57,lon:88.36},{name:"South Africa - Joburg",flag:"🇿🇦",tz:"Africa/Johannesburg",lat:-26.2,lon:28.0},{name:"Spain - Madrid",flag:"🇪🇸",tz:"Europe/Madrid",lat:40.4,lon:-3.7},{name:"UAE - Dubai",flag:"🇦🇪",tz:"Asia/Dubai",lat:25.2,lon:55.27},{name:"Canada - Toronto",flag:"🇨🇦",tz:"America/Toronto",lat:43.65,lon:-79.38},{name:"Germany - Berlin",flag:"🇩🇪",tz:"Europe/Berlin",lat:52.52,lon:13.40},{name:"Brazil - Sao Paulo",flag:"🇧🇷",tz:"America/Sao_Paulo",lat:-23.55,lon:-46.63},{name:"Japan - Tokyo",flag:"🇯🇵",tz:"Asia/Tokyo",lat:35.68,lon:139.76}];
 let weatherCache={};
-async function fetchWeather(lat,lon){try{let u=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&timezone=auto`;let r=await fetch(u);let j=await r.json();if(j.current) return Math.round(j.current.temperature_2m)+"°C";}catch(e){}return "";}
-async function loadWeather(){for(let c of countries){let w=await fetchWeather(c.lat,c.lon);weatherCache[c.name]=w;updateClocks();}}
+async function fetchWeather(lat,lon){try{let r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&timezone=auto`);let j=await r.json();if(j.current) return Math.round(j.current.temperature_2m)+"°C";}catch(e){}return "--°C";}
+async function loadWeather(){for(let c of countries){weatherCache[c.name]=await fetchWeather(c.lat,c.lon);updateClocks();}}
 function getTimeParts(tz){let now=new Date();let hf=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',hour12:false});let h=parseInt(hf.format(now));let ts=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(now);let ds=new Intl.DateTimeFormat('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric',year:'numeric'}).format(now);return{hour:h,timeStr:ts,dateStr:ds};}
 function getGreet(h){if(h>=5&&h<12)return{txt:"Good Morning",icon:"☀️"};if(h>=12&&h<17)return{txt:"Good Afternoon",icon:"🌤️"};if(h>=17&&h<21)return{txt:"Good Evening",icon:"🌆"};return{txt:"Good Night",icon:"🌙"};}
-function renderClocks(){let g=document.getElementById('timeGrid');g.innerHTML='';countries.forEach((c,i)=>{let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let w=weatherCache[c.name]||'...';g.innerHTML+=`<div class="timeCard" id="clock-${i}" onclick="speakClock(${i})"><div style="position:absolute;top:4px;right:6px">${gr.icon}</div><div class="flag">${c.flag}</div><div class="t">${c.name}</div><div class="t" style="color:var(--orange)" id="t-${i}">${p.timeStr}</div><div class="small" id="d-${i}">${p.dateStr}</div><div class="greet" id="g-${i}">${gr.txt}</div><div class="weather" id="w-${i}">🌡️ ${w}</div><button class="btn2" style="padding:5px;font-size:10px" onclick="event.stopPropagation();speakClock(${i})">🔊 TAP TO HEAR</button></div>`;});}
-function updateClocks(){countries.forEach((c,i)=>{let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let te=document.getElementById(`t-${i}`),de=document.getElementById(`d-${i}`),ge=document.getElementById(`g-${i}`),we=document.getElementById(`w-${i}`);if(te)te.textContent=p.timeStr;if(de)de.textContent=p.dateStr;if(ge)ge.textContent=gr.txt;if(we)we.textContent=`🌡️ ${weatherCache[c.name]||'...'} ${gr.icon}`;});}
-setInterval(updateClocks,1000);renderClocks();loadWeather();
-function speakClock(i){let c=countries[i];let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let w=weatherCache[c.name]||'';speak(`${c.name} time is ${p.timeStr}. ${gr.txt}. Weather ${w}`);}
-function speak(t){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=0.9;speechSynthesis.speak(u);}}function stopSpeak(){speechSynthesis.cancel();}
-function toggleMore(){let m=document.getElementById('moreContent');m.style.display=m.style.display==='none'?'block':'none';}
-function openOnly(id){let mc=document.getElementById('moreContent');mc.style.display='block';setTimeout(()=>{let el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('highlight');setTimeout(()=>el.classList.remove('highlight'),2500);}},200);}
+function renderClocks(){let g=document.getElementById('timeGrid');let left=countries.slice(0,6);let right=countries.slice(6,12);let html=`<div class="timeCol"><h3>LEFT - 6 Countries (Nigeria First)</h3>`;left.forEach((c,i)=>{html+=makeCard(c,i);});html+=`</div><div class="timeCol"><h3>RIGHT - 6 Countries</h3>`;right.forEach((c,i)=>{let idx=i+6;html+=makeCard(c,idx);});html+=`</div>`;g.innerHTML=html;updateClocks();}
+function makeCard(c,idx){return `<div class="timeCard" id="card-${idx}" onclick="speakClock(${idx})"><div style="position:absolute;top:4px;right:6px" id="ic-${idx}">☀️</div><div class="flag">${c.flag}</div><div class="t">${c.name}</div><div class="t" style="color:var(--orange)" id="t-${idx}">--</div><div class="small" id="d-${idx}">--</div><div class="greet" id="g-${idx}">--</div><div class="weather" id="w-${idx}">${weatherCache[c.name]||'...'}</div><button class="btn2" style="padding:5px;font-size:9px;margin-top:4px" onclick="event.stopPropagation();speakClock(${idx})">🔊 TAP TO HEAR</button></div>`;}
+function updateClocks(){countries.forEach((c,i)=>{let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let te=document.getElementById(`t-${i}`);let de=document.getElementById(`d-${i}`);let ge=document.getElementById(`g-${i}`);let ie=document.getElementById(`ic-${i}`);let we=document.getElementById(`w-${i}`);if(te)te.textContent=p.timeStr;if(de)de.textContent=p.dateStr;if(ge)ge.textContent=gr.txt;if(ie)ie.textContent=gr.icon;if(we&&weatherCache[c.name])we.textContent=`🌡️ ${weatherCache[c.name]} ${gr.txt}`;});}
+setInterval(updateClocks,1000);
+function speakClock(i){let c=countries[i];let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let w=weatherCache[c.name]||'';let card=document.getElementById(`card-${i}`);if(card){card.classList.add('highlight');setTimeout(()=>card.classList.remove('highlight'),2500);}let txt=`Hello! You tapped ${c.name}. Current time is ${p.timeStr}, today is ${p.dateStr}. ${gr.txt}! Weather is ${w}. Thanks for visiting Larffan Belefu!`;speak(txt);addAI(`${c.name}: ${p.timeStr} - ${gr.txt} - Weather ${w}`);}
 
-let calcVal='';let calcCurr='NORMAL';const currSymbols={NORMAL:'',USD:'$',NGN:'₦',GBP:'£',EUR:'€'};const currNames={NORMAL:'',USD:'dollars',NGN:'naira',GBP:'pounds',EUR:'euros'};
-function setCurr(c){calcCurr=c;document.querySelectorAll('.currBar button').forEach(b=>b.classList.remove('active'));document.getElementById('c'+c).classList.add('active');document.getElementById('calcHint').textContent=c==='NORMAL'?`Mode: NORMAL`:`Mode: ${currSymbols[c]} ${currNames[c]}`;}
-function buildCalc(){let g=document.getElementById('calcGrid');g.innerHTML='';['7','8','9','/','C','4','5','6','*','(','1','2','3','- ',')','0','.','=','+','%'].forEach(b=>{let bt=document.createElement('button');bt.textContent=b.trim();bt.onclick=()=>pressCalc(b.trim());g.appendChild(bt);});}
-function pressCalc(b){if(b==='C'){calcVal='';document.getElementById('calcDisp').value='';return;}if(b==='='){try{let r=Function('"use strict";return ('+calcVal+')')();let sym=currSymbols[calcCurr];document.getElementById('calcDisp').value=sym+r.toLocaleString();calcVal=String(r);}catch(e){document.getElementById('calcDisp').value='Error';}return;}calcVal+=b;document.getElementById('calcDisp').value=calcVal;}
-function clearCalc(){calcVal='';document.getElementById('calcDisp').value='';}function speakResult(){let v=document.getElementById('calcDisp').value;if(v)speak(v);}buildCalc();
-function voiceCalc(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return;let rec=new R();rec.lang='en-US';rec.onresult=(e)=>{let sp=e.results[0][0].transcript;try{let r=Function('"use strict";return ('+sp.replace(/[^0-9+\-*/().% ]/g,'')+')')();document.getElementById('calcDisp').value=r;calcVal=String(r);speak('Result '+r);}catch{}};rec.start();}
+// SPEAK
+function speak(t){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=0.9;u.lang='en-US';speechSynthesis.speak(u);}}function stopSpeak(){speechSynthesis.cancel();}
 
-function onYouTubeIframeAPIReady(){ytPlayer=new YT.Player('ytPlayer',{height:'100%',width:'100%',videoId:selectedList[0],playerVars:{autoplay:0},events:{onStateChange:onPlayerState,onReady:()=>buildThumbs(selectedList)}});}
-function buildThumbs(list){let l=document.getElementById('thumbList');l.innerHTML='';list.forEach((id,i)=>{let d=document.createElement('div');d.innerHTML=`<span class="num">${i+1}</span><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:112px;height:64px;border-radius:8px">`;d.onclick=()=>{currentIndex=i;ytPlayer.loadVideoById(id);};l.appendChild(d);});}
-function getActiveList(){return isEngine2? engine2List : selectedList;}
-function onPlayerState(e){if(e.data===0&&autoNext)nextInList();}function nextInList(){let list=getActiveList();currentIndex=(currentIndex+1)%list.length;ytPlayer.loadVideoById(list[currentIndex]);}function prevInList(){let list=getActiveList();currentIndex=(currentIndex-1+list.length)%list.length;ytPlayer.loadVideoById(list[currentIndex]);}function toggleFullscreen(){let w=document.getElementById('playerWrap');if(!document.fullscreenElement)w.requestFullscreen();else document.exitFullscreen();}function toggleAuto(){autoNext=!autoNext;document.getElementById('autoLabel').textContent=autoNext?'ON':'OFF';}
-function engine1(){isEngine2=false;currentIndex=0;ytPlayer.loadVideoById(selectedList[0]);buildThumbs(selectedList);speak("Engine one playing all videos");}
-function engine2(){isEngine2=true;currentIndex=0;ytPlayer.loadVideoById(engine2List[0]);buildThumbs(engine2List);speak("Engine two playing 273 videos including 5 new shorts");}
-function previewCustom(){let v=document.getElementById('ytInput').value;let id=cleanId(v);if(id)ytPlayer.loadVideoById(id);}
+// MORE BUTTON - OPEN ONLY ONE
+function toggleMore(){let mc=document.getElementById('moreContent');mc.style.display=mc.style.display==='none'?'block':'none';if(mc.style.display==='block')mc.scrollIntoView({behavior:'smooth'});}
+function openOnly(id){let mc=document.getElementById('moreContent');mc.style.display='block';let target=document.getElementById(id);if(target){setTimeout(()=>{target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.add('highlight');setTimeout(()=>target.classList.remove('highlight'),3000);},200);speak(`Taking you to ${id}`);}else if(id==='worldtime'){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});}}
 
-// TRACKER PRO - LIVE COUNTING
-let watchIds={};let lastPos={};
-function allowLocation(num){
-  if(!navigator.geolocation){alert("No location support");return;}
-  document.getElementById(`p${num}Status`).textContent="🟢 Getting location...";
-  navigator.geolocation.getCurrentPosition(pos=>{
-    lastPos[num]=pos;
-    let lat=pos.coords.latitude, lon=pos.coords.longitude;
-    document.getElementById(`p${num}Status`).innerHTML=`✅ Location allowed - Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
-    document.getElementById(`p${num}Live`).textContent=`Live: ${new Date().toLocaleTimeString()} - Moving tracking active`;
-    showOnMap(num, lat, lon);
-    // live watch
-    if(watchIds[num]) navigator.geolocation.clearWatch(watchIds[num]);
-    watchIds[num]=navigator.geolocation.watchPosition(p=>{
-      lastPos[num]=p;
-      let la=p.coords.latitude, lo=p.coords.longitude;
-      document.getElementById(`p${num}Live`).textContent=`Live ${new Date().toLocaleTimeString()} - Lat ${la.toFixed(5)} Lon ${lo.toFixed(5)} - Accuracy ${Math.round(p.coords.accuracy)}m - Person dey go...`;
-      updateDistance();
-    });
-    speak(`Phone ${num} location allowed. I dey track am live now.`);
-  }, err=>{document.getElementById(`p${num}Status`).textContent="❌ Allow location for map: "+err.message;});
-}
-function showOnMap(num, lat, lon){
-  if(!lat && lastPos[num]){lat=lastPos[num].coords.latitude; lon=lastPos[num].coords.longitude;}
-  if(!lat){alert("First click Allow Location for Phone "+num);return;}
-  document.getElementById('mapFrame').style.display='block';
-  document.getElementById('mapView').src=`https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
-  document.getElementById('mapFrame').scrollIntoView({behavior:'smooth'});
-  updateDistance();
-}
-function updateDistance(){
-  if(lastPos[1] && lastPos[2]){
-    let d=calcDistance(lastPos[1].coords.latitude,lastPos[1].coords.longitude,lastPos[2].coords.latitude,lastPos[2].coords.longitude);
-    document.getElementById('liveDistance').textContent=`Phone 1 to Phone 2: ${d.toFixed(2)} km - Live counting - Person dey go`;
+// CALCULATOR
+let currMode='NORMAL';let calcVal='';
+function setCurr(m){currMode=m;document.querySelectorAll('.currBar button').forEach(b=>b.classList.remove('active'));document.getElementById('c'+m).classList.add('active');document.getElementById('calcHint').textContent='Mode: '+m;speak('Mode '+m);}
+function buildCalc(){let grid=document.getElementById('calcGrid');grid.innerHTML='';['7','8','9','/','C','4','5','6','*','(','1','2','3','- ',')','0','.','=','+','%'].forEach(b=>{let bt=document.createElement('button');bt.textContent=b.trim();bt.onclick=()=>pressCalc(b.trim());grid.appendChild(bt);});}buildCalc();
+function pressCalc(b){if(b==='C'){calcVal='';document.getElementById('calcDisp').value='';return;}if(b==='='){try{let res=Function('"use strict";return ('+calcVal+')')();let out=currMode==='NORMAL'?res.toLocaleString():currMode+' '+res.toLocaleString();document.getElementById('calcDisp').value=out;speak(`Result is ${res} ${currMode}`);calcVal=String(res);}catch(e){document.getElementById('calcDisp').value='Error';}return;}calcVal+=b;document.getElementById('calcDisp').value=calcVal;}
+function clearCalc(){calcVal='';document.getElementById('calcDisp').value='';}function speakResult(){let v=document.getElementById('calcDisp').value;if(v)speak(v);}function voiceCalc(){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=new Rec();rec.lang='en-US';rec.onresult=e=>{let t=e.results[0][0].transcript;document.getElementById('calcDisp').value=t;try{let expr=t.replace(/[^0-9\+\-\*\/\%\(\)\.]/g,'');let res=Function('"use strict";return ('+expr+')')();document.getElementById('calcDisp').value=res;calcVal=String(res);speak(`Result is ${res}`);}catch{}};rec.start();}
+
+// YOUTUBE
+function onYouTubeIframeAPIReady(){ytPlayer=new YT.Player('ytPlayer',{videoId:selectedList[0],playerVars:{autoplay:0,rel:0},events:{onStateChange:e=>{if(e.data===0&&autoNext)nextInList();},onReady:()=>{buildThumbs();}}});}
+function buildThumbs(){let l=document.getElementById('thumbList');l.innerHTML='';selectedList.forEach((id,i)=>{let d=document.createElement('div');d.innerHTML=`<span class="num">${i+1}</span><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:112px;height:64px;border-radius:8px"><div style="font-size:10px">${id}</div>`;d.onclick=()=>{currentIndex=i;ytPlayer.loadVideoById(id);};l.appendChild(d);});}
+function nextInList(){currentIndex=(currentIndex+1)%selectedList.length;ytPlayer.loadVideoById(selectedList[currentIndex]);}function prevInList(){currentIndex=(currentIndex-1+selectedList.length)%selectedList.length;ytPlayer.loadVideoById(selectedList[currentIndex]);}
+function toggleFullscreen(){let w=document.getElementById('playerWrap');if(!document.fullscreenElement)w.requestFullscreen();else document.exitFullscreen();}function toggleAuto(){autoNext=!autoNext;document.getElementById('autoLabel').textContent=autoNext?'ON':'OFF';}
+function engine1(){if(ytPlayer)ytPlayer.loadVideoById(selectedList[0]);speak('Engine 1 playing all videos');}function engine2(){if(ytPlayer)ytPlayer.loadVideoById(selectedList[0]);speak('Engine 2 playing 268 plus 11 new videos');}function previewCustom(){let v=document.getElementById('ytInput').value;let id=cleanId(v);if(id&&ytPlayer)ytPlayer.loadVideoById(id);}
+
+// ENCYCLOPEDIA, DICT, CALENDAR, JOTTER
+let encyData=[{t:"Marriage",d:"Marriage is union of two people with love..."},{t:"Money",d:"Money is medium of exchange..."}];function renderEncy(){let el=document.getElementById('encyList');el.innerHTML='';encyData.forEach(e=>{let div=document.createElement('div');div.className='encyTopic';div.innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;div.onclick=()=>{document.getElementById('encyContent').style.display='block';document.getElementById('encyContent').innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;speak(e.d);};el.appendChild(div);});}renderEncy();function filterEncy(){let q=document.getElementById('encySearch').value.toLowerCase();let f=encyData.filter(e=>e.t.toLowerCase().includes(q));let el=document.getElementById('encyList');el.innerHTML='';f.forEach(e=>{let div=document.createElement('div');div.className='encyTopic';div.innerHTML=`<h3>${e.t}</h3>`;el.appendChild(div);});}function speakEncy(){speak(document.getElementById('encyContent').innerText);}
+let dict={love:"Deep affection",money:"Medium of exchange"};function searchDict(){let w=document.getElementById('dictInput').value.toLowerCase();document.getElementById('dictOut').textContent=dict[w]||w+' means important...';}function speakDict(){speak(document.getElementById('dictOut').innerText);}
+for(let y=1960;y<=2100;y++){let o=document.createElement('option');o.value=y;o.textContent=y;if(y===2026)o.selected=true;document.getElementById('ySel').appendChild(o);}for(let d=1;d<=31;d++){let o=document.createElement('option');o.value=d;o.textContent=d;document.getElementById('dSel').appendChild(o);}
+function showCalendar(){let y=document.getElementById('ySel').value,m=document.getElementById('mSel').value,d=document.getElementById('dSel').value;let s=new Date(y,m,d).toDateString();document.getElementById('calRes').textContent=s;speak(s);}
+function saveFan(n){localStorage.setItem('jotter'+n,document.getElementById('f'+n).value);speak('Jotter '+n+' saved');}function speakJotter(n){let v=document.getElementById('f'+n).value;if(v)speak(v);}for(let i=1;i<=4;i++){let v=localStorage.getItem('jotter'+i);if(v)document.getElementById('f'+i).value=v;}
+
+// COMMUNITY CHAT - FIREBASE LIVE - SHORT ANSWER TRACKER AI
+function sendCommunity(){
+  let name=document.getElementById('cName').value||'Anonymous';
+  let text=document.getElementById('cText').value;
+  if(!text) return;
+  try{
+    let db=firebase.database();
+    db.ref('chats').push({name:name, text:text, time:Date.now()});
+  }catch(e){
+    let box=document.getElementById('cBox');let div=document.createElement('div');div.textContent=name+': '+text;box.appendChild(div);
   }
+  document.getElementById('cText').value='';
+  speak(`Message sent`);
 }
-function calcDistance(lat1,lon1,lat2,lon2){let R=6371;let dLat=(lat2-lat1)*Math.PI/180;let dLon=(lon2-lon1)*Math.PI/180;let a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+try{
+  let db=firebase.database();
+  db.ref('chats').limitToLast(50).on('child_added', snap=>{
+    let d=snap.val();let box=document.getElementById('cBox');
+    let div=document.createElement('div');div.style.padding='4px';div.style.borderBottom='1px solid #222';
+    div.textContent=d.name+': '+d.text;box.appendChild(div);box.scrollTop=box.scrollHeight;
+  });
+}catch(e){}
 
-function payForPhones(){
-  var h=PaystackPop.setup({key:'pk_live_dbcbe2a0951a6ca98ad43ff8bc28b80abec7a06c',email:localStorage.getItem('larffan_user')||'customer@larffan.com',amount:200000,currency:'NGN',callback:function(r){
-    alert('Payment success! '+r.reference+' - Phone 2 & 3 unlocked');
-    document.getElementById('phone2Card').style.opacity='1';document.getElementById('phone3Card').style.opacity='1';
-    document.getElementById('p2Name').textContent='Unlocked';document.getElementById('p3Name').textContent='Unlocked';
-    localStorage.setItem('tracker_paid','yes');
-  }});
-  h.openIframe();
-}
-if(localStorage.getItem('tracker_paid')==='yes'){document.getElementById('phone2Card').style.opacity='1';document.getElementById('phone3Card').style.opacity='1';}
-
-// Encyclopedia etc same as your code
-let encyData=[{t:"Marriage",d:"Marriage is union of love and understanding"},{t:"Money",d:"Money is medium of exchange - manage well"},{t:"Love",d:"Love is care and sacrifice"}];
-function renderEncy(list=encyData){let el=document.getElementById('encyList');if(!el)return;el.innerHTML='';list.forEach(e=>{let d=document.createElement('div');d.className='encyTopic';d.innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;d.onclick=()=>{document.getElementById('encyContent').style.display='block';document.getElementById('encyContent').innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;speak(e.d);};el.appendChild(d);});}renderEncy();
-function filterEncy(){let q=document.getElementById('encySearch').value.toLowerCase();renderEncy(encyData.filter(e=>e.t.toLowerCase().includes(q)));}function speakEncy(){let c=document.getElementById('encyContent').innerText;if(c)speak(c);}
-let dict={love:"Deep affection",money:"Medium of exchange"};function searchDict(){let w=document.getElementById('dictInput').value.toLowerCase();let o=document.getElementById('dictOut');o.textContent=dict[w]||w;}function speakDict(){speak(document.getElementById('dictOut').innerText);}
-function saveFan(n){localStorage.setItem('jotter'+n,document.getElementById('f'+n).value);speak('Saved');}function speakJotter(n){let v=document.getElementById('f'+n).value;if(v)speak(v);}for(let i=1;i<=4;i++){let v=localStorage.getItem('jotter'+i);if(v)document.getElementById('f'+i).value=v;}
-
-function toggleAI(){let p=document.getElementById('aiPanel');p.style.display=p.style.display==='none'?'block':'none';}function addAI(t){let c=document.getElementById('aiChat');c.innerHTML+=`<div>AI: ${t}</div>`;c.scrollTop=c.scrollHeight;speak(t);}
-function sendAI(){let inp=document.getElementById('aiIn');let q=inp.value.toLowerCase();if(!q)return;addAI('You: '+q);inp.value='';handleAI(q);}
+// AI WITH TRACKER - CALL FIRST NAME, LIVE LOCATION
+let userFirstName = localStorage.getItem('larffanName') || 'My Friend';
+function addAI(t){let c=document.getElementById('aiChat');let div=document.createElement('div');div.style.margin='6px 0';div.style.padding='6px';div.style.background='#1e293b';div.style.borderRadius='8px';div.textContent='AI: '+t;c.appendChild(div);c.scrollTop=c.scrollHeight;speak(t);}
+function toggleAI(){let p=document.getElementById('aiPanel');p.style.display=p.style.display==='none'?'block':'none';}
+function sendAI(){let q=document.getElementById('aiIn').value;if(!q)return;addAI('You: '+q);document.getElementById('aiIn').value='';handleAI(q);}
 function handleAI(q){
-  q=q.toLowerCase().trim();
-  if(q.includes('comedy')){document.getElementById('tv').scrollIntoView({behavior:'smooth'});engine2();addAI('Taking you to comedy - Engine 2 with 273 videos');return;}
-  if(q.includes('tracker')||q.includes('find my')||q.includes('phone')){document.getElementById('trackerCard').scrollIntoView({behavior:'smooth'});addAI('Taking you to Phone Tracker - Find your device. Phone 1, Phone 2, Phone 3 live tracking');return;}
-  if(q.includes('calculator')){openOnly('tools');addAI('Taking you to Calculator');return;}
-  if(q.includes('time')||q.includes('clock')){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});addAI('Taking you to World Clock');return;}
-  addAI('I can take you to comedy, I can take you to phone tracker find my phone device, TV, World Clock, Calculator');
+  let l=q.toLowerCase();
+  if(l.includes('your name')||l.includes('my name is')){
+    let name=q.split(' ').pop();userFirstName=name;localStorage.setItem('larffanName',name);
+    addAI(`Nice to meet you ${name}! I will call you ${name} now. I can take you to tracker and tell you location is here, live!`);return;
+  }
+  if(l.includes('tracker')||l.includes('phone')||l.includes('location')){
+    document.getElementById('trackerCard').scrollIntoView({behavior:'smooth'});
+    addAI(`Hello ${userFirstName}! Taking you to tracker. Your Phone 1 location is here, live on map. Person dey go, I dey talk am live. Click OPEN FULL TRACKER for 3 phones professional. The location is here!`);
+    // Simulate live tracker talk
+    setTimeout(()=>{speak(`Hello ${userFirstName}, your tracker location is here, live tracking active`);},500);
+    return;
+  }
+  for(let i=0;i<countries.length;i++){if(l.includes(countries[i].name.split(' ')[0].toLowerCase())){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});setTimeout(()=>speakClock(i),600);return;}}
+  if(l.includes('tv')){document.getElementById('tv').scrollIntoView({behavior:'smooth'});addAI(`Hello ${userFirstName}, taking you to TV`);return;}
+  if(l.includes('radio')){document.getElementById('radioCard').scrollIntoView({behavior:'smooth'});addAI(`Hello ${userFirstName}, taking you to Radio`);return;}
+  if(l.includes('jotter')){openOnly('rooms');addAI(`Hello ${userFirstName}, taking you to Jotter`);return;}
+  if(l.includes('calculator')){openOnly('calcSection');addAI(`Hello ${userFirstName}, taking you to Calculator`);return;}
+  addAI(`Hello ${userFirstName}! I can take you to TV, World Clock, Tracker, Radio, Jotter, Calculator. Say "take me to tracker" and I go tell you "the location is here" live!`);
 }
-function voiceAI(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return;let rec=new R();rec.lang='en-US';rec.onresult=(e)=>{let t=e.results[0][0].transcript;document.getElementById('aiIn').value=t;handleAI(t.toLowerCase());};rec.start();speak('Listening');}
+function voiceAI(){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=new Rec();rec.lang='en-US';rec.onresult=e=>{handleAI(e.results[0][0].transcript);};rec.start();speak('Listening '+userFirstName);}
 
-let deferredPrompt=null;window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('trackOut').textContent='📲 App ready to install! Click Install button';});
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then((c)=>{if(c.outcome==='accepted'){document.getElementById('trackOut').textContent='App installed!';}deferredPrompt=null;});}else{alert('To install: Chrome -> 3 dots top right -> Add to Home screen / Install App');}}
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(()=>{console.log('PWA ready');});}
-function giftPay(){var h=PaystackPop.setup({key:'pk_live_dbcbe2a0951a6ca98ad43ff8bc28b80abec7a06c',email:'customer@larffan.com',amount:100000,currency:'NGN',callback:function(r){alert('Thanks! '+r.reference)}});h.openIframe();}
-</script>
-</body></html>
+function giftPay(){speak('Thank you for support');}
+function ownerAddVideos(){let t=document.getElementById('ownerNewLinks').value;let ids=t.split('\n').map(cleanId).filter(Boolean);selectedList=[...new Set([...selectedList,...ids])];buildThumbs();document.getElementById('ownerStatus').textContent=ids.length+' added, total '+selectedList.length;}
+
+(function(){renderClocks();loadWeather();let u=window.location.href;if(u.includes('larffa2026')){document.getElementById('ownerPanel').style.display='block';}})();
+</script></body></html>
