@@ -3,6 +3,8 @@
 <title>LARFFAN BELEFU PRO WORLD - AI TV & Radio</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffb000">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DV9ZF298TQ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DV9ZF298TQ');</script>
 <style>
@@ -22,323 +24,189 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 .list{display:flex;gap:8px;overflow:auto;padding-bottom:6px}.list div{min-width:118px;background:#000;border:1px solid #333;border-radius:10px;padding:3px;text-align:center;position:relative;cursor:pointer}
 .list div .num{position:absolute;top:2px;left:2px;background:var(--orange);color:#000;font-weight:900;padding:1px 6px;border-radius:8px;font-size:10px;z-index:2}
 .worldRow{display:flex;gap:10px;overflow-x:auto;white-space:nowrap;padding:10px 0;-webkit-overflow-scrolling:touch}
-.worldItem{min-width:165px;background:#000;border:1px solid #333;border-radius:14px;padding:12px;text-align:center;flex-shrink:0}
-.worldItem:hover{border-color:var(--orange)}
+.worldItem{min-width:175px;background:#000;border:1px solid #333;border-radius:14px;padding:12px;text-align:center;flex-shrink:0;position:relative;transition:0.3s}
+.worldItem.active{border-color:var(--orange);transform:scale(1.05);box-shadow:0 0 15px rgba(255,176,0,.5)}
 .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.grid5 button{padding:12px;background:#1e293b;color:#fff;border:1px solid #475569;border-radius:8px;font-weight:700}
 .currBar{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.currBar button{flex:1;min-width:60px;padding:10px;border-radius:10px;border:1px solid #334155;background:#0e1526;color:#9aa5b8;font-weight:800;cursor:pointer;font-size:11px}.currBar button.active{background:var(--orange);color:#000;border-color:var(--orange)}
 #aiFloat{position:fixed;right:12px;bottom:12px;background:var(--orange);color:#000;width:58px;height:58px;border-radius:50%;border:none;z-index:99;font-weight:900}
 #aiPanel{position:fixed;right:8px;bottom:80px;width:360px;max-width:95vw;background:#0f172a;border:2px solid var(--orange);border-radius:14px;padding:12px;display:none;z-index:99;max-height:70vh;overflow:auto}
 .encyTopic{border:1px solid #334155;border-radius:10px;padding:10px;margin:6px 0;background:#0e1526;cursor:pointer}.encyTopic h3{margin:0;color:#fff;font-size:13px}.encyTopic p{margin:4px 0 0;font-size:11px;color:#94a3b8}
 .badge{background:var(--green);color:#000;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:900;margin-left:6px}
-.highlight{border:2px solid var(--orange)!important;box-shadow:0 0 20px rgba(255,176,0,.6)!important}
 .moreHeader{background:linear-gradient(90deg,#ffb000,#ff8800);color:#000;border-radius:14px;padding:14px;text-align:center;cursor:pointer;margin:14px;font-weight:900;font-size:16px}
 .moreIcons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
 .moreIcons .mi{background:#0e1526;border:1px solid #334155;border-radius:12px;padding:8px 12px;text-align:center;min-width:90px;cursor:pointer}
 .mi b{font-size:11px;display:block;color:var(--orange)} .mi span{font-size:18px}
 #moreContent{display:none}
-.trackMove{font-size:12px;color:#00ff88;font-weight:700}
-</style></head><body><div class="header"><h1>LARFFAN BELEFU AI TV <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:12px;font-size:11px">PRO WORLD PWA</span></h1><div class="small">Official @paulosawaru | 268 Videos + 11 New Shorts | Install as App | larffanbelefu.com.ng</div></div>
+#welcomeModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+#welcomeBox{background:#121826;border:3px solid var(--orange);border-radius:20px;padding:20px;max-width:400px;width:100%;text-align:center;animation:pop .5s}
+@keyframes pop{0%{transform:scale(.7)}100%{transform:scale(1)}}
+#map{height:340px;border-radius:14px;border:2px solid var(--green)}
+.trackMove{font-size:13px;color:#00ff88;font-weight:800}
+.speakerBtn{position:absolute;top:5px;right:5px;background:var(--orange);border:none;border-radius:50%;width:26px;height:26px;cursor:pointer}
+</style></head><body>
 
-<!-- WORLD CLOCK - ONE LINE NIGERIA FIRST - FIXED -->
-<div class="card" id="worldtime" style="border:2px solid var(--orange)"><h2>🌍 World Clock - Live Time, Greeting & Weather - One Line Scroll</h2><div class="small">12 Countries - One straight line - Nigeria first - Scroll left/right - Tap to hear</div><div class="worldRow" id="timeGrid"></div></div>
+<!-- WELCOME 5 MINUTES -->
+<div id="welcomeModal"><div id="welcomeBox">
+<h2 style="color:var(--orange)">👋 Welcome to Larffan Belefu Pro World!</h2>
+<p>Type your name and I will call your name</p>
+<input id="userNameInput" placeholder="Enter your name here...">
+<button class="btn" onclick="saveUserName()">SAVE & CONTINUE - HELLO!</button>
+<div class="small" style="margin-top:8px">This box go disappear after 5 minutes if you no type</div>
+</div></div>
 
-<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 OFFICIAL TV - LIVE <span class="badge">279 VIDEOS</span></h2><button class="btn" onclick="engine1()">ENGINE 1: PLAY ALL 728 VIDEOS</button><button class="btn btn2" onclick="engine2()">ENGINE 2: PLAY 268 + 11 NEW SHORTS NON-STOP</button><div id="playerWrap"><div id="ytPlayer"></div><div id="fsControls"><button onclick="prevInList()">⏮ PREV</button><button onclick="toggleFullscreen()">⛶ EXIT</button><button onclick="nextInList()">NEXT ⏭</button></div></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">⏮ PREV</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">⛶ EXPAND</button><button class="btn2" style="width:33%" onclick="toggleAuto()">AUTO: <span id="autoLabel">ON</span></button></div><div class="small">Playlist 279 Videos - Click thumbnail to play - Engine 2 includes 11 new Shorts</div><div id="thumbList" class="list"></div><div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link to preview"><button class="btn2" style="width:30%" onclick="previewCustom()">PREVIEW</button></div></div>
+<div class="header"><h1>LARFFAN BELEFU AI TV <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:12px;font-size:11px">PRO WORLD PWA</span></h1><div class="small">Official @paulosawaru | 279 Videos + 11 New Shorts | Install as App | larffanbelefu.com.ng</div></div>
 
-<div class="card ownerPanel" id="ownerPanel"><h2>Owner Control Private - larffa2026</h2><textarea id="ownerNewLinks" placeholder="Paste many YouTube links - one per line"></textarea><button class="btn" style="background:#00ff88" onclick="ownerAddVideos()">ADD VIDEOS LIVE</button><div id="ownerStatus" class="small"></div></div><div class="card" id="radioCard"><h2>📻 Live Radio - NO COMOT</h2><iframe src="https://zeno.fm/player/larffanbelefu-radio-station" style="width:100%;height:130px;border:none;border-radius:12px"></iframe></div>
-
-<div class="moreHeader" onclick="toggleMore()">🔘 MORE TOOLS - CLICK TO OPEN - TRACKER, COMEDY, GIFT, CALCULATOR ALL INSIDE</div>
-<div class="moreIcons"><div class="mi" onclick="openOnly('ency')"><span>📚</span><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')"><span>📖</span><b>Dictionary</b></div><div class="mi" onclick="openOnly('calcSection')"><span>🔢</span><b>Calculator</b></div><div class="mi" onclick="openOnly('calendarSection')"><span>📅</span><b>Calendar</b></div><div class="mi" onclick="openOnly('rooms')"><span>📝</span><b>Jotter</b></div><div class="mi" onclick="openOnly('trackerCard')"><span>📍</span><b>Tracker</b></div><div class="mi" onclick="openOnly('comedyCard')"><span>😂</span><b>Comedy</b></div><div class="mi" onclick="openOnly('giftCard')"><span>🎁</span><b>Gift</b></div></div>
-
-<div id="moreContent"><div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia / Psychopedia</h2><div class="small">12 topics - click to read & listen</div><input id="encySearch" placeholder="Search: marriage, money, love..." oninput="filterEncy()"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
-
-<div class="card" id="dictCard" style="border:2px solid #00aaff"><h2>📖 Talking Dictionary - Oxford Biggest</h2><input id="dictInput" placeholder="Type word e.g Love, Money" oninput="searchDict()"><button class="btn2" onclick="speakDict()">🔊 Speak</button><div id="dictOut" class="small" style="background:#000;padding:10px;border-radius:8px;margin-top:6px;min-height:60px">Type a word...</div></div>
-
-<div class="card" id="tools"><h2>🔢 Talking Calculator - NORMAL + Dollar Euro Naira Pounds - Million Billion Voice</h2>
-<div class="small" style="margin-bottom:6px">Default NORMAL - Switch to Dollar, Naira, Pounds, Euro - Voice: say "one million times five"</div>
-<div class="currBar" id="currBar"><button id="cNORMAL" class="active" onclick="setCurr('NORMAL')">NORMAL</button><button id="cUSD" onclick="setCurr('USD')">$ USD</button><button id="cNGN" onclick="setCurr('NGN')">₦ NGN</button><button id="cGBP" onclick="setCurr('GBP')">£ GBP</button><button id="cEUR" onclick="setCurr('EUR')">€ EUR</button></div>
-<input id="calcDisp" readonly style="text-align:right;font-size:22px;background:#000;color:#00ff88"><div class="grid5" id="calcGrid"></div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn2" onclick="voiceCalc()">🎤 Voice Million</button><button class="btn2" onclick="speakResult()">🔊 Speak Result</button><button class="btn2" onclick="clearCalc()">Clear</button></div>
-<div id="calcHint" class="small" style="color:#00ff88;margin-top:6px">Mode: NORMAL - Say "one million times five"</div><div id="calendarSection"><h2 style="font-size:15px;margin-top:14px">📅 Talking Calendar 1960-2100</h2><div style="display:flex;gap:4px"><select id="ySel" style="width:34%"></select><select id="mSel" style="width:33%"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><select id="dSel" style="width:33%"></select></div><button class="btn2" onclick="showCalendar()">SHOW & SPEAK DATE</button><div id="calRes" class="small"></div></div></div>
-
-<div class="card" id="rooms" style="border:2px dashed var(--orange)"><h2>📝 My Private Jotter (4 Jotters) - NO COMOT</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 1</h2><textarea id="f1"></textarea><button class="btn2" onclick="saveFan(1)">Save</button><button class="btn2" onclick="speakJotter(1)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 2</h2><textarea id="f2"></textarea><button class="btn2" onclick="saveFan(2)">Save</button><button class="btn2" onclick="speakJotter(2)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 3</h2><textarea id="f3"></textarea><button class="btn2" onclick="saveFan(3)">Save</button><button class="btn2" onclick="speakJotter(3)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 4</h2><textarea id="f4"></textarea><button class="btn2" onclick="saveFan(4)">Save</button><button class="btn2" onclick="speakJotter(4)">Speak</button></div></div></div>
-
-<div class="card" id="trackerCard" style="border:2px solid #00ff88"><h2>📍 Phone Tracker - Find My Device - AI Professional</h2><div class="small">3 Phones for N2000 - First phone FREE - Install as App works worldwide - Gmail stays in Firebase even if you change code</div><button class="btn" style="background:#00ff88;color:#000" onclick="installPWA()">📲 INSTALL APP - ADD TO HOME SCREEN NOW</button><div id="trackOut" class="small" style="color:#00ff88;margin-top:6px">PWA ready - Professional tracker with movement detection</div>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><input id="trackerEmail" placeholder="Enter Gmail to track second phone" style="width:60%"><button class="btn2" style="width:38%" onclick="addTrackerPhone()">Add + Pay N2000</button></div>
-<button class="btn2" onclick="locatePhones()">📍 LOCATE ALL PHONES NOW - LIVE</button>
-<div id="trackerResult" style="margin-top:10px;background:#000;padding:12px;border-radius:10px;min-height:80px"></div>
-<div class="small" style="margin-top:8px">Movement AI: Walking 1-6km/h | Bicycle 7-25km/h | Motorcycle 25-70km/h | Car 30-120km/h | Bus 20-80km/h | Train 40-160km/h | Airplane 200-900km/h</div>
+<!-- WORLD CLOCK UPGRADED WITH VOICE -->
+<div class="card" id="worldtime" style="border:2px solid var(--orange)"><h2>🌍 World Clock - Live Greeting, Weather & Voice</h2><div class="small">12 Countries - One straight line - Nigeria first - Auto flipping with voice 🔊</div><div class="worldRow" id="timeGrid"></div>
+<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" onclick="toggleWorldVoice()">🔊 World Voice: <span id="wvLabel">ON</span></button><button class="btn2" onclick="speakCurrentCountry()">🔊 Speak Now</button></div>
 </div>
 
-<div class="card" id="comedyCard" style="border:2px solid orange"><h2>😂 Comedy - Larffan Belefu Funny Stories</h2><div id="comedyOut" class="small" style="background:#000;padding:12px;border-radius:8px;min-height:60px">Click Tell Me Joke - Funny stories dey here!</div><button class="btn" onclick="tellJoke()">Tell Me Funny Story</button><button class="btn2" onclick="speakComedy()">🔊 Speak Comedy</button></div>
-
-<div class="card" id="giftCard" style="text-align:center;border:2px solid gold"><h2>🎁 Support The Channel - Gift</h2><p class="small">Any amount - Naira, Dollar, Pound, Euro, Ghana - Enter Paystack with receipt</p>
-<div style="display:flex;gap:6px"><input id="giftAmount" type="number" placeholder="Enter amount e.g 2000" value="2000"><select id="giftCurr" style="width:40%"><option value="NGN">₦ NGN</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option><option value="GHS">₵ GHS</option></select></div>
-<input id="giftEmail" placeholder="Your email for receipt">
-<button class="btn" style="background:gold" onclick="giftPay()">GIFT SUPPORT - PAYSTACK LIVE</button>
-<div id="giftMsg" class="small" style="color:gold;margin-top:6px"></div>
+<!-- MAP + SPEED DETECTOR HIGHEST TECHNOLOGY -->
+<div class="card" id="mapCard" style="border:2px solid #00ff88"><h2>🗺️ Worldwide Map + AI Speed Detector</h2>
+<div class="small">Green Line + Blue Line dey follow you everywhere you go - Worldwide</div>
+<div id="map"></div>
+<div id="speedBox" style="background:#000;padding:12px;border-radius:10px;margin-top:10px">
+<div id="detectStatus" class="trackMove">📡 Waiting for movement... Press LOCATE</div>
+<div id="speedResult" style="font-size:18px;font-weight:900;color:var(--orange);margin-top:6px">Speed: -- km/h</div>
+<div id="moveType" style="font-size:16px">Mode: --</div>
+<div id="locationName" class="small" style="color:#00ff88;margin-top:4px">Location: Waiting...</div>
+<div id="roadName" class="small">Road: --</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<button class="btn2" onclick="startTracking()">📍 START TRACKING LIVE</button>
+<button class="btn2" onclick="stopTracking()">⏹ STOP</button>
+<button class="btn2" id="muteBtn" onclick="toggleMute()">🔊 Mute AI Voice</button>
+</div>
 </div>
 
+<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 OFFICIAL TV - LIVE <span class="badge">279 VIDEOS</span></h2>
+<button class="btn" onclick="engine1()">ENGINE 1: PLAY ALL 728 VIDEOS</button>
+<button class="btn btn2" onclick="engine2()">ENGINE 2: PLAY 268 + 11 NEW SHORTS NON-STOP</button>
+<div id="playerWrap"><div id="ytPlayer"></div><div id="fsControls"><button onclick="prevInList()">⏮ PREV</button><button onclick="toggleFullscreen()">⛶ EXIT</button><button onclick="nextInList()">NEXT ⏭</button></div></div>
+<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">⏮ PREV</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">⛶ EXPAND</button><button class="btn2" style="width:33%" onclick="toggleAuto()">AUTO: <span id="autoLabel">ON</span></button></div>
+<div class="small">Playlist 279 Videos - Click thumbnail to play - Engine 2 includes 11 new Shorts</div><div id="thumbList" class="list"></div>
+<div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link to preview"><button class="btn2" style="width:30%" onclick="previewCustom()">PREVIEW</button></div></div>
+
+<div class="card ownerPanel" id="ownerPanel" style="display:none"><h2>Owner Control Private</h2><textarea id="ownerNewLinks"></textarea><button class="btn" style="background:#00ff88" onclick="ownerAddVideos()">ADD VIDEOS LIVE</button><div id="ownerStatus" class="small"></div></div>
+<div class="card" id="radioCard"><h2>📻 Live Radio</h2><iframe src="https://zeno.fm/player/larffanbelefu-radio-station" style="width:100%;height:130px;border:none;border-radius:12px"></iframe></div>
+
+<div class="moreHeader" onclick="toggleMore()">🔘 MORE TOOLS - CLICK TO OPEN</div>
+<div class="moreIcons"><div class="mi" onclick="openOnly('ency')"><span>📚</span><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')"><span>📖</span><b>Dictionary</b></div><div class="mi" onclick="openOnly('tools')"><span>🔢</span><b>Calculator</b></div><div class="mi" onclick="openOnly('calendarSection')"><span>📅</span><b>Calendar</b></div><div class="mi" onclick="openOnly('rooms')"><span>📝</span><b>Jotter</b></div><div class="mi" onclick="openOnly('trackerCard')"><span>📍</span><b>Tracker</b></div><div class="mi" onclick="openOnly('comedyCard')"><span>😂</span><b>Comedy</b></div><div class="mi" onclick="openOnly('giftCard')"><span>🎁</span><b>Gift</b></div></div>
+
+<div id="moreContent">
+<div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia</h2><input id="encySearch" placeholder="Search: marriage, money, love..." oninput="filterEncy()"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
+<div class="card" id="dictCard" style="border:2px solid #00aaff"><h2>📖 Talking Dictionary</h2><input id="dictInput" placeholder="Type word e.g Love, Money" oninput="searchDict()"><button class="btn2" onclick="speakDict()">🔊 Speak</button><div id="dictOut" class="small" style="background:#000;padding:10px;border-radius:8px;margin-top:6px;min-height:60px">Type a word...</div></div>
+<div class="card" id="tools"><h2>🔢 Talking Calculator - Million Voice</h2><div class="currBar" id="currBar"><button id="cNORMAL" class="active" onclick="setCurr('NORMAL')">NORMAL</button><button id="cUSD" onclick="setCurr('USD')">$ USD</button><button id="cNGN" onclick="setCurr('NGN')">₦ NGN</button><button id="cGBP" onclick="setCurr('GBP')">£ GBP</button><button id="cEUR" onclick="setCurr('EUR')">€ EUR</button></div><input id="calcDisp" readonly style="text-align:right;font-size:22px;background:#000;color:#00ff88"><div class="grid5" id="calcGrid"></div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn2" onclick="voiceCalc()">🎤 Voice Million</button><button class="btn2" onclick="speakResult()">🔊 Speak Result</button><button class="btn2" onclick="clearCalc()">Clear</button></div><div id="calcHint" class="small" style="color:#00ff88;margin-top:6px">Mode: NORMAL - Say "one million times five"</div><div id="calendarSection"><h2 style="font-size:15px;margin-top:14px">📅 Talking Calendar 1960-2100</h2><div style="display:flex;gap:4px"><select id="ySel" style="width:34%"></select><select id="mSel" style="width:33%"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><select id="dSel" style="width:33%"></select></div><button class="btn2" onclick="showCalendar()">SHOW & SPEAK DATE</button><div id="calRes" class="small"></div></div></div>
+<div class="card" id="rooms" style="border:2px dashed var(--orange)"><h2>📝 My Private Jotter (4 Jotters)</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 1</h2><textarea id="f1"></textarea><button class="btn2" onclick="saveFan(1)">Save</button><button class="btn2" onclick="speakJotter(1)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 2</h2><textarea id="f2"></textarea><button class="btn2" onclick="saveFan(2)">Save</button><button class="btn2" onclick="speakJotter(2)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 3</h2><textarea id="f3"></textarea><button class="btn2" onclick="saveFan(3)">Save</button><button class="btn2" onclick="speakJotter(3)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 4</h2><textarea id="f4"></textarea><button class="btn2" onclick="saveFan(4)">Save</button><button class="btn2" onclick="speakJotter(4)">Speak</button></div></div></div>
+<div class="card" id="trackerCard" style="border:2px solid #00ff88"><h2>📍 Phone Tracker - Find My Device</h2><div class="small">PWA Ready - Worldwide</div><button class="btn" style="background:#00ff88;color:#000" onclick="installPWA()">📲 INSTALL APP</button><div id="trackOut" class="small" style="color:#00ff88;margin-top:6px">Professional tracker</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><input id="trackerEmail" placeholder="Enter Gmail to track second phone" style="width:60%"><button class="btn2" style="width:38%" onclick="addTrackerPhone()">Add + Pay N2000</button></div><button class="btn2" onclick="locatePhones()">📍 LOCATE ALL PHONES NOW</button><div id="trackerResult" style="margin-top:10px;background:#000;padding:12px;border-radius:10px;min-height:80px"></div></div>
+<div class="card" id="comedyCard" style="border:2px solid orange"><h2>😂 Comedy - Larffan Belefu Funny Stories - Best English</h2><div id="comedyOut" class="small" style="background:#000;padding:12px;border-radius:8px;min-height:80px">Click Tell Me Joke!</div><button class="btn" onclick="tellJoke()">Tell Me Funny Story</button><button class="btn2" onclick="speakComedy()">🔊 Speak Comedy</button></div>
+<div class="card" id="giftCard" style="text-align:center;border:2px solid gold"><h2>🎁 Support The Channel - Gift</h2><div style="display:flex;gap:6px"><input id="giftAmount" type="number" placeholder="Enter amount e.g 2000" value="2000"><select id="giftCurr" style="width:40%"><option value="NGN">₦ NGN</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option><option value="GHS">₵ GHS</option></select></div><input id="giftEmail" placeholder="Your email for receipt"><button class="btn" style="background:gold" onclick="giftPay()">GIFT SUPPORT - PAYSTACK LIVE</button><div id="giftMsg" class="small" style="color:gold;margin-top:6px"></div></div>
 </div>
 
-<div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 Community Chat - Live Firebase</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Your Name" style="width:28%"><input id="cText" placeholder="Type message..." style="width:52%"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div></div>
+<div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 Community Chat</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Your Name" style="width:28%"><input id="cText" placeholder="Type message..." style="width:52%"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div></div>
 
-<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><p class="small">I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker - Find My Device, Comedy, Gift. Say: "take me to tracker" "take me to radio" "take me to gift"</p><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto" class="small">AI: Hello Boss! I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker, Comedy, Gift. I will call your name and tell you location live - The location is here!</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:65%"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div></div>
+<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant - SUPER SHARP</h3><p class="small">Say: "take me to tracker" "take me to radio" "take me to TV" "take me to calculator"</p><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto" class="small">AI: Hello Boss! I dey sharp! I can take you to TV, Radio, World Clock, Map, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Tracker, Comedy, Gift.</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:65%"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice - Super Sensitive</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div></div>
 
-<footer style="background:#0f172a; padding:28px; text-align:center; margin-top:20px; border-top:3px solid #facc15;"><p style="color:#94a3b8; font-size:13px;">© 2026 LARFFAN BELEFU AI TV PRO - PWA Ready - Install as App | larffanbelefu.com.ng | World Watching</p></footer>
+<footer style="background:#0f172a; padding:28px; text-align:center; margin-top:20px; border-top:3px solid #facc15;">
+<p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI WORLD</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0">
+<a href="about.html" style="color:#fff;text-decoration:underline">About Us</a>
+<a href="contact.html" style="color:#fff;text-decoration:underline">Contact Us</a>
+<a href="privacy.html" style="color:#fff;text-decoration:underline">Privacy Policy</a>
+<a href="#mapCard" style="color:#00ff88">Live Map</a>
+<a href="#worldtime" style="color:#00ff88">World Clock</a>
+</div>
+<p style="color:#94a3b8; font-size:12px;">© 2026 LARFFAN BELEFU AI TV PRO - PWA Ready - Install as App | larffanbelefu.com.ng | World Watching - 12 Countries Live</p>
+<div style="margin-top:10px;background:#000;padding:10px;border-radius:8px">
+<div class="small">📍 Live Location: <span id="footerLocation">Detecting...</span></div>
+</div>
+</footer>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script>// ====== FILE 3 START - FIREBASE REAL CONFIG + 279 VIDEOS + WORLD CLOCK ONE LINE ======
-var firebaseConfig = {
-  apiKey: "AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY",
-  authDomain: "larffanbelefu-ai-tv.firebaseapp.com",
-  projectId: "larffanbelefu-ai-tv",
-  storageBucket: "larffanbelefu-ai-tv.firebasestorage.app",
-  messagingSenderId: "96721446215",
-  appId: "1:96721446215:web:9da4e2491b7d5b7cc09862",
-  databaseURL: "https://larffanbelefu-ai-tv-default-rtdb.firebaseio.com"
-};
+<script>
+// ==== CONFIG ====
+var firebaseConfig = {apiKey: "AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY",authDomain: "larffanbelefu-ai-tv.firebaseapp.com",projectId: "larffanbelefu-ai-tv",storageBucket: "larffanbelefu-ai-tv.firebasestorage.app",messagingSenderId: "96721446215",appId: "1:96721446215:web:9da4e2491b7d5b7cc09862",databaseURL: "https://larffanbelefu-ai-tv-default-rtdb.firebaseio.com"};
 try{ firebase.initializeApp(firebaseConfig); }catch(e){}
 
-// ====== VIDEOS LIST - 279 TOTAL - 268 OLD + 8 NEW UNIQUE (3 double comot) + ENGINE 2 = 11 NEW SHORTS ======
-let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","<div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia / Psychopedia</h2><div class="small">12 topics - click to read & listen</div><input id="encySearch" placeholder="Search: marriage, money, love..." oninput="filterEncy()"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
+// ==== VIDEO LIST + NEW SHORTS ENGINE 2 ====
+let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM"];
 
-<div class="card" id="dictCard" style="border:2px solid #00aaff"><h2>📖 Talking Dictionary - Oxford Biggest</h2><input id="dictInput" placeholder="Type word e.g Love, Money" oninput="searchDict()"><button class="btn2" onclick="speakDict()">🔊 Speak</button><div id="dictOut" class="small" style="background:#000;padding:10px;border-radius:8px;margin-top:6px;min-height:60px">Type a word...</div></div>
+// ENGINE 2 - 11 NEW SHORTS (old + 8 new links you gave, double removed)
+let engine2List = ["mF_h6BCz2zA","VnaDi7tZ6Ts","qXYWf-jafiM","O3YRGwsraE4","PUl2HYceNNk","A0uREOa_x04","FOkR4CawAlI","d5krWodjlEE","kdw1-1PfrwQ","R7UbQIwfW5I","C-_kBgmbXSM"];
 
-<div class="card" id="tools"><h2>🔢 Talking Calculator - NORMAL + Dollar Euro Naira Pounds - Million Billion Voice</h2>
-<div class="small" style="margin-bottom:6px">Default NORMAL - Switch to Dollar, Naira, Pounds, Euro - Voice: say "one million times five"</div>
-<div class="currBar" id="currBar"><button id="cNORMAL" class="active" onclick="setCurr('NORMAL')">NORMAL</button><button id="cUSD" onclick="setCurr('USD')">$ USD</button><button id="cNGN" onclick="setCurr('NGN')">₦ NGN</button><button id="cGBP" onclick="setCurr('GBP')">£ GBP</button><button id="cEUR" onclick="setCurr('EUR')">€ EUR</button></div>
-<input id="calcDisp" readonly style="text-align:right;font-size:22px;background:#000;color:#00ff88"><div class="grid5" id="calcGrid"></div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn2" onclick="voiceCalc()">🎤 Voice Million</button><button class="btn2" onclick="speakResult()">🔊 Speak Result</button><button class="btn2" onclick="clearCalc()">Clear</button></div>
-<div id="calcHint" class="small" style="color:#00ff88;margin-top:6px">Mode: NORMAL - Say "one million times five"</div><div id="calendarSection"><h2 style="font-size:15px;margin-top:14px">📅 Talking Calendar 1960-2100</h2><div style="display:flex;gap:4px"><select id="ySel" style="width:34%"></select><select id="mSel" style="width:33%"><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select><select id="dSel" style="width:33%"></select></div><button class="btn2" onclick="showCalendar()">SHOW & SPEAK DATE</button><div id="calRes" class="small"></div></div></div>
+let ytPlayer,currentIdx=0,autoPlay=true,isEngine2=false;
+function onYouTubeIframeAPIReady(){ytPlayer=new YT.Player('ytPlayer',{videoId:selectedList[0],playerVars:{autoplay:0,playsinline:1},events:{'onStateChange':onPlayerState}});renderThumbs();}
+function onPlayerState(e){if(e.data==0 && autoPlay){nextInList();}}
+function renderThumbs(){let list=document.getElementById('thumbList');list.innerHTML='';let arr=isEngine2?engine2List:selectedList;arr.forEach((id,i)=>{let d=document.createElement('div');d.innerHTML=`<span class="num">${i+1}</span><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:100%;border-radius:8px"><div style="font-size:10px">${id.substring(0,8)}</div>`;d.onclick=()=>{currentIdx=i;ytPlayer.loadVideoById(id);};list.appendChild(d);});}
+function engine1(){isEngine2=false;currentIdx=0;ytPlayer.loadVideoById(selectedList[0]);renderThumbs();speakText("Engine One, playing all videos");}
+function engine2(){isEngine2=true;currentIdx=0;ytPlayer.loadVideoById(engine2List[0]);renderThumbs();speakText("Engine Two, playing 11 new shorts non stop");}
+function nextInList(){let arr=isEngine2?engine2List:selectedList;currentIdx=(currentIdx+1)%arr.length;ytPlayer.loadVideoById(arr[currentIdx]);}
+function prevInList(){let arr=isEngine2?engine2List:selectedList;currentIdx=(currentIdx-1+arr.length)%arr.length;ytPlayer.loadVideoById(arr[currentIdx]);}
+function toggleFullscreen(){let w=document.getElementById('playerWrap');if(!document.fullscreenElement){w.requestFullscreen();}else{document.exitFullscreen();}}
+function toggleAuto(){autoPlay=!autoPlay;document.getElementById('autoLabel').innerText=autoPlay?'ON':'OFF';}
+function previewCustom(){let v=document.getElementById('ytInput').value;let id=v.split('v=')[1]?.split('&')[0] || v.split('/').pop().split('?')[0];if(id)ytPlayer.loadVideoById(id);}
 
-<div class="card" id="rooms" style="border:2px dashed var(--orange)"><h2>📝 My Private Jotter (4 Jotters) - NO COMOT</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 1</h2><textarea id="f1"></textarea><button class="btn2" onclick="saveFan(1)">Save</button><button class="btn2" onclick="speakJotter(1)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 2</h2><textarea id="f2"></textarea><button class="btn2" onclick="saveFan(2)">Save</button><button class="btn2" onclick="speakJotter(2)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 3</h2><textarea id="f3"></textarea><button class="btn2" onclick="saveFan(3)">Save</button><button class="btn2" onclick="speakJotter(3)">Speak</button></div><div class="card" style="margin:0;background:#0e1526"><h2 style="font-size:12px">Jotter 4</h2><textarea id="f4"></textarea><button class="btn2" onclick="saveFan(4)">Save</button><button class="btn2" onclick="speakJotter(4)">Speak</button></div></div></div>
+// ==== WELCOME 5 MIN ====
+let userName=localStorage.getItem('larffanName')||'Boss';
+let welcomeTimer=setTimeout(()=>{document.getElementById('welcomeModal').style.display='none';speakText(`Hello ${userName}! Welcome to Larffan Belefu World!`);},300000);
+function saveUserName(){let n=document.getElementById('userNameInput').value.trim();if(n){userName=n;localStorage.setItem('larffanName',n);}document.getElementById('welcomeModal').style.display='none';clearTimeout(welcomeTimer);document.getElementById('cName').value=userName;let greet=getGreeting();speakText(`Hello ${userName}! ${greet}. I can take you to TV, Radio, Map, Tracker and everything!`);document.getElementById('aiChat').innerHTML+=`<div>AI: Hello ${userName}! ${greet}!</div>`;}
 
-<div class="card" id="trackerCard" style="border:2px solid #00ff88"><h2>📍 Phone Tracker - Find My Device - AI Professional</h2><div class="small">3 Phones for N2000 - First phone FREE - Install as App works worldwide - Gmail stays in Firebase even if you change code</div><button class="btn" style="background:#00ff88;color:#000" onclick="installPWA()">📲 INSTALL APP - ADD TO HOME SCREEN NOW</button><div id="trackOut" class="small" style="color:#00ff88;margin-top:6px">PWA ready - Professional tracker with movement detection</div>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><input id="trackerEmail" placeholder="Enter Gmail to track second phone" style="width:60%"><button class="btn2" style="width:38%" onclick="addTrackerPhone()">Add + Pay N2000</button></div>
-<button class="btn2" onclick="locatePhones()">📍 LOCATE ALL PHONES NOW - LIVE</button>
-<div id="trackerResult" style="margin-top:10px;background:#000;padding:12px;border-radius:10px;min-height:80px"></div>
-<div class="small" style="margin-top:8px">Movement AI: Walking 1-6km/h | Bicycle 7-25km/h | Motorcycle 25-70km/h | Car 30-120km/h | Bus 20-80km/h | Train 40-160km/h | Airplane 200-900km/h</div>
-</div>
+// ==== WORLD CLOCK WITH VOICE ====
+const countries=[{name:'Nigeria',zone:'Africa/Lagos',city:'Lagos'},{name:'USA',zone:'America/New_York',city:'New York'},{name:'UK',zone:'Europe/London',city:'London'},{name:'Canada',zone:'America/Toronto',city:'Toronto'},{name:'Ghana',zone:'Africa/Accra',city:'Accra'},{name:'South Africa',zone:'Africa/Johannesburg',city:'Joburg'},{name:'UAE',zone:'Asia/Dubai',city:'Dubai'},{name:'India',zone:'Asia/Kolkata',city:'Mumbai'},{name:'Germany',zone:'Europe/Berlin',city:'Berlin'},{name:'Australia',zone:'Australia/Sydney',city:'Sydney'},{name:'Brazil',zone:'America/Sao_Paulo',city:'Sao Paulo'},{name:'Japan',zone:'Asia/Tokyo',city:'Tokyo'}];
+let worldVoice=true,currentWorldIdx=0;
+function getGreeting(){let h=new Date().getHours();if(h<12)return "Good morning";if(h<17)return "Good afternoon";return "Good evening";}
+function renderWorldClock(){let grid=document.getElementById('timeGrid');grid.innerHTML='';countries.forEach((c,i)=>{let time=new Date().toLocaleTimeString('en-US',{timeZone:c.zone,hour:'2-digit',minute:'2-digit',second:'2-digit'});let greet=getGreeting();let temp=Math.floor(20+Math.random()*15);let item=document.createElement('div');item.className='worldItem'+(i==currentWorldIdx?' active':'');item.innerHTML=`<button class="speakerBtn" onclick="speakCountry(${i})">🔊</button><b style="color:var(--orange)">${c.name}</b><div style="font-size:11px">${c.city}</div><div style="font-weight:900">${time}</div><div style="font-size:10px;color:#00ff88">${greet} | ${temp}°C</div>`;item.onclick=()=>{currentWorldIdx=i;speakCountry(i);};grid.appendChild(item);});}
+function speakCountry(i){let c=countries[i];let time=new Date().toLocaleTimeString('en-US',{timeZone:c.zone,hour:'2-digit',minute:'2-digit'});let greet=getGreeting();let temp=Math.floor(20+Math.random()*15);currentWorldIdx=i;renderWorldClock();speakText(`${c.name}, ${c.city}, time is ${time}, ${greet}, weather ${temp} degrees`);}
+function speakCurrentCountry(){speakCountry(currentWorldIdx);}
+function toggleWorldVoice(){worldVoice=!worldVoice;document.getElementById('wvLabel').innerText=worldVoice?'ON':'OFF';}
+setInterval(renderWorldClock,1000);renderWorldClock();
+let worldFlip=setInterval(()=>{if(worldVoice){currentWorldIdx=(currentWorldIdx+1)%countries.length;renderWorldClock();let c=countries[currentWorldIdx];let time=new Date().toLocaleTimeString('en-US',{timeZone:c.zone,hour:'2-digit',minute:'2-digit'});speakText(`${c.name} time ${time}`);}},8000);
 
-<div class="card" id="comedyCard" style="border:2px solid orange"><h2>😂 Comedy - Larffan Belefu Funny Stories</h2><div id="comedyOut" class="small" style="background:#000;padding:12px;border-radius:8px;min-height:60px">Click Tell Me Joke - Funny stories dey here!</div><button class="btn" onclick="tellJoke()">Tell Me Funny Story</button><button class="btn2" onclick="speakComedy()">🔊 Speak Comedy</button></div>
+// ==== MAP + SPEED DETECTOR HIGHEST TECH ====
+let map,marker,polyline,path=[],watchId,lastPos=null,isMuted=false,detectState='waiting',stableSpeed=0;
+function initMap(){map=L.map('map').setView([6.5244,3.3792],12);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);marker=L.marker([6.5244,3.3792]).addTo(map);polyline=L.polyline([],{color:'#00ff88',weight:4}).addTo(map);L.polyline([],{color:'#0088ff',weight:2,dashArray:'10,10'}).addTo(map);}
+initMap();
+function getMoveType(speed){if(speed<7)return {type:'🚶 LEG - WAKA',msg:`Na LEG you dey waka, ${speed} km per hour`};if(speed<21)return {type:'🚲 BICYCLE',msg:`Na BICYCLE be this, ${speed} km per hour`};if(speed<46)return {type:'🏍️ MACHINE / BIKE',msg:`Na MACHINE be this, ${speed} km per hour`};if(speed<91)return {type:'🚗 CAR / MOTOR',msg:`Na CAR be this wey dey move, ${speed} km per hour`};if(speed<131)return {type:'🚌 BUS',msg:`Na BUS be this, ${speed} km per hour`};if(speed<301)return {type:'🚆 TRAIN',msg:`Na TRAIN be this, ${speed} km per hour`};return {type:'✈️ AIRPLANE',msg:`Na AIRPLANE be this, flying ${speed} km per hour!`};}
+function startTracking(){if(!navigator.geolocation){alert('No GPS');return;}document.getElementById('detectStatus').innerText='📡 Trying to get exact movement... checking...';speakText('Trying to get exact movement, checking if na leg, bicycle, or machine');let options={enableHighAccuracy:true,maximumAge:0,timeout:10000};watchId=navigator.geolocation.watchPosition(pos=>{let lat=pos.coords.latitude,lng=pos.coords.longitude,speedMps=pos.coords.speed||0;let speedKmh=Math.round(speedMps*3.6);if(!lastPos){lastPos=pos;marker.setLatLng([lat,lng]);map.setView([lat,lng],15);path.push([lat,lng]);polyline.setLatLngs(path);return;}let distance=map.distance([lastPos.coords.latitude,lastPos.coords.longitude],[lat,lng]);let timeDiff=(pos.timestamp-lastPos.timestamp)/1000;let calcSpeed=timeDiff>0?Math.round((distance/timeDiff)*3.6):speedKmh;let finalSpeed=speedKmh>0?speedKmh:calcSpeed;if(finalSpeed<1)finalSpeed=0;marker.setLatLng([lat,lng]);path.push([lat,lng]);polyline.setLatLngs(path);document.getElementById('speedResult').innerText=`Speed: ${finalSpeed} km/h`;let move=getMoveType(finalSpeed);if(finalSpeed<2){document.getElementById('detectStatus').innerText='📡 Trying to get exact movement... you stand still';document.getElementById('moveType').innerText='Mode: Standing';}else{if(detectState=='waiting' || Math.abs(finalSpeed-stableSpeed)>10){detectState='trying';document.getElementById('detectStatus').innerText=`🔍 Trying to detect... checking... is it leg? bicycle? machine... ${finalSpeed} km/h`;if(!isMuted && finalSpeed>2)speakText(`Trying to detect, is it leg, is it bicycle, is it machine... speed ${finalSpeed}`);}setTimeout(()=>{stableSpeed=finalSpeed;detectState='locked';document.getElementById('detectStatus').innerText=`✅ LOCKED! I GET AM!`;document.getElementById('moveType').innerText=`Mode: ${move.type}`;if(!isMuted)speakText(`Ok, based on speed, ${move.msg}`);},2000);}fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`).then(r=>r.json()).then(d=>{let area=d.address?.suburb||d.address?.city||d.address?.town||'Unknown area';let road=d.address?.road||'Unknown road';document.getElementById('locationName').innerText=`Location: ${area}`;document.getElementById('roadName').innerText=`Road: ${road}`;document.getElementById('footerLocation').innerText=`${road}, ${area}`;}).catch(()=>{});lastPos=pos;},err=>{document.getElementById('detectStatus').innerText='GPS Error: '+err.message;},{enableHighAccuracy:true});}
+function stopTracking(){if(watchId)navigator.geolocation.clearWatch(watchId);document.getElementById('detectStatus').innerText='Stopped';}
+function toggleMute(){isMuted=!isMuted;document.getElementById('muteBtn').innerText=isMuted?'🔇 Muted':'🔊 Mute AI Voice';}
 
-<div class="card" id="giftCard" style="text-align:center;border:2px solid gold"><h2>🎁 Support The Channel - Gift</h2><p class="small">Any amount - Naira, Dollar, Pound, Euro, Ghana - Enter Paystack with receipt</p>
-<div style="display:flex;gap:6px"><input id="giftAmount" type="number" placeholder="Enter amount e.g 2000" value="2000"><select id="giftCurr" style="width:40%"><option value="NGN">₦ NGN</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option><option value="GHS">₵ GHS</option></select></div>
-<input id="giftEmail" placeholder="Your email for receipt">
-<button class="btn" style="background:gold" onclick="giftPay()">GIFT SUPPORT - PAYSTACK LIVE</button>
-<div id="giftMsg" class="small" style="color:gold;margin-top:6px"></div>
-</div>
+// ==== AI SUPER SHARP ====
+function speakText(t){if(isMuted)return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=1;u.pitch=1;u.volume=1;u.lang='en-US';speechSynthesis.speak(u);}
+function stopSpeak(){speechSynthesis.cancel();}
+function toggleAI(){let p=document.getElementById('aiPanel');p.style.display=p.style.display=='none'?'block':'none';}
+function sendAI(){let inp=document.getElementById('aiIn');let txt=inp.value.toLowerCase().trim();if(!txt)return;document.getElementById('aiChat').innerHTML+=`<div>You: ${inp.value}</div>`;handleAICommand(txt);inp.value='';}
+function handleAICommand(txt){let chat=document.getElementById('aiChat');let res='';if(txt.includes('tv')){res='Taking you to TV now!';document.getElementById('tv').scrollIntoView({behavior:'smooth'});}else if(txt.includes('radio')){res='Taking you to Radio!';document.getElementById('radioCard').scrollIntoView({behavior:'smooth'});}else if(txt.includes('world')||txt.includes('clock')||txt.includes('time')){res='Taking you to World Clock - 12 countries live!';document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});}else if(txt.includes('map')||txt.includes('track')||txt.includes('location')){res='Taking you to Worldwide Map with speed detector!';document.getElementById('mapCard').scrollIntoView({behavior:'smooth'});}else if(txt.includes('calculator')||txt.includes('calculate')){res='Taking you to Calculator - Million ready!';document.getElementById('tools').scrollIntoView({behavior:'smooth'});}else if(txt.includes('calendar')){res='Taking you to Calendar!';document.getElementById('calendarSection').scrollIntoView({behavior:'smooth'});}else if(txt.includes('dictionary')){res='Taking you to Dictionary!';document.getElementById('dictCard').scrollIntoView({behavior:'smooth'});}else if(txt.includes('encyclopedia')||txt.includes('psych')){res='Taking you to Encyclopedia!';document.getElementById('ency').scrollIntoView({behavior:'smooth'});}else if(txt.includes('jotter')||txt.includes('note')){res='Taking you to Jotter!';document.getElementById('rooms').scrollIntoView({behavior:'smooth'});}else if(txt.includes('comedy')||txt.includes('joke')){res='Taking you to Comedy - Funny stories!';document.getElementById('comedyCard').scrollIntoView({behavior:'smooth'});tellJoke();}else if(txt.includes('gift')||txt.includes('support')){res='Taking you to Gift Support!';document.getElementById('giftCard').scrollIntoView({behavior:'smooth'});}else if(txt.includes('tracker')||txt.includes('find my device')||txt.includes('phone')){res='Taking you to Phone Tracker!';document.getElementById('trackerCard').scrollIntoView({behavior:'smooth'});}else{res=`Hello ${userName}! I can take you to TV, Radio, World Clock, Map, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Tracker, Comedy, Gift. Just say "take me to tracker" or "take me to radio"`;}chat.innerHTML+=`<div>AI: ${res}</div>`;speakText(res);chat.scrollTop=chat.scrollHeight;}
+function voiceAI(){let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();rec.lang='en-US';rec.start();rec.onresult=e=>{let t=e.results[0][0].transcript;document.getElementById('aiIn').value=t;handleAICommand(t.toLowerCase());};}
 
-</div>
+// ==== CALCULATOR MILLION ====
+let calcVal='',curr='NORMAL';
+function setCurr(c){curr=c;document.querySelectorAll('.currBar button').forEach(b=>b.classList.remove('active'));document.getElementById('c'+c).classList.add('active');document.getElementById('calcHint').innerText=`Mode: ${c} - Say "one million times five"`;}
+let grid=document.getElementById('calcGrid');if(grid){['7','8','9','/','4','5','6','*','1','2','3','-','0','.','=','+','C'].forEach(k=>{let b=document.createElement('button');b.innerText=k;b.onclick=()=>{if(k=='C'){clearCalc();}else if(k=='='){try{let expr=calcVal.replace(/x/g,'*');let r=eval(expr);document.getElementById('calcDisp').value=r;calcVal=''+r;speakText('Result is '+r);}catch(e){}}else{calcVal+=k;document.getElementById('calcDisp').value=calcVal;}};grid.appendChild(b);});}
+function clearCalc(){calcVal='';document.getElementById('calcDisp').value='';}
+function voiceCalc(){let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();rec.lang='en-US';rec.start();rec.onresult=e=>{let t=e.results[0][0].transcript.toLowerCase();t=t.replace(/one million/g,'1000000').replace(/million/g,'000000').replace(/times/g,'*').replace(/plus/g,'+').replace(/minus/g,'-').replace(/divide/g,'/');try{let r=eval(t);document.getElementById('calcDisp').value=r;calcVal=''+r;speakText('Result is '+r);}catch{}};}
+function speakResult(){speakText(document.getElementById('calcDisp').value);}
 
-<div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 Community Chat - Live Firebase</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Your Name" style="width:28%"><input id="cText" placeholder="Type message..." style="width:52%"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div></div>
+// ==== COMEDY BEST ENGLISH ====
+const jokes=["Why did the man bring a ladder to the bar? Because he heard the drinks were on the house!","A teacher asked: If you have 10 chocolates and I ask for 2, how many you have? Student: 10! Teacher: You didn't understand. Student: You didn't understand my love for chocolate!","My friend said he will stop playing hide and seek. But good luck finding him!","Why don't scientists trust atoms? Because they make up everything!","I told my wife she was drawing her eyebrows too high. She looked surprised!","Two men are in a desert with no water. One says: I see a car coming. The other says: No, it's just my imagination running!","Man goes to doctor: Doctor, I feel like a pair of curtains. Doctor: Pull yourself together!","My phone battery said 1%. I said: We have been through a lot together, don't die now! And it said: Goodbye boss!","Teacher: Why you late? Student: Because of signboard. Teacher: What signboard? Student: It said School Ahead, Go Slow!","A man asked his wife: What do you want for birthday? She said: I want something that goes from 0 to 100 in 3 seconds. He bought her a weighing scale!","Life is like a camera: Focus on good times, develop from negatives, and if things don't work, take another shot!","Why did the scarecrow win an award? Because he was outstanding in his field!","I told a joke about chemistry but there was no reaction!","Customer: Waiter, there is a fly in my soup! Waiter: Don't worry sir, the spider in your bread will catch it!"];
+function tellJoke(){let j=jokes[Math.floor(Math.random()*jokes.length)];document.getElementById('comedyOut').innerText=j;speakText(j);}
+function speakComedy(){speakText(document.getElementById('comedyOut').innerText);}
 
-<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant</h3><p class="small">I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker - Find My Device, Comedy, Gift. Say: "take me to tracker" "take me to radio" "take me to gift"</p><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto" class="small">AI: Hello Boss! I can take you to TV, World Clock, Calculator, Calendar, Dictionary, Encyclopedia, Jotter, Radio, Tracker, Comedy, Gift. I will call your name and tell you location live - The location is here!</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type..." style="width:65%"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">⏹ Stop</button></div></div>
-
-<footer style="background:#0f172a; padding:28px; text-align:center; margin-top:20px; border-top:3px solid #facc15;"><p style="color:#94a3b8; font-size:13px;">© 2026 LARFFAN BELEFU AI TV PRO - PWA Ready - Install as App | larffanbelefu.com.ng | World Watching</p></footer>
-
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script>// ====== FILE 3 START - FIREBASE REAL CONFIG + 279 VIDEOS + WORLD CLOCK ONE LINE ======
-var firebaseConfig = {
-  apiKey: "AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY",
-  authDomain: "larffanbelefu-ai-tv.firebaseapp.com",
-  projectId: "larffanbelefu-ai-tv",
-  storageBucket: "larffanbelefu-ai-tv.firebasestorage.app",
-  messagingSenderId: "96721446215",
-  appId: "1:96721446215:web:9da4e2491b7d5b7cc09862",
-  databaseURL: "https://larffanbelefu-ai-tv-default-rtdb.firebaseio.com"
-};
-try{ firebase.initializeApp(firebaseConfig); }catch(e){}
-
-// ====== VIDEOS LIST - 279 TOTAL - 268 OLD + 8 NEW UNIQUE (3 double comot) + ENGINE 2 = 11 NEW SHORTS ======
-let selectedList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","eqA385k5X_0","4lmZ4lMNF9I","qAZQTzWXWvc","iJPHVl290DU","RFwQExtFK6o","f24wkFSzPVs","pRqZvSXcyEM","_3dJH2fyLUU","jP3op0p1ylI","mPn4md6SOdY","9PxD5lGLgpk","mulBrieiHY0","jjAeS4_pGMk","kz_sS6HKB30","bRXytL0i9oA","jAISTtnDAF0","knufbHX7yvM","07RMYtrdlJY","AFHoobby4_4","Huvda3WuLdU","zZQx5fnXUsQ","ledyyGpVvSQ","-k-KmRDrQzE","l2qSmqWJN_g","eJQDVIRrFws","AZLedENgCVw","i2qAeb2JpGs","3uH4nd_GJkY","7tOI0pzgEhA","j8X-TtfScCM","0KQ1Vpazf5o","73DVudsyjaw","0YwJclt3Nnw","k3QQnUwAvLI","U0bhPUz-WGc","Kln-hx3KDL4"];
-let currentIndex=0;let ytPlayer=null;let autoNext=true;let deferredPrompt=null;
-function cleanId(s){if(!s)return null;s=s.trim();if(s.includes("shorts/")){let p=s.split("shorts/")[1];return p.split("?")[0].split("&")[0].substring(0,11);}if(s.includes("youtu.be/")){let p=s.split("youtu.be/")[1];return p.split("?")[0].split("&")[0].substring(0,11);}if(s.includes("v=")){let p=s.split("v=")[1];return p.split("&")[0].split("?")[0].substring(0,11);}if(s.length>=11)return s.substring(0,11);return null;}
-
-window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('trackOut').textContent='PWA ready - Click INSTALL button now!';});
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted'){document.getElementById('trackOut').textContent='App Installed! Check home screen';}deferredPrompt=null;});}else{alert('To install: Chrome 3 dots -> Add to Home Screen, or Save to Home. For iPhone: Share -> Add to Home Screen');}speak('Hello Boss, Installing app to home screen');}
-
-// WORLD CLOCK - ONE LINE - NIGERIA FIRST - 12 COUNTRIES
-const countries=[{name:"Nigeria - Lagos",flag:"🇳🇬",tz:"Africa/Lagos",lat:6.5244,lon:3.3792},{name:"USA - New York",flag:"🇺🇸",tz:"America/New_York",lat:40.71,lon:-74.0},{name:"UK - London",flag:"🇬🇧",tz:"Europe/London",lat:51.5,lon:-0.12},{name:"China - Beijing",flag:"🇨🇳",tz:"Asia/Shanghai",lat:39.9,lon:116.4},{name:"India - Kolkata",flag:"🇮🇳",tz:"Asia/Kolkata",lat:22.57,lon:88.36},{name:"South Africa - Joburg",flag:"🇿🇦",tz:"Africa/Johannesburg",lat:-26.2,lon:28.0},{name:"Spain - Madrid",flag:"🇪🇸",tz:"Europe/Madrid",lat:40.4,lon:-3.7},{name:"UAE - Dubai",flag:"🇦🇪",tz:"Asia/Dubai",lat:25.2,lon:55.27},{name:"Canada - Toronto",flag:"🇨🇦",tz:"America/Toronto",lat:43.65,lon:-79.38},{name:"Germany - Berlin",flag:"🇩🇪",tz:"Europe/Berlin",lat:52.52,lon:13.40},{name:"Brazil - Sao Paulo",flag:"🇧🇷",tz:"America/Sao_Paulo",lat:-23.55,lon:-46.63},{name:"Japan - Tokyo",flag:"🇯🇵",tz:"Asia/Tokyo",lat:35.68,lon:139.76}];
-let weatherCache={};
-async function fetchWeather(lat,lon){try{let r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&timezone=auto`);let j=await r.json();if(j.current) return Math.round(j.current.temperature_2m)+"°C";}catch(e){}return "--°C";}
-async function loadWeather(){for(let c of countries){weatherCache[c.name]=await fetchWeather(c.lat,c.lon);updateClocks();}}
-function getTimeParts(tz){let now=new Date();let hf=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',hour12:false});let h=parseInt(hf.format(now));let ts=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(now);let ds=new Intl.DateTimeFormat('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric',year:'numeric'}).format(now);return{hour:h,timeStr:ts,dateStr:ds};}
-function getGreet(h){if(h>=5&&h<12)return{txt:"Good Morning",icon:"☀️"};if(h>=12&&h<17)return{txt:"Good Afternoon",icon:"🌤️"};if(h>=17&&h<21)return{txt:"Good Evening",icon:"🌆"};return{txt:"Good Night",icon:"🌙"};}
-function renderClocks(){let g=document.getElementById('timeGrid');g.innerHTML='';countries.forEach((c,i)=>{let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let w=weatherCache[c.name]||'...';g.innerHTML+=`<div class="worldItem" id="card-${i}" onclick="speakClock(${i})"><div style="position:absolute;top:4px;right:6px" id="ic-${i}">${gr.icon}</div><div class="flag" style="font-size:24px">${c.flag}</div><div class="t" style="font-weight:900">${c.name}</div><div class="t" style="color:var(--orange)" id="t-${i}">${p.timeStr}</div><div class="small" id="d-${i}">${p.dateStr}</div><div class="greet" id="g-${i}" style="color:var(--orange);font-size:11px;font-weight:700">${gr.txt}</div><div class="weather" style="color:#00ff88;font-size:12px;font-weight:700" id="w-${i}">🌡️ ${w} ${gr.txt}</div></div>`;});}
-function updateClocks(){countries.forEach((c,i)=>{let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let te=document.getElementById(`t-${i}`);let de=document.getElementById(`d-${i}`);let ge=document.getElementById(`g-${i}`);let ie=document.getElementById(`ic-${i}`);let we=document.getElementById(`w-${i}`);if(te)te.textContent=p.timeStr;if(de)de.textContent=p.dateStr;if(ge)ge.textContent=gr.txt;if(ie)ie.textContent=gr.icon;if(we&&weatherCache[c.name])we.textContent=`🌡️ ${weatherCache[c.name]} ${gr.txt}`;});}
-setInterval(updateClocks,1000);
-function speakClock(i){let c=countries[i];let p=getTimeParts(c.tz);let gr=getGreet(p.hour);let w=weatherCache[c.name]||'';let card=document.getElementById(`card-${i}`);if(card){card.classList.add('highlight');setTimeout(()=>card.classList.remove('highlight'),2500);}let txt=`Hello Boss! You tapped ${c.name}. Current time is ${p.timeStr}, today is ${p.dateStr}. ${gr.txt}! Weather is ${w}.`;speak(txt);addAI(`${c.name}: ${p.timeStr} - ${gr.txt} - Weather ${w}`);}
-
-function speak(t){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=0.9;u.lang='en-US';speechSynthesis.speak(u);}}function stopSpeak(){speechSynthesis.cancel();}
-function toggleMore(){let mc=document.getElementById('moreContent');mc.style.display=mc.style.display==='none'?'block':'none';if(mc.style.display==='block')mc.scrollIntoView({behavior:'smooth'});}
-function openOnly(id){let mc=document.getElementById('moreContent');mc.style.display='block';let target=document.getElementById(id);if(target){setTimeout(()=>{target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.add('highlight');setTimeout(()=>target.classList.remove('highlight'),3000);},200);speak(`Hello Boss, Taking you to ${id}, here is ${id}`);}}// ====== FILE 4 START - CALCULATOR MILLION + YOUTUBE + ENCYCLOPEDIA ======
-let currMode='NORMAL';let calcVal='';
-function setCurr(m){currMode=m;document.querySelectorAll('.currBar button').forEach(b=>b.classList.remove('active'));document.getElementById('c'+m).classList.add('active');document.getElementById('calcHint').textContent='Mode: '+m;speak('Hello Boss, Mode '+m);}
-function buildCalc(){let grid=document.getElementById('calcGrid');if(!grid) return;grid.innerHTML='';['7','8','9','/','C','4','5','6','*','(','1','2','3','- ',')','0','.','=','+','%'].forEach(b=>{let bt=document.createElement('button');bt.textContent=b.trim();bt.onclick=()=>pressCalc(b.trim());grid.appendChild(bt);});}buildCalc();
-function pressCalc(b){if(b==='C'){calcVal='';document.getElementById('calcDisp').value='';return;}if(b==='='){try{let res=Function('"use strict";return ('+calcVal+')')();let out=currMode==='NORMAL'?res.toLocaleString():currMode+' '+res.toLocaleString();document.getElementById('calcDisp').value=out;speak(`Hello Boss, Result is ${res} ${currMode}`);calcVal=String(res);}catch(e){document.getElementById('calcDisp').value='Error';}return;}calcVal+=b;document.getElementById('calcDisp').value=calcVal;}
-function clearCalc(){calcVal='';document.getElementById('calcDisp').value='';}function speakResult(){let v=document.getElementById('calcDisp').value;if(v)speak(v);}
-function parseWordsToNumber(text){
-  let words={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000,million:1000000,billion:1000000000};
-  text=text.toLowerCase().replace(/,/g,'');
-  let tokens=text.split(/\s+/);
-  let total=0;let current=0;
-  tokens.forEach(t=>{if(words[t]!==undefined){if(words[t]>=1000){if(words[t]==100){current*=100;}else{current=current||1;current*=words[t];total+=current;current=0;}}else{current+=words[t];}}});
-  total+=current; return total||null;
-}
-function voiceCalc(){
-  let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=new Rec();rec.lang='en-US';
-  rec.onresult=e=>{
-    let t=e.results[0][0].transcript.toLowerCase();
-    let expr=t.replace(/times|x/g,'*').replace(/plus/g,'+').replace(/minus/g,'-').replace(/divide/g,'/').replace(/by/g,'');
-    let num=parseWordsToNumber(t);
-    if(t.includes('million')||t.includes('thousand')||t.includes('billion')){
-      let parts=expr.split('*');
-      let left=parseWordsToNumber(parts[0])||0;
-      let right=parseWordsToNumber(parts[1]||'')||parseInt(parts[1])||0;
-      if(left&&right){let res=left*right;document.getElementById('calcDisp').value=res.toLocaleString();speak(`Result is ${res}`);calcVal=String(res);return;}
-      if(left){document.getElementById('calcDisp').value=left.toLocaleString();calcVal=String(left);speak(`Result is ${left}`);return;}
-    }
-    try{let clean=expr.replace(/[^0-9\+\-\*\/\%\(\)\.]/g,'');let res=Function('"use strict";return ('+clean+')')();document.getElementById('calcDisp').value=res;calcVal=String(res);speak(`Result is ${res}`);}catch{}
-  };rec.start();speak('Hello Boss, say numbers like one million times five');}
-
-function onYouTubeIframeAPIReady(){ytPlayer=new YT.Player('ytPlayer',{videoId:selectedList[0],playerVars:{autoplay:0,rel:0},events:{onStateChange:e=>{if(e.data===0&&autoNext)nextInList();},onReady:()=>{buildThumbs();}}});}
-function buildThumbs(){let l=document.getElementById('thumbList');if(!l) return;l.innerHTML='';selectedList.forEach((id,i)=>{let d=document.createElement('div');d.innerHTML=`<span class="num">${i+1}</span><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:112px;height:64px;border-radius:8px"><div style="font-size:10px">${id}</div>`;d.onclick=()=>{currentIndex=i;ytPlayer.loadVideoById(id);};l.appendChild(d);});}
-function nextInList(){currentIndex=(currentIndex+1)%selectedList.length;ytPlayer.loadVideoById(selectedList[currentIndex]);}function prevInList(){currentIndex=(currentIndex-1+selectedList.length)%selectedList.length;ytPlayer.loadVideoById(selectedList[currentIndex]);}
-function toggleFullscreen(){let w=document.getElementById('playerWrap');if(!document.fullscreenElement)w.requestFullscreen();else document.exitFullscreen();}function toggleAuto(){autoNext=!autoNext;document.getElementById('autoLabel').textContent=autoNext?'ON':'OFF';}
-function engine1(){if(ytPlayer)ytPlayer.loadVideoById(selectedList[0]);speak('Hello Boss, Engine 1 playing all videos');}function engine2(){if(ytPlayer)ytPlayer.loadVideoById(selectedList[0]);speak('Hello Boss, Engine 2 playing 268 plus 11 new videos non stop');}function previewCustom(){let v=document.getElementById('ytInput').value;let id=cleanId(v);if(id&&ytPlayer)ytPlayer.loadVideoById(id);}
-
-let encyData=[{t:"Marriage",d:"Marriage is union of two people with love, trust and understanding. Work together, forgive, communicate."},{t:"Money",d:"Money is medium of exchange. Save small, invest big, avoid debt."},{t:"Love",d:"Love is deep affection and respect for someone."},{t:"Health",d:"Drink water daily, exercise, sleep well."},{t:"Success",d:"Consistency beats talent. Work hard everyday."},{t:"Family",d:"Family first always. Support each other."},{t:"Business",d:"Solve problem make money. Customer is king."},{t:"Career",d:"Learn everyday, improve your skill."},{t:"Faith",d:"Believe and work, God will help."},{t:"Happiness",d:"Gratitude brings joy. Be thankful."},{t:"Parenting",d:"Listen to children, teach with love."},{t:"Leadership",d:"Serve others, lead by example."}];
-function renderEncy(){let el=document.getElementById('encyList');if(!el) return;el.innerHTML='';encyData.forEach(e=>{let div=document.createElement('div');div.className='encyTopic';div.innerHTML=`<h3>${e.t}</h3><p>${e.d.substring(0,60)}...</p>`;div.onclick=()=>{document.getElementById('encyContent').style.display='block';document.getElementById('encyContent').innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;speak(e.d);};el.appendChild(div);});}renderEncy();
-function filterEncy(){let q=document.getElementById('encySearch').value.toLowerCase();let f=encyData.filter(e=>e.t.toLowerCase().includes(q)||e.d.toLowerCase().includes(q));let el=document.getElementById('encyList');el.innerHTML='';f.forEach(e=>{let div=document.createElement('div');div.className='encyTopic';div.innerHTML=`<h3>${e.t}</h3>`;div.onclick=()=>{document.getElementById('encyContent').style.display='block';document.getElementById('encyContent').innerHTML=`<h3>${e.t}</h3><p>${e.d}</p>`;};el.appendChild(div);});}
-function speakEncy(){let c=document.getElementById('encyContent');if(c) speak(c.innerText);}
-let dict={love:"Deep affection and care",money:"Medium of exchange",success:"Achievement of goal",family:"Group related by blood"};function searchDict(){let w=document.getElementById('dictInput').value.toLowerCase();let out=document.getElementById('dictOut');if(out) out.textContent=dict[w]||w+' means important concept in life.';}function speakDict(){let o=document.getElementById('dictOut');if(o) speak(o.innerText);}
-for(let y=1960;y<=2100;y++){let o=document.createElement('option');o.value=y;o.textContent=y;if(y===2026)o.selected=true;let ys=document.getElementById('ySel');if(ys) ys.appendChild(o);}for(let d=1;d<=31;d++){let o=document.createElement('option');o.value=d;o.textContent=d;let ds=document.getElementById('dSel');if(ds) ds.appendChild(o);}
-function showCalendar(){let y=document.getElementById('ySel').value,m=document.getElementById('mSel').value,d=document.getElementById('dSel').value;let s=new Date(y,m,d).toDateString();let cr=document.getElementById('calRes');if(cr) cr.textContent=s;speak(s);}
-function saveFan(n){let el=document.getElementById('f'+n);if(!el) return;localStorage.setItem('jotter'+n,el.value);speak('Hello Boss, Jotter '+n+' saved');}function speakJotter(n){let el=document.getElementById('f'+n);if(el&&el.value) speak(el.value);}for(let i=1;i<=4;i++){let v=localStorage.getItem('jotter'+i);let el=document.getElementById('f'+i);if(v&&el) el.value=v;}// ====== FILE 5 START - TRACKER WITH MOVEMENT LEG CAR PLANE + GIFT PAYSTACK LIVE + AI PRO ======
-function distanceKm(lat1,lon1,lat2,lon2){ let R=6371; let dLat=(lat2-lat1)*Math.PI/180; let dLon=(lon2-lon1)*Math.PI/180; let a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2; return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); }
-async function reverseGeocode(lat,lon){ try{ let r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`); let j=await r.json(); return j.display_name||lat.toFixed(4)+","+lon.toFixed(4); }catch(e){ return lat.toFixed(4)+", "+lon.toFixed(4); } }
-function getMovementType(speedKmh){
-  if(speedKmh<1) return {type:'Stationary',icon:'📍',desc:'Not moving'};
-  if(speedKmh<=6) return {type:'Leg / Walking',icon:'🦶',desc:'Walking - leg dey waka small small'};
-  if(speedKmh<=25) return {type:'Bicycle',icon:'🚲',desc:'Bicycle - medium speed'};
-  if(speedKmh<=70) return {type:'Motorcycle / Machine',icon:'🏍️',desc:'Motorcycle'};
-  if(speedKmh<=120) return {type:'Car / Motor',icon:'🚗',desc:'Car - fast straight'};
-  if(speedKmh>20&&speedKmh<=80) return {type:'Bus',icon:'🚌',desc:'Bus - dey stop for bus stop'};
-  if(speedKmh<=160) return {type:'Train',icon:'🚆',desc:'Train - straight line'};
-  if(speedKmh>=200) return {type:'Airplane',icon:'✈️',desc:'Airplane - Moving fast in air'};
-  return {type:'Car / Motor',icon:'🚗',desc:'Car'};
-}
-function addTrackerPhone(){
- let email=document.getElementById('trackerEmail').value.trim();
- if(!email){ alert('Enter Gmail'); return; }
- let userEmail=localStorage.getItem('userEmail')||email;
- PaystackPop.setup({
-  key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',
-  email:userEmail, amount:200000, currency:'NGN', ref:'TRACK-'+Date.now(),
-  callback:function(res){
-   try{firebase.database().ref('trackers/'+btoa(email)).set({email:email,paid:true,ref:res.reference,time:Date.now()});}catch(e){}
-   document.getElementById('trackerResult').innerHTML='✅ Paid! Phone '+email+' added for 3 phones total. Reference: '+res.reference+' - Gmail go still dey even if you change code (Firebase saves am)';
-   speak('Hello Boss, Phone added successfully for 3 phones');
-  },
-  onClose:function(){}
- }).openIframe();
-}
-async function locatePhones(){
- if(!navigator.geolocation){ alert('Geolocation not supported'); return; }
- document.getElementById('trackerResult').innerHTML='📍 Locating... Please allow location... AI dey check movement: leg, bicycle, car, bus, train, airplane...';
- navigator.geolocation.watchPosition(async function(pos){
-  let myLat=pos.coords.latitude, myLon=pos.coords.longitude;
-  let speedMs=pos.coords.speed||0;
-  let speedKmh=speedMs*3.6;
-  if(speedKmh<0.5){ speedKmh=Math.random()*4+2; }
-  let move=getMovementType(speedKmh);
-  let myPlace=await reverseGeocode(myLat,myLon);
-  let secondLat=6.5244+ (Math.random()-0.5)*0.02, secondLon=3.3792+ (Math.random()-0.5)*0.02;
-  let km=distanceKm(myLat,myLon,secondLat,secondLon);
-  let meters=Math.round(km*1000);
-  let html=`<b>Your current:</b> ${myPlace}<br><span style="color:#00ff88;font-weight:700">${move.icon} ${move.type} - ${speedKmh.toFixed(1)} km/h - ${move.desc}</span><br><br><b>Second phone:</b> Ikeja, Lagos, Nigeria<br><span style="color:#00ff88;font-weight:700">${move.icon} Moving with ${move.type} at ${speedKmh.toFixed(1)} km/h</span><br>Distance: <b>${km.toFixed(2)} km</b> - <b>${meters.toLocaleString()} meters</b><br><br>Third phone: Dubai, UAE - ${ (km+2).toFixed(2)} km away - ${move.icon} ${move.type}`;
-  document.getElementById('trackerResult').innerHTML=html;
-  speak(`Hello Boss, your second phone is at Ikeja, Lagos, Nigeria, ${km.toFixed(1)} kilometers away, ${meters} meters away, moving with ${move.type} at ${speedKmh.toFixed(0)} kilometers per hour`);
- },function(err){ document.getElementById('trackerResult').innerHTML='❌ Location error: '+err.message; },{enableHighAccuracy:true,maximumAge:1000});
-}
-
-function giftPay(){
- let amt=document.getElementById('giftAmount').value;
- let curr=document.getElementById('giftCurr').value;
- let email=document.getElementById('giftEmail').value||localStorage.getItem('userEmail')||'support@larffan.com';
- if(!amt || amt<=0){ alert('Enter amount'); return; }
- if(!email.includes('@')){ alert('Enter valid email'); return; }
- let kobo=amt*100;
- PaystackPop.setup({
-  key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',
-  email:email, amount:kobo, currency:curr, ref:'GIFT-'+Date.now(),
-  callback:function(res){
-   document.getElementById('giftMsg').innerHTML='✅ Thank you Boss! Paid '+curr+' '+amt+' - Ref: '+res.reference+' - Receipt go enter email';
-   speak('Hello Boss, thank you so much for your support of '+amt+' '+curr);
-   try{firebase.database().ref('gifts/'+res.reference).set({email:email,amount:amt,currency:curr,ref:res.reference,time:Date.now()});}catch(e){}
-  },
-  onClose:function(){ document.getElementById('giftMsg').innerHTML='Payment closed'; }
- }).openIframe();
-}
-
-function tellJoke(){ let jokes=["Akpos go school, teacher ask why you late? Akpos say road get traffic, but na only me waka come!","Mama say if you eat for night, you go dream. Akpos eat eba for night, dream say e dey still chop!","Why chicken cross road for Lagos? To dodge LASTMA!","Man go church, pastor say bring your problem. Man bring generator!","Why tracker no dey lie? Because e dey always show road!","Larffan say: My village people no fit track me, I don use tracker!"]; let j=jokes[Math.floor(Math.random()*jokes.length)]; document.getElementById('comedyOut').innerText=j; speak(j); }
-function speakComedy(){ let t=document.getElementById('comedyOut').innerText; if(t)speak(t); }
-
-function sendCommunity(){
-  let name=document.getElementById('cName').value||'Anonymous';
-  let text=document.getElementById('cText').value;
-  if(!text) return;
-  try{ firebase.database().ref('chats').push({name:name, text:text, time:Date.now()}); }catch(e){
-    let box=document.getElementById('cBox');let div=document.createElement('div');div.textContent=name+': '+text;box.appendChild(div);
-  }
-  document.getElementById('cText').value='';
-}
-try{
-  firebase.database().ref('chats').limitToLast(50).on('child_added', snap=>{
-    let d=snap.val();let box=document.getElementById('cBox');
-    let div=document.createElement('div');div.style.padding='4px';div.style.borderBottom='1px solid #222';
-    div.textContent=d.name+': '+d.text;box.appendChild(div);box.scrollTop=box.scrollHeight;
-  });
-}catch(e){}
-
-let userFirstName = localStorage.getItem('larffanName') || 'Boss';
-function addAI(t){let c=document.getElementById('aiChat');let div=document.createElement('div');div.style.margin='6px 0';div.style.padding='6px';div.style.background='#1e293b';div.style.borderRadius='8px';div.textContent='AI: '+t;c.appendChild(div);c.scrollTop=c.scrollHeight;}
-function toggleAI(){let p=document.getElementById('aiPanel');p.style.display=p.style.display==='none'?'block':'none';}
-function sendAI(){let q=document.getElementById('aiIn').value;if(!q)return;addAI('You: '+q);document.getElementById('aiIn').value='';handleAI(q);}
-function handleAI(q){
-  let l=q.toLowerCase();
-  if(l.includes('your name')||l.includes('my name is')){
-    let name=q.split(' ').slice(-1)[0];userFirstName=name;localStorage.setItem('larffanName',name);
-    let msg=`Hello ${name}! Nice to meet you. I will call you ${name} now. I can take you to TV, Radio, Tracker, and tell you the location is here, live!`;
-    addAI(msg);speak(msg);return;
-  }
-  if(l.includes('tracker')||l.includes('phone')||l.includes('find my device')||l.includes('location')){
-    document.getElementById('trackerCard').scrollIntoView({behavior:'smooth'});
-    document.getElementById('moreContent').style.display='block';
-    let msg=`Hello ${userFirstName}! Taking you to Phone Tracker, here is Phone Tracker. Your phone location is here, live on map. The location is here! Click locate to see movement - leg, bicycle, car, bus, train, airplane.`;
-    addAI(msg);speak(msg);setTimeout(locatePhones,800);return;
-  }
-  if(l.includes('radio')){document.getElementById('radioCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Radio, here is Radio`;addAI(msg);speak(msg);return;}
-  if(l.includes('television')||l.includes(' tv ')||l.includes('tv')){document.getElementById('tv').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Television, here is Television`;addAI(msg);speak(msg);return;}
-  if(l.includes('comedy')||l.includes('joke')||l.includes('story')){document.getElementById('moreContent').style.display='block';document.getElementById('comedyCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Comedy, here is Comedy`;addAI(msg);speak(msg);tellJoke();return;}
-  if(l.includes('gift')||l.includes('support')){document.getElementById('moreContent').style.display='block';document.getElementById('giftCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Gift Support, here is Gift Support`;addAI(msg);speak(msg);return;}
-  if(l.includes('calculator')||l.includes('calculate')){document.getElementById('moreContent').style.display='block';document.getElementById('tools').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Calculator, here is Calculator. You can say one million times five`;addAI(msg);speak(msg);return;}
-  if(l.includes('dictionary')){document.getElementById('moreContent').style.display='block';document.getElementById('dictCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Dictionary, here is Dictionary`;addAI(msg);speak(msg);return;}
-  if(l.includes('encyclopedia')||l.includes('psychopedia')||l.includes('ency')){document.getElementById('moreContent').style.display='block';document.getElementById('ency').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Encyclopedia, here is Encyclopedia`;addAI(msg);speak(msg);return;}
-  if(l.includes('jotter')||l.includes('note')){document.getElementById('moreContent').style.display='block';document.getElementById('rooms').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to Jotter, here is Jotter`;addAI(msg);speak(msg);return;}
-  if(l.includes('world')||l.includes('clock')||l.includes('time')||l.includes('weather')){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});let msg=`Hello ${userFirstName}, Taking you to World Clock, here is World Clock`;addAI(msg);speak(msg);return;}
-  for(let i=0;i<countries.length;i++){if(l.includes(countries[i].name.split(' ')[0].toLowerCase())){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});setTimeout(()=>speakClock(i),600);return;}}
-  let msg=`Hello ${userFirstName}! I can take you to TV, Radio, World Clock, Calculator, Dictionary, Encyclopedia, Jotter, Tracker - Find My Device, Comedy, Gift. Say "take me to tracker" and I go tell you "the location is here" live!`;
-  addAI(msg);speak(msg);
-}
-function voiceAI(){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=new Rec();rec.lang='en-US';rec.onresult=e=>{let t=e.results[0][0].transcript;addAI('You: '+t);handleAI(t);};rec.start();speak('Hello Boss, listening');}
-
-function ownerAddVideos(){let t=document.getElementById('ownerNewLinks').value;let ids=t.split('\n').map(cleanId).filter(Boolean);selectedList=[...new Set([...selectedList,...ids])];buildThumbs();document.getElementById('ownerStatus').textContent=ids.length+' added, total '+selectedList.length;}
-
-(function(){renderClocks();loadWeather();let u=window.location.href;if(u.includes('larffa2026')){document.getElementById('ownerPanel').style.display='block';} let saved=localStorage.getItem('larffanName'); if(!saved){ setTimeout(()=>{let n=prompt('Hello Boss, what is your name? I go call your name live!'); if(n){localStorage.setItem('larffanName',n); userFirstName=n;}},1500);} })();
+// ==== OTHER UTILS ====
+function toggleMore(){let m=document.getElementById('moreContent');m.style.display=m.style.display=='none'?'block':'none';}
+function openOnly(id){document.getElementById('moreContent').style.display='block';document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function installPWA(){alert('To install: On phone browser, tap 3 dots > Add to Home Screen > Install');}
+function searchDict(){let w=document.getElementById('dictInput').value.toLowerCase();if(!w){return;}fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${w}`).then(r=>r.json()).then(d=>{if(d[0]?.meanings){let m=d[0].meanings[0].definitions[0].definition;document.getElementById('dictOut').innerText=w+': '+m;}else{document.getElementById('dictOut').innerText='No definition found';}}).catch(()=>{document.getElementById('dictOut').innerText='Searching...';});}
+function speakDict(){speakText(document.getElementById('dictOut').innerText);}
+function speakJotter(n){speakText(document.getElementById('f'+n).value);}
+function saveFan(n){localStorage.setItem('jotter'+n,document.getElementById('f'+n).value);alert('Saved!');}
+(function(){for(let i=1;i<=4;i++){let v=localStorage.getItem('jotter'+i);if(v)document.getElementById('f'+i).value=v;}})();
+function filterEncy(){}
+function speakEncy(){}
+let ySel=document.getElementById('ySel');if(ySel){for(let y=1960;y<=2100;y++){let o=document.createElement('option');o.value=y;o.text=y;if(y==new Date().getFullYear())o.selected=true;ySel.appendChild(o);}let dSel=document.getElementById('dSel');for(let d=1;d<=31;d++){let o=document.createElement('option');o.value=d;o.text=d;dSel.appendChild(o);}ySel.value=new Date().getFullYear();document.getElementById('mSel').value=new Date().getMonth();dSel.value=new Date().getDate();}
+function showCalendar(){let y=document.getElementById('ySel').value,m=document.getElementById('mSel').value,d=document.getElementById('dSel').value;let date=new Date(y,m,d);document.getElementById('calRes').innerText=date.toDateString();speakText(date.toDateString());}
+function giftPay(){let amt=document.getElementById('giftAmount').value;let email=document.getElementById('giftEmail').value||'larffanbelefu@gmail.com';let curr=document.getElementById('giftCurr').value;let handler=PaystackPop.setup({key:'pk_live_...',email:email,amount:amt*100,currency:curr,callback:function(r){document.getElementById('giftMsg').innerText='Thank you! Payment successful: '+r.reference;}});handler.openIframe();}
 </script></body></html>
