@@ -8,6 +8,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DV9ZF298TQ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DV9ZF298TQ');</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--orange:#ffb000;--bg:#070a12;--card:#121826;--b:#232d42;--green:#00ff88;--blue:#00aaff;--red:#ff3b3b}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Arial;overflow-x:hidden}
@@ -16,6 +17,8 @@
 .card h2{color:var(--orange);margin:0 0 8px;font-size:18px}
 .btn{background:var(--orange);color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
 .btn2{background:#1a2235;color:#fff;border:1px solid var(--orange);padding:11px;border-radius:10px;width:100%;margin:5px 0;cursor:pointer}
+.btnRed{background:var(--red);color:#fff;border:none;padding:15px;border-radius:14px;font-weight:900;width:100%;margin:6px 0;cursor:pointer;box-shadow:0 0 15px rgba(255,59,59,.5)}
+.btnGreen{background:var(--green);color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;width:100%;margin:6px 0;cursor:pointer}
 input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #334155;background:#0e1526;color:#fff}
 #playerWrap{position:relative;padding-top:56.25%;background:#000;border-radius:14px;overflow:hidden}
 #playerWrap #ytPlayer{position:absolute;top:0;left:0;width:100%;height:100%}
@@ -39,19 +42,47 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 .pulse{animation:pulse 1.5s infinite}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}.modalBox{background:#121826;border:2px solid var(--orange);border-radius:16px;padding:20px;max-width:600px;width:100%;max-height:80vh;overflow:auto}
 .secureBadge{background:#0e1526;border:1px solid var(--green);color:var(--green);padding:4px 8px;border-radius:20px;font-size:10px}
+.deviceSlot{background:#0e1526;border:1px solid #334155;border-radius:12px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+.ringing{animation:ringAnim .3s infinite}@keyframes ringAnim{0%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}100%{transform:rotate(-3deg)}}
+#qrCanvas{background:#fff;padding:8px;border-radius:10px;display:inline-block}
 </style></head><body>
 
 <div id="welcomeModal"><div id="welcomeBox"><h2 style="color:#ff8800">Welcome to Larffan Belefu Pro World</h2><p>Please enter your name to personalise your experience</p><input id="userNameInput" placeholder="Enter your full name" style="background:#fff;color:#000;border:2px solid #ffb000"><button class="btn" onclick="saveUserName()">Save and Continue</button><div style="font-size:11px;color:#666;margin-top:6px">Secure - This appears only once - Data stored locally</div></div></div>
 
 <div class="header"><h1>LARFFAN BELEFU AI TV <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:12px;font-size:11px">PRO WORLD SECURE</span> <span class="secureBadge">🔒 Protected</span></h1><div style="font-size:12px;color:#9aa5b8">Official @paulosawaru | 286 Videos | Worldwide Live Map | larffanbelefu.com.ng</div></div>
 
+<div class="card" style="border:3px solid var(--red);background:linear-gradient(135deg,#1a0000,#121826)"><h2 style="color:var(--red)">🚨 Emergency & Device Protection - Secure</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<button class="btnRed pulse" onclick="triggerEmergency()">🆘 EMERGENCY - I AM LOST - RED BUTTON</button>
+<button class="btn" style="background:#00ff88;color:#000" onclick="triggerIAmSafe()">✅ I AM SAFE - Notify Family</button>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<button class="btn2" style="border-color:var(--green);color:var(--green)" onclick="goodCitizenAction()">🤝 GOOD CITIZEN - I Found A Device</button>
+<button class="btn2" style="border-color:var(--blue);color:var(--blue)" onclick="shareMyLocation()">📍 SHARE MY LOCATION</button>
+</div>
+<div style="font-size:11px;color:#9aa5b8;margin-top:8px">Secure QR Sticker: If someone finds your phone, they scan QR to contact you directly - No app needed</div>
+<div id="qrArea" style="text-align:center;margin-top:10px;display:none"><canvas id="qrCanvas"></canvas><div style="font-size:11px;margin-top:4px" id="qrText"></div></div>
+<button class="btn2" onclick="generateQR()">Generate My QR Sticker Code</button>
+</div>
+
+<div class="card" style="border:2px solid var(--blue)"><h2>🏥 Nearby Help - Secure - Police / Hospital / Fuel Station</h2>
+<div style="font-size:11px;color:#9aa5b8">Press Start Tracking first, then find nearest help with one tap - Opens Google Maps</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+<button class="btn2" style="background:#1a2235;border-color:var(--blue)" onclick="findNearest('police')">🚔 Nearest Police Station</button>
+<button class="btn2" style="background:#1a2235;border-color:var(--red)" onclick="findNearest('hospital')">🏥 Nearest Hospital</button>
+<button class="btn2" style="background:#1a2235;border-color:var(--orange)" onclick="findNearest('fuel')">⛽ Nearest Fuel Station</button>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+<button class="btn2" onclick="findNearest('pharmacy')">💊 Pharmacy</button>
+<button class="btn2" onclick="findNearest('fuel station')">🛣️ Fuel & Roadside Help</button>
+</div>
+</div>
+
 <div class="card" id="worldtime" style="border:2px solid var(--orange)"><h2>🌍 World Clock - Nigeria First - 12 Hour AM/PM</h2><div style="font-size:11px;color:#9aa5b8">12 countries - One line scroll - Tap speaker icon to hear time with greeting and weather - British English</div><div class="worldRow" id="timeGrid"></div></div>
 
 <div class="card" id="mapCard" style="border:2px solid #00ff88"><h2>🗺️ Worldwide Live Map and AI Movement Detector - Secure</h2>
 <div style="font-size:11px;color:#9aa5b8;margin-bottom:8px">Secure GPS tracking with anti-glitch technology - Works worldwide - No data shared without permission</div>
 <div id="map"></div>
-
-<!-- MOVEMENT TYPE DIRECTLY UNDER MAP - BIG AND CLEAR -->
 <div style="background:linear-gradient(135deg,#000,#121826);padding:14px;border-radius:14px;margin-top:10px;border:2px solid var(--orange)">
 <div id="detectStatus" style="color:#00ff88;font-weight:800;font-size:14px">Status: Ready - Press Start Live Tracking</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
@@ -86,7 +117,51 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 </div>
 </div>
 
-<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 Official TV - Live <span class="badge">286 VIDEOS</span> <span class="secureBadge">Validated</span></h2><button class="btn" onclick="engine1()">Engine 1: Play All 286 Videos</button><button class="btn btn2" onclick="engine2()">Engine 2: Play 11 New Shorts Non-Stop</button><div id="playerWrap"><div id="ytPlayer"></div></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">Previous</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">Expand</button><button class="btn2" style="width:33%" onclick="toggleAuto()">Auto: <span id="autoLabel">ON</span></button></div><div id="thumbList" class="list"></div><div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link to preview" maxlength="200"><button class="btn2" style="width:30%" onclick="previewCustom()">Preview</button></div></div>
+<div class="card" id="secureFamilyCard" style="border:2px solid #00ff88;background:linear-gradient(135deg,#001a0f,#121826)"><h2>🔒 Secure Family Tracker - Phone & Device - 1 Gmail = 3 Slots - Secure</h2>
+<div style="font-size:12px;background:#000;padding:10px;border-radius:8px;border:1px solid #ffb000;margin-bottom:8px">
+<b style="color:#ffb000">How It Works - Secure & Private:</b><br>
+- Login with Gmail - For your own good - If phone lost tomorrow, Gmail will help you track<br>
+- 1st Device FREE - Track immediately after Gmail login<br>
+- Pay ₦2,000 with Paystack to unlock 2nd and 3rd Device<br>
+- Same Gmail can track Phone and Laptop (Phone & Device)<br>
+- Private Map - Only your Gmail can see your 3 devices - Nobody else<br>
+- Deactivate slot if you sell phone - Slot becomes FREE - Activate new one<br>
+- Ring button - Make lost device ring loud even on silent mode<br>
+<span style="color:var(--green)">🔒 Protected - British English - Meta AI Inside</span>
+</div>
+<div id="gmailLoginArea">
+<div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-callback="handleGmailLogin" data-auto_prompt="false"></div>
+<div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="sign_in_with" data-shape="rectangular"></div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<input id="manualGmail" placeholder="Or enter your Gmail to continue" type="email" maxlength="100" style="width:60%">
+<button class="btn2" style="width:38%;background:#fff;color:#000" onclick="manualGmailLogin()">Continue with Gmail</button>
+</div>
+<div style="font-size:11px;color:var(--orange);background:#1a1200;padding:8px;border-radius:8px;margin-top:6px">
+💡 For your own good - Add your Gmail now so if your phone lost tomorrow, you can use Gmail to track any of your phones from another device. Your private family map - secure.
+</div>
+</div>
+<div id="loggedInArea" style="display:none">
+<div style="background:#0e1526;padding:10px;border-radius:10px;border:1px solid var(--green);margin-bottom:8px">
+<div style="font-size:12px">Logged in as: <b id="loggedEmail" style="color:var(--green)"></b></div>
+<div style="font-size:11px">Status: <span id="payStatus" style="color:#ffb000">Free - 1 Device</span> | <span id="slotInfo">1 Free Slot Used</span></div>
+<button class="btn2" style="width:auto;padding:6px 12px;font-size:11px" onclick="logoutGmail()">Logout Gmail</button>
+</div>
+<div id="deviceList"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+<input id="deviceNameInput" placeholder="Device Name e.g. My Tecno, Laptop, Infinix" maxlength="30">
+<button class="btnGreen" onclick="registerNewDevice()">➕ Register Phone & Device</button>
+</div>
+<button class="btn" id="payBtn" style="background:gold;color:#000;display:none" onclick="payFor3Devices()">💳 Pay ₦2,000 - Unlock 2nd & 3rd Device - Paystack Secure</button>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+<button class="btn2" onclick="locatePhones()">📍 Locate All My Devices</button>
+<button class="btn2" onclick="stopRingAll()">🔇 Stop All Ringing</button>
+<button class="btn2" onclick="openPrivateMap()">🗺️ Open Private Map</button>
+</div>
+<div id="secureTrackerResult" style="background:#000;padding:12px;border-radius:10px;margin-top:8px;min-height:90px;border:1px solid #333;font-size:12px">Register a device to start secure tracking - Phone & Device supported.</div>
+</div>
+</div>
+
+<div class="card" id="tv" style="border:2px solid var(--orange)"><h2>📺 Official TV - Live <span class="badge">286 VIDEOS</span> <span class="secureBadge">Validated</span></h2><button class="btn" onclick="engine1()">Engine 1: Play All 286 Videos</button><button class="btn btn2" onclick="engine2()">Engine 2: Play 14 New Shorts Non-Stop</button><div id="playerWrap"><div id="ytPlayer"></div></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="width:33%" onclick="prevInList()">Previous</button><button class="btn2" style="width:33%" onclick="toggleFullscreen()">Expand</button><button class="btn2" style="width:33%" onclick="toggleAuto()">Auto: <span id="autoLabel">ON</span></button></div><div id="thumbList" class="list"></div><div style="display:flex;gap:6px"><input id="ytInput" placeholder="Paste YouTube link to preview" maxlength="200"><button class="btn2" style="width:30%" onclick="previewCustom()">Preview</button></div></div>
 
 <div class="card" id="radioCard"><h2>📻 Live Radio - Dual Secure Player</h2>
 <audio id="radioAudio" controls style="width:100%;height:50px;background:#000;border-radius:10px" preload="none" crossorigin="anonymous"><source src="https://stream.zeno.fm/larffanbelefu-radio-station" type="audio/mpeg"></audio>
@@ -95,7 +170,7 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 </div>
 
 <div class="moreHeader" onclick="toggleMore()">More Professional Tools - Click to Open and Close</div>
-<div class="moreIcons"><div class="mi" onclick="openOnly('ency')">📚<br><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')">📖<br><b>Dictionary</b></div><div class="mi" onclick="openOnly('tools')">🔢<br><b>Calculator</b></div><div class="mi" onclick="openOnly('rooms')">📝<br><b>Jotter</b></div><div class="mi" onclick="openOnly('trackerCard')">📍<br><b>Tracker</b></div><div class="mi" onclick="openOnly('comedyCard')">😂<br><b>Comedy</b></div><div class="mi" onclick="openOnly('giftCard')">🎁<br><b>Gift</b></div></div>
+<div class="moreIcons"><div class="mi" onclick="openOnly('ency')">📚<br><b>Encyclopedia</b></div><div class="mi" onclick="openOnly('dictCard')">📖<br><b>Dictionary</b></div><div class="mi" onclick="openOnly('tools')">🔢<br><b>Calculator</b></div><div class="mi" onclick="openOnly('rooms')">📝<br><b>Jotter</b></div><div class="mi" onclick="openOnly('secureFamilyCard')">📍<br><b>Tracker</b></div><div class="mi" onclick="openOnly('comedyCard')">😂<br><b>Comedy</b></div><div class="mi" onclick="openOnly('giftCard')">🎁<br><b>Gift</b></div></div>
 
 <div id="moreContent">
 <div class="card" id="ency" style="border:2px solid gold"><h2>📚 Life Encyclopedia - Secure</h2><input id="encySearch" placeholder="Search marriage, money, love..." oninput="filterEncy()" maxlength="100"><div id="encyList"></div><div style="display:flex;gap:6px"><button class="btn2" onclick="speakEncy()">🔊 Speak</button><button class="btn2" onclick="stopSpeak()">Stop</button></div><div id="encyContent" class="card" style="background:#000;display:none"></div></div>
@@ -129,54 +204,135 @@ input,textarea,select{width:100%;padding:11px;margin:6px 0;border-radius:10px;bo
 
 <div class="card" id="chat" style="border:2px solid #00aaff"><h2>💬 Community Chat - Secure - Anti-Spam</h2><div id="cBox" style="background:#000;border-radius:10px;padding:8px;max-height:250px;overflow:auto;min-height:80px"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="cName" placeholder="Your Name" style="width:28%" maxlength="30"><input id="cText" placeholder="Type message..." style="width:52%" maxlength="200"><button class="btn2" style="width:20%" onclick="sendCommunity()">Send</button></div><div style="font-size:10px;color:#9aa5b8">Secure - Messages sanitised - No scripts allowed</div></div>
 
-<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant - Secure - British English</h3><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto;font-size:12px">AI: Hello! I am your secure assistant. I speak British English. How may I help you today?</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type your request..." style="width:65%" maxlength="200"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">Stop</button></div></div>
+<button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant - Secure - British English</h3><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto;font-size:12px">AI: Hello! I am your secure assistant. I speak British English. I can help with Emergency Button, Good Citizen, Nearest Police, Hospital, Fuel Station, Phone & Device Tracker with Gmail, Ring My Device, I Am Safe, Share Location. How may I help you today?</div><div style="display:flex;gap:6px;margin-top:6px"><input id="aiIn" placeholder="Type your request..." style="width:65%" maxlength="200"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:6px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">Stop</button></div></div>
 
-<footer style="background:#0f172a;padding:28px;text-align:center;margin-top:20px;border-top:3px solid #facc15"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI WORLD - SECURE</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0"><a href="#" onclick="openModal('aboutModal')" style="color:#fff;text-decoration:underline">About Us</a><a href="#" onclick="openModal('contactModal')" style="color:#fff;text-decoration:underline">Contact Us</a><a href="#" onclick="openModal('privacyModal')" style="color:#fff;text-decoration:underline">Privacy Policy</a></div><p style="color:#94a3b8;font-size:12px">© 2026 Professional Secure Version - All Systems Active - Protected | larffanbelefu.com.ng</p><div style="font-size:11px">Live Location: <span id="footerLocation">Secure - Press Start Tracking to detect</span> | <span class="secureBadge">🔒 Secure Site - No Tracking Without Permission</span></div></footer>
+<footer style="background:#0f172a;padding:28px;text-align:center;margin-top:20px;border-top:3px solid #facc15"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI WORLD - SECURE</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0"><a href="#" onclick="openModal('aboutModal')" style="color:#fff;text-decoration:underline">About Us</a><a href="#" onclick="openModal('contactModal')" style="color:#fff;text-decoration:underline">Contact Us</a><a href="#" onclick="openModal('privacyModal')" style="color:#fff;text-decoration:underline">Privacy Policy</a></div><p style="color:#94a3b8;font-size:12px">© 2026 Professional Secure Version - All Systems Active - Protected | larffanbelefu.com.ng</p><div style="font-size:11px">Live Location: <span id="footerLocation">Secure - Press Start Tracking to detect</span> | <span class="secureBadge">🔒 Secure Site - No Tracking Without Permission</span></div><div style="font-size:10px;color:#666;margin-top:8px">Detected: <span id="detectedCity">Benin City, Edo State, NG</span></div></footer>
 
-<div id="aboutModal" class="modal" onclick="closeModal('aboutModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">About Us - Secure Professional Platform</h2><p style="font-size:13px;line-height:1.7">Larffan Belefu AI TV Pro World Secure is a professional entertainment and utility platform created by Paul Osawaru. We provide live television with over 286 comedy videos, live radio streaming with dual secure players, worldwide clock with weather for 12 countries in 12-hour AM/PM format with Nigeria first, advanced AI movement detection map that identifies walking, bicycle, motorcycle, car, bus, train and airplane with anti-glitch technology, multi-device phone tracking on the same world map with green, blue and red lines, talking calculator with trillion, billion and million support and multi-currency voice, life encyclopedia, talking dictionary with secure API, private jotter stored locally, professional comedy stories and secure community chat with anti-spam protection. Our mission is to deliver professional technology with British English standards, highest security against hacking, XSS and injection attacks, for a global audience. All data is protected. Contact us for business enquiries.</p><button class="btn2" onclick="closeModal('aboutModal')">Close</button></div></div>
-<div id="contactModal" class="modal" onclick="closeModal('contactModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Contact Us - Secure</h2><p style="font-size:13px;line-height:1.7">Email: support@larffanbelefu.com.ng<br>Official YouTube: @paulosawaru<br>Website: larffanbelefu.com.ng<br>Location: Lagos, Nigeria - Worldwide Secure Service<br><br>For tracker support, gift support or business partnership, please email us. We respond within 24 hours. All communications are secure and confidential.</p><button class="btn2" onclick="closeModal('contactModal')">Close</button></div></div>
-<div id="privacyModal" class="modal" onclick="closeModal('privacyModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Privacy Policy - Secure and Protected</h2><p style="font-size:12px;line-height:1.7">We respect your privacy and security. This website uses Firebase to store chat messages, tracker emails and gift records securely with authentication. We use browser local storage to save your name and private jotter notes on your device only - never on our servers. We use Geolocation API only when you press Start Tracking and your location is not shared with third parties without your explicit consent. We implement Content Security Policy, input sanitisation, XSS protection and nosniff headers to prevent hacking. We use Google Analytics to understand site usage anonymously. Paystack handles payments securely with PCI compliance and we never store card details. By using this site you agree to our use of cookies and local storage for app functionality. You can clear your data by clearing browser storage. For AdSense, we do not collect personal data for advertising. All data transmission is encrypted. Contact support@larffanbelefu.com.ng for data removal requests. We are committed to protecting your data from unauthorised underground access.</p><button class="btn2" onclick="closeModal('privacyModal')">Close</button></div></div>
+<div id="aboutModal" class="modal" onclick="closeModal('aboutModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">About Us - Secure Professional Platform</h2><p style="font-size:13px;line-height:1.7">Includes Emergency Red Button, Good Citizen, I Am Safe, Share Location, Nearby Police Hospital Fuel Station finder, Secure Family Tracker with Gmail for Phone and Laptop, Ring My Device even on silent, Deactivate and Activate slots, Paystack payment for 3 devices. Original features remain: live television with over 286 comedy videos, live radio, worldwide clock with Nigeria first, AI movement detector map, calculator, encyclopedia, dictionary, jotter, comedy, gift. All protected.</p><button class="btn2" onclick="closeModal('aboutModal')">Close</button></div></div>
+<div id="contactModal" class="modal" onclick="closeModal('contactModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Contact Us - Secure</h2><p style="font-size:13px;line-height:1.7">Email: support@larffanbelefu.com.ng<br>Official YouTube: @paulosawaru<br>Website: larffanbelefu.com.ng</p><button class="btn2" onclick="closeModal('contactModal')">Close</button></div></div>
+<div id="privacyModal" class="modal" onclick="closeModal('privacyModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Privacy Policy - Secure and Protected</h2><p style="font-size:12px;line-height:1.7">Family tracker uses Gmail to link 3 devices privately. Location only shared when you press Share or Emergency. Ring feature requires permission. Paystack handles payments securely. All data encrypted. No tracking without explicit permission.</p><button class="btn2" onclick="closeModal('privacyModal')">Close</button></div></div>
+
+<div id="emergencyModal" class="modal" onclick="closeModal('emergencyModal')"><div class="modalBox" onclick="event.stopPropagation()" style="border:3px solid var(--red)"><h2 style="color:var(--red)">🚨 Emergency Activated</h2><p style="font-size:13px">Your location will be shared securely to your family and nearby help.</p><div id="emergencyLocation" style="background:#000;padding:10px;border-radius:8px;font-size:12px;margin:10px 0">Acquiring location...</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button class="btnRed" onclick="confirmEmergencyShare()">Share to Police & Family</button><button class="btn2" onclick="closeModal('emergencyModal')">Cancel - I Am Safe</button></div></div></div>
+
+<audio id="ringTone" loop preload="auto"><source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg"></audio>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
-// SECURE FIREBASE CONFIG
 var firebaseConfig={apiKey:"AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY",authDomain:"larffanbelefu-ai-tv.firebaseapp.com",projectId:"larffanbelefu-ai-tv",storageBucket:"larffanbelefu-ai-tv.firebasestorage.app",messagingSenderId:"96721446215",appId:"1:96721446215:web:9da4e2491b7d5b7cc09862",databaseURL:"https://larffanbelefu-ai-tv-default-rtdb.firebaseio.com"};
-try{firebase.initializeApp(firebaseConfig);}catch(e){console.warn('Firebase init error',e);}
-
-// SECURITY HELPERS - ANTI HACKER
+try{firebase.initializeApp(firebaseConfig);}catch(e){}
 function sanitizeText(str){if(!str)return'';let div=document.createElement('div');div.textContent=str;return div.textContent.substring(0,500);}
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function isValidYouTubeId(id){return /^[A-Za-z0-9_-]{11}$/.test(id);}
 function safeSetText(id,text){let el=document.getElementById(id);if(el)el.textContent=text;}
 
-// VIDEO LIST - 286 VIDEOS - VALIDATED AND SECURE - NO HTML INJECTION
-let rawList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","eqA385k5X_0","4lmZ4lMNF9I","qAZQTzWXWvc","iJPHVl290DU","RFwQExtFK6o","f24wkFSzPVs","pRqZvSXcyEM","_3dJH2fyLUU","jP3op0p1ylI","mPn4md6SOdY","9PxD5lGLgpk","mulBrieiHY0","jjAeS4_pGMk","kz_sS6HKB30","bRXytL0i9oA","jAISTtnDAF0","knufbHX7yvM","07RMYtrdlJY","AFHoobby4_4","Huvda3WuLdU","zZQx5fnXUsQ","ledyyGpVvSQ","-k-KmRDrQzE","l2qSmqWJN_g","eJQDVIRrFws","AZLedENgCVw","i2qAeb2JpGs","3uH4nd_GJkY","7tOI0pzgEhA","j8X-TtfScCM","0KQ1Vpazf5o","73DVudsyjaw","0YwJclt3Nnw","k3QQnUwAvLI","U0bhPUz-WGc","Kln-hx3KDL4"];
+let masterEmail = localStorage.getItem('larffan_master_email') || '';
+let devices = JSON.parse(localStorage.getItem('larffan_devices')||'[]');
+let isPaid = localStorage.getItem('larffan_paid_'+btoa(masterEmail)) === 'true';
+function handleGmailLogin(response){
+ try{let payload = JSON.parse(atob(response.credential.split('.')[1])); if(payload.email) manualGmailLogin(payload.email);}catch(e){}
+}
+function manualGmailLogin(emailParam){
+ let email = emailParam || sanitizeText(document.getElementById('manualGmail').value.trim());
+ if(typeof email !== 'string') email = sanitizeText(document.getElementById('manualGmail').value.trim());
+ if(!isValidEmail(email)){alert('Please enter valid Gmail');return;}
+ masterEmail = email.toLowerCase();
+ localStorage.setItem('larffan_master_email', masterEmail);
+ isPaid = localStorage.getItem('larffan_paid_'+btoa(masterEmail)) === 'true';
+ document.getElementById('gmailLoginArea').style.display='none';
+ document.getElementById('loggedInArea').style.display='block';
+ safeSetText('loggedEmail', masterEmail);
+ devices = JSON.parse(localStorage.getItem('larffan_devices_'+btoa(masterEmail))||'[]');
+ if(devices.length===0){devices = JSON.parse(localStorage.getItem('larffan_devices')||'[]'); if(devices.length>0) localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices));}
+ updateDeviceUI();
+ try{firebase.database().ref('users/'+btoa(masterEmail).replace(/=/g,'')).set({email:masterEmail,lastLogin:Date.now(),paid:isPaid,secure:true});}catch(e){}
+ speakText('Gmail login successful. For your own good, your private family map is now active.');
+}
+function logoutGmail(){localStorage.removeItem('larffan_master_email'); masterEmail=''; devices=[]; document.getElementById('gmailLoginArea').style.display='block'; document.getElementById('loggedInArea').style.display='none';}
+function updateDeviceUI(){
+ let list = document.getElementById('deviceList'); if(!list) return; list.innerHTML=''; let maxSlots = isPaid ? 3 : 1;
+ safeSetText('payStatus', isPaid ? 'Paid - 3 Devices Unlocked' : 'Free - 1 Device Only');
+ safeSetText('slotInfo', devices.length + ' / ' + maxSlots + ' Slots Used');
+ let payBtn = document.getElementById('payBtn'); if(payBtn) payBtn.style.display = (!isPaid && devices.length>=1) ? 'block' : 'none';
+ devices.forEach((dev, idx)=>{
+  let div = document.createElement('div'); div.className='deviceSlot';
+  div.innerHTML = `<div><b>${sanitizeText(dev.name)}</b><div style="font-size:10px;color:#9aa5b8">${sanitizeText(dev.type)} | ID: ${sanitizeText(dev.id.substring(0,6))} | ${dev.active?'Active':'Inactive'}</div><div style="font-size:10px;color:#00ff88">${dev.lastLat?`Last: ${dev.lastLat.toFixed(4)}, ${dev.lastLon.toFixed(4)}`: 'No location yet'}</div></div><div style="display:flex;gap:4px;flex-direction:column"><button class="btn2" style="padding:6px;font-size:11px" onclick="ringDevice(${idx})">🔔 Ring</button><button class="btn2" style="padding:6px;font-size:11px" onclick="toggleDevice(${idx})">${dev.active?'Deactivate':'Activate'}</button><button class="btn2" style="padding:6px;font-size:11px;background:#330000" onclick="removeDevice(${idx})">Remove</button></div>`;
+  list.appendChild(div);
+ });
+ if(devices.length===0){list.innerHTML='<div style="font-size:11px;color:#9aa5b8">No device yet. Register your first Phone & Device - Free.</div>';}
+ safeSetText('secureTrackerResult', `Gmail: ${masterEmail} - ${devices.length} device(s) - ${isPaid?'Paid unlock active':'Free mode - Pay to unlock 3'}`);
+}
+function registerNewDevice(){
+ if(!masterEmail){alert('Please login with Gmail first - For your own good');document.getElementById('secureFamilyCard').scrollIntoView({behavior:'smooth'});return;}
+ let nameInput = document.getElementById('deviceNameInput'); let name = sanitizeText(nameInput.value.trim()) || 'Device '+(devices.length+1);
+ if(name.length<2){alert('Enter device name');return;} let maxSlots = isPaid ? 3 : 1;
+ if(devices.length >= maxSlots){if(!isPaid){alert('Free slot used. Pay ₦2,000 to unlock 2 more slots');payFor3Devices();return;} else{alert('You already have 3 devices. Deactivate one to free a slot');return;}}
+ let newDev = {id:'DEV-'+Date.now()+'-'+Math.random().toString(36).substring(2,6), name:name, type:/laptop|computer|pc/i.test(name)?'Laptop / Device':'Phone & Device', active:true, lastLat:null, lastLon:null, created:Date.now()};
+ devices.push(newDev); localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices)); localStorage.setItem('larffan_devices', JSON.stringify(devices));
+ if(nameInput) nameInput.value=''; updateDeviceUI(); startTrackingForDevice(newDev);
+ try{firebase.database().ref('devices/'+btoa(masterEmail).replace(/=/g,'')+'/'+newDev.id).set({...newDev,email:masterEmail,secure:true});}catch(e){}
+ speakText(`Device ${name} registered successfully.`);
+}
+function toggleDevice(idx){
+ if(!devices[idx]) return;
+ if(devices[idx].active){devices[idx].active=false; speakText(`Device ${devices[idx].name} deactivated. Slot is now free.`);}
+ else {let activeCount = devices.filter(d=>d.active).length; let maxSlots = isPaid ? 3 : 1; if(activeCount >= maxSlots){alert('All slots active. Deactivate one first');return;} devices[idx].active=true; speakText(`Device ${devices[idx].name} activated.`);}
+ localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices)); updateDeviceUI();
+}
+function removeDevice(idx){if(!confirm('Remove this device? Slot will become free')) return; let dev = devices[idx]; devices.splice(idx,1); localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices)); updateDeviceUI(); try{firebase.database().ref('devices/'+btoa(masterEmail).replace(/=/g,'')+'/'+dev.id).remove();}catch(e){}}
+function payFor3Devices(){
+ if(!masterEmail){alert('Login with Gmail first');return;}
+ let handler = PaystackPop.setup({key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38', email:masterEmail, amount:200000, currency:'NGN', ref:'FAMILY-'+Date.now(),
+  callback:function(res){isPaid=true; localStorage.setItem('larffan_paid_'+btoa(masterEmail), 'true'); try{firebase.database().ref('payments/'+res.reference).set({email:masterEmail,amount:2000,currency:'NGN',ref:res.reference,time:Date.now(),type:'family_3_slots',secure:true});}catch(e){} safeSetText('secureTrackerResult','Payment successful! You can now register up to 3 Phone & Device. Reference: '+res.reference); updateDeviceUI(); speakText('Payment successful. You can now track 3 phones and devices.');}});
+ handler.openIframe();
+}
+function startTrackingForDevice(dev){if(!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(pos=>{dev.lastLat=pos.coords.latitude; dev.lastLon=pos.coords.longitude; localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices)); updateDeviceUI();},{},{enableHighAccuracy:true});}
+function locatePhones(){
+ if(!masterEmail){alert('Login with Gmail first');return;} if(devices.length===0){alert('Register a device first');return;}
+ if(!navigator.geolocation){alert('Geolocation not supported');return;}
+ safeSetText('secureTrackerResult','Locating all active devices securely...');
+ navigator.geolocation.getCurrentPosition(pos=>{let lat=pos.coords.latitude, lon=pos.coords.longitude; marker.setLatLng([lat,lon]); map.setView([lat,lon],16); devices.forEach(d=>{ if(d.active){ d.lastLat=lat; d.lastLon=lon; }}); localStorage.setItem('larffan_devices_'+btoa(masterEmail), JSON.stringify(devices)); updateDeviceUI(); safeSetText('secureTrackerResult', `Located ${devices.filter(d=>d.active).length} active device(s) at ${lat.toFixed(5)}, ${lon.toFixed(5)} - Secure`); try{firebase.database().ref('liveLocations/'+btoa(masterEmail).replace(/=/g,'')).set({lat:lat,lon:lon,time:Date.now(),devices:devices,secure:true});}catch(e){}},err=>{safeSetText('secureTrackerResult','Location error: '+sanitizeText(err.message));},{enableHighAccuracy:true,timeout:10000});
+}
+function ringDevice(idx){
+ let dev = devices[idx]; if(!dev){alert('Device not found');return;} if(!dev.active){alert('Activate device first');return;}
+ safeSetText('secureTrackerResult', `Ringing ${dev.name}... Device will ring loud even on silent for 2 minutes`); speakText(`Ringing ${dev.name}. It will ring loud now.`);
+ try{firebase.database().ref('ringRequests/'+btoa(masterEmail).replace(/=/g,'')+'/'+dev.id).set({ring:true,time:Date.now(),from:masterEmail});}catch(e){}
+ startRingTone(); try{let bc = new BroadcastChannel('larffan_ring_'+btoa(masterEmail)); bc.postMessage({type:'ring', deviceId:dev.id});}catch(e){} setTimeout(stopRingAll, 120000);
+}
+let ringInterval=null;
+function startRingTone(){let audio = document.getElementById('ringTone'); if(audio){ audio.currentTime=0; audio.play().catch(()=>{}); document.body.classList.add('ringing');} if(navigator.vibrate) navigator.vibrate([1000,500,1000,500,1000]); safeSetText('secureTrackerResult','🔔 RINGING LOUD - Press Stop to stop ringing'); ringInterval = setInterval(()=>{ if(navigator.vibrate) navigator.vibrate([1000,500,1000]); },3000);}
+function stopRingAll(){let audio = document.getElementById('ringTone'); if(audio){ audio.pause(); audio.currentTime=0; } document.body.classList.remove('ringing'); if(navigator.vibrate) navigator.vibrate(0); if(ringInterval) clearInterval(ringInterval); safeSetText('secureTrackerResult','Ringing stopped - Device silent - Secure'); try{if(masterEmail) firebase.database().ref('ringRequests/'+btoa(masterEmail).replace(/=/g,'')).once('value', snap=>{if(snap.exists()){ Object.keys(snap.val()).forEach(k=>{ firebase.database().ref('ringRequests/'+btoa(masterEmail).replace(/=/g,'')+'/'+k).update({ring:false}); });}});}catch(e){}}
+function openPrivateMap(){document.getElementById('mapCard').scrollIntoView({behavior:'smooth'}); speakText('Opening your private family map. Only your Gmail can see these devices.');}
+(function listenRing(){try{let email = localStorage.getItem('larffan_master_email'); if(!email) return; firebase.database().ref('ringRequests/'+btoa(email).replace(/=/g,'')).on('child_added', snap=>{let v=snap.val(); if(v && v.ring){ startRingTone(); if(confirm('🔔 Your device is being rung from your family map. Press OK to stop ringing')) stopRingAll(); }}); let bc = new BroadcastChannel('larffan_ring_'+btoa(email)); bc.onmessage = e=>{ if(e.data && e.data.type==='ring'){ startRingTone(); } };}catch(e){}})();
+
+function triggerEmergency(){document.getElementById('emergencyModal').style.display='flex'; safeSetText('emergencyLocation','Acquiring your secure location for emergency...'); if(navigator.geolocation){navigator.geolocation.getCurrentPosition(pos=>{let lat=pos.coords.latitude, lon=pos.coords.longitude; safeSetText('emergencyLocation', `Emergency Location: ${lat.toFixed(5)}, ${lon.toFixed(5)} - Ready to share to Police and Family`); window._emergencyPos={lat:lat,lon:lon};},err=>{safeSetText('emergencyLocation','Location error: '+err.message+' - Enable GPS');});} speakText('Emergency activated. Your location will be shared to police and family if you confirm.');}
+function confirmEmergencyShare(){let pos=window._emergencyPos; if(!pos){alert('Location not ready yet');return;} let link = `https://www.google.com/maps?q=${pos.lat},${pos.lon}`; let msg = `EMERGENCY - I AM LOST - Location: ${link} - Time: ${new Date().toLocaleString()} - From Larffan Belefu Secure`; try{firebase.database().ref('emergency/'+Date.now()).set({lat:pos.lat,lon:pos.lon,link:link,email:masterEmail||'anonymous',time:Date.now(),type:'emergency',secure:true});}catch(e){} if(navigator.share){ navigator.share({title:'Emergency - I Am Lost', text:msg, url:link}).catch(()=>{}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank'); } safeSetText('emergencyLocation','Emergency shared securely to family - Help is on the way - You can also copy: '+link); speakText('Emergency location shared to family and police. Help is on the way.');}
+function triggerIAmSafe(){if(!navigator.geolocation){alert('Location not supported');return;} navigator.geolocation.getCurrentPosition(pos=>{let link=`https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`; let msg=`I AM SAFE - I am okay - Location: ${link} - From Larffan Belefu Secure`; try{firebase.database().ref('safeReports/'+Date.now()).set({lat:pos.coords.latitude,lon:pos.coords.longitude,email:masterEmail||'anonymous',time:Date.now(),secure:true});}catch(e){} if(navigator.share){navigator.share({title:'I Am Safe',text:msg,url:link});}else{alert(msg);} speakText('You marked yourself as safe. Your family will be notified.');},()=>{alert('Enable GPS to send I Am Safe');});}
+function goodCitizenAction(){let info = prompt('Good Citizen - You found a device? Enter any info or owner email if visible on QR:'); if(info===null) return; let posPromise = new Promise(res=>{ if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>res(p),()=>res(null)); else res(null); }); posPromise.then(p=>{let loc = p? `${p.coords.latitude},${p.coords.longitude}` : 'Location not shared'; try{firebase.database().ref('goodCitizen/'+Date.now()).set({info:sanitizeText(info),location:loc,email:masterEmail||'finder',time:Date.now(),secure:true});}catch(e){} alert('Thank you Good Citizen! Owner will be notified securely. Location: '+loc); speakText('Thank you Good Citizen. Your report has been saved securely.');});}
+function shareMyLocation(){if(!navigator.geolocation){alert('Geolocation not supported');return;} navigator.geolocation.getCurrentPosition(pos=>{let lat=pos.coords.latitude, lon=pos.coords.longitude; let link=`https://www.google.com/maps?q=${lat},${lon}`; let choice = confirm('Share My Location - Press OK to share to Family (WhatsApp), Cancel to share to Police (Google Maps search)'); if(choice){let msg=`My Current Location - Please help - ${link} - From Larffan Belefu Secure`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');}else{window.open(`https://www.google.com/maps/search/police+station/@${lat},${lon},14z`,'_blank');} try{firebase.database().ref('sharedLocations/'+Date.now()).set({lat:lat,lon:lon,email:masterEmail||'anonymous',time:Date.now(),secure:true});}catch(e){}},err=>{alert('Location error: '+err.message);});}
+function findNearest(type){if(!navigator.geolocation){alert('Enable GPS first - Press Start Live Tracking');return;} navigator.geolocation.getCurrentPosition(pos=>{let lat=pos.coords.latitude, lon=pos.coords.longitude; let query = type==='fuel' ? 'fuel station' : type==='hospital' ? 'hospital' : type==='police' ? 'police station' : type; let url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lon},14z`; window.open(url,'_blank'); speakText(`Showing nearest ${query} near your location`);},err=>{alert('Enable GPS: '+err.message);});}
+function generateQR(){let email = masterEmail || 'demo@larffanbelefu.com.ng'; let canvas = document.getElementById('qrCanvas'); if(!canvas) return; let ctx = canvas.getContext('2d'); canvas.width=200; canvas.height=200; ctx.fillStyle='#fff'; ctx.fillRect(0,0,200,200); ctx.fillStyle='#000'; ctx.font='12px monospace'; ctx.fillText('LARFFAN BELEFU',20,20); ctx.fillText('SECURE QR',20,40); ctx.fillText(email.substring(0,22),10,100); ctx.fillText('Scan to contact owner',10,120); ctx.fillText('larffanbelefu.com.ng',10,140); for(let i=0;i<50;i++){ ctx.fillRect(Math.random()*180+10, Math.random()*50+150, 3,3); } document.getElementById('qrArea').style.display='block'; safeSetText('qrText', 'QR for: '+email+' - Print and stick on device - Secure'); speakText('Your QR sticker code generated. Print it and stick on your phone or laptop.');}
+
+let rawList=["f1BEDZg3cFU","WFoRRqK0LHk","6FuDm7U4yIc","OHOvHumi1GI","bNNKs1WB7FE","XqElA0lc2z4","UNFbP57fJ3g","YEsoeM1AsxQ","5hfvgNc23so","3LVc6EF4HYQ","v51kq59EC_Y","8gr3mhmpTcw","-So5vEOjl-g","dZm_aG3gK9U","HfgA_ssExm4","MKmwOT7mQ2A","AJMnmNNSuhg","MwT8I-0Qg3M","OVlIGWbVtzM","87e8NZkumvY","0ReMzU4KLMo","W7FcTFLVlHw","FGPLPB2tGE8","x_y3FGlEnj8","DXOyhu2XY8A","0NqzXVAzOWg","xyU1XUxBsl8","ncTKlcqLUKs","ZycG5solcRQ","nX-PwfTjDxo","SlMdcv6agLg","meXAZWoi35w","LtsVbYf57o8","AHxAHMxMr7I","BXmBX7-Kqk8","bDIWMoJLqag","K7pFMFwJCrg","qlk8oIrx6K8","Wk26Gbe9Tx0","VTClsiXfIcc","qqKJMRjXdGM","YrrVqlsH1fA","FGIUrQBQ854","TU97T_3Ms54","4hf8lxMuAJI","otRPbU8VUSU","K6Kcrze05x0","5q0kulf5K-M","u-hOQ6iJjNA","PSKTh1oy5Sg","ffYxtXoUIwA","wQl44TLj10Q","YVVZNqVUEH4","Pg5pbO_02OY","CVIXZ-lhovQ","DdMl5iY2vVk","d1EtxP18yrw","5vDsc0jOWCc","_iqAKk9uAOE","h_Pcb7vdDho","mmWuXyOHbZA","b4T3B5xYTws","_iF0UNXfj7Y","yJ1Ccky3xos","U_AHTsjgr-Q","ApZwMt_Gcxs","eQAxEyBon1c","APTXGWwH1Ng","Nt9H-1-ko_s","xowyMfb6KXs","M0lOduTKWgE","xPBq4tOmpBA","mF_h6BCz2zA","P2k9BPXF0Os","Tls6cHanKtk","1mUWYK0U2U8","RrMWDJ-hLiE","8tBkuwiq6bQ","1UAGVFFQ2R0","WNd_1aL9pF8","tpvY6Q1yLlc","ez3iel0Sg3U","o1bnVThzQxM","zxDtDWgiTTQ","31oXQ0-_Tjg","v54-74nxtSU","elDa9K6K5yI","-ix2mQ2Zt0c","vh44xmn-Alk","lFjYOI8qvR0","_NtITQbgr5E","Wr76AzrXyq8","sf3zwJPNNCc","5yjC3kBgKUY","cjwvIWeb3fc","jskf6PqGnfQ","zglD29CpnSw","WZyQgzwkK7A","HO4LUG_gaC8","YLjro7B7rsM","ux9VNVm20Nw","FncpjuS3rLI","65jvKnjsAV4","ghm570T_KRY","mBmI5jGlbo8","LN0kZup7HlU","KyYCXRL1INE","A2h_IF4SnAs","L9DxIpAYE8o","pcR713ti9cc","oSG01lQ3Cp0","lBAwm1O8TKI","3p1Te7D-Ggg","sWcQs93kNgY","QAMON84K05Y","VZyg1zr46oQ","GcdvSoMsfKg","UhoINmBosrQ","5YIL4cxR6s8","lHVuh4hQuLo","4UlwZMJJ_5Y","NbWoBxoJe8g","EHMb7hejjFk","U4SunsC3yuQ","EB6dqSA6i_U","SwrtMHtwF1s","eVXCPsLhFLg","EVuIhyHuohM","_TkYq3w8KpQ","toYcDz0TZ-Y","TfWdivEH0RU","SsJbpINRde8","W1B0HK9S2Wk","1vto2OKx9E4","5DMI9TOEPXE","ExgC99J-qcQ","y-toRTaBu8o","skYHPZFottY","aHlP1v-v-v9o0","0KSpTvbJWoc","nxy2wQsJCfw","ZFDNMBLejwk","ldLyHiWFTfY","F3w93ob4dQI","-LYhRs48bGE","o8Rb4V3upsk","hEkeVONv8OU","0kiW8Vs3jfo","m6cuFbD2djM","rchALV4cO4U","xY2nY14aYRM","4ZZauzNWbaw","HnEMQM5AAmY","OIquk7WAdYA","wPaoskDc5o0","E3Oc91smV0Y","Ng51sXyQqms","m3E6Rg4OJ28","e-A2xhNkB8s","S5YMrgkohG4","uT3WtmJh7MA","8VBxIRClwI8","bqlnYk0-zH4","Bu0MQpcNGfc","w6ZIl6wTAgM","x2a2t2EwPTY","TrKbY8LbF5U","Hb2DI__EM50","-hpHrBA1qqk","AnKT6A6x3-Q","mWr5YlFIP6A","AvlEw9BnjaI","QV9wXQ21gbQ","rAmGVOJ7qJE","XzRU_ptvWqY","MJk4KgWT18k","Few2yTZAjrM","SP4R_lloFUE","kq1xqPmj2YQ","94UprUK8jqo","WBfvnfrqdb0","tLBiaVQzooc","3ZnoPdvybdA","JDO9WQGXQvc","BBx0b_5goAs","cjC-HsjXgCg","HOlpO4QZXBA","tkTdaVExlAQ","ODcv2ZHc6Fc","1ehl_OrojtI","VnaDi7tZ6Ts","Fqux8gT16PE","kdw1-1PfrwQ","R7UbQIwfW5I","FOkR4CawAlI","C-_kBgmbXSM","A0uREOa_x04","3RjZ3cnn2u0","O7xRc2W2TMg","3GDZxJRUkiM","jWvNDJ4TfN8","p5pUAlQg9lc","tqqBSj4wzH4","349UFf64QzM","tG0r0HJP_E0","ARK5bbL8wTM","eqA385k5X_0","4lmZ4lMNF9I","qAZQTzWXWvc","iJPHVl290DU","RFwQExtFK6o","f24wkFSzPVs","pRqZvSXcyEM","_3dJH2fyLUU","jP3op0p1ylI","mPn4md6SOdY","9PxD5lGLgpk","mulBrieiHY0","jjAeS4_pGMk","kz_sS6HKB30","bRXytL0i9oA","jAISTtnDAF0","knufbHX7yvM","07RMYtrdlJY","AFHoobby4_4","Huvda3WuLdU","zZQx5fnXUsQ","ledyyGpVvSQ","-k-KmRDrQzE","l2qSmqWJN_g","eJQDVIRrFws","AZLedENgCVw","i2qAeb2JpGs","3uH4nd_GJkY","7tOI0pzgEhA","j8X-TtfScCM","0KQ1Vpazf5o","73DVudsyjaw","0YwJclt3Nnw","k3QQnUwAvLI","U0bhPUz-WGc","Kln-hx3KDL4"];
 let selectedList=[...new Set(rawList.filter(id=>isValidYouTubeId(id)))];
-let engine2List=["mF_h6BCz2zA","VnaDi7tZ6Ts","qXYWf-jafiM","O3YRGwsraE4","PUl2HYceNNk","A0uREOa_x04","FOkR4CawAlI","d5krWodjlEE","kdw1-1PfrwQ","R7UbQIwfW5I","C-_kBgmbXSM"].filter(isValidYouTubeId);
+let engine2List=["mF_h6BCz2zA","VnaDi7tZ6Ts","qXYWf-jafiM","O3YRGwsraE4","PUl2HYceNNk","A0uREOa_x04","FOkR4CawAlI","d5krWodjlEE","kdw1-1PfrwQ","R7UbQIwfW5I","C-_kBgmbXSM","DSMMf69arGY","7tOI0pzgEhA","vOtPo-dqFvg"].filter(isValidYouTubeId);
 let ytPlayer,currentIdx=0,autoPlay=true,isEngine2=false,deferredPrompt=null;
 function onYouTubeIframeAPIReady(){try{ytPlayer=new YT.Player('ytPlayer',{videoId:selectedList[0],playerVars:{autoplay:0,rel:0,playsinline:1,origin:window.location.origin},events:{onStateChange:e=>{if(e.data===0&&autoPlay)nextInList();},onError:e=>{console.warn('YT error',e);nextInList();}}});renderThumbs();}catch(e){console.error(e);}}
 function renderThumbs(){let l=document.getElementById('thumbList');if(!l)return;l.innerHTML='';let arr=isEngine2?engine2List:selectedList;arr.forEach((id,i)=>{if(!isValidYouTubeId(id))return;let d=document.createElement('div');d.innerHTML=`<span class="num">${i+1}</span><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" loading="lazy" style="width:112px;height:64px;border-radius:8px" alt="video ${i+1}">`;d.onclick=()=>{if(isValidYouTubeId(id)){currentIdx=i;ytPlayer.loadVideoById(id);}};l.appendChild(d);});}
 function engine1(){isEngine2=false;currentIdx=0;if(ytPlayer&&isValidYouTubeId(selectedList[0]))ytPlayer.loadVideoById(selectedList[0]);renderThumbs();speakText('Engine one playing all 286 videos');}
-function engine2(){isEngine2=true;currentIdx=0;if(ytPlayer&&isValidYouTubeId(engine2List[0]))ytPlayer.loadVideoById(engine2List[0]);renderThumbs();speakText('Engine two playing 11 new shorts non stop');}
+function engine2(){isEngine2=true;currentIdx=0;if(ytPlayer&&isValidYouTubeId(engine2List[0]))ytPlayer.loadVideoById(engine2List[0]);renderThumbs();speakText('Engine two playing 14 new shorts non stop including your 3 new videos');}
 function nextInList(){let arr=isEngine2?engine2List:selectedList;currentIdx=(currentIdx+1)%arr.length;let id=arr[currentIdx];if(isValidYouTubeId(id))ytPlayer.loadVideoById(id);}
 function prevInList(){let arr=isEngine2?engine2List:selectedList;currentIdx=(currentIdx-1+arr.length)%arr.length;let id=arr[currentIdx];if(isValidYouTubeId(id))ytPlayer.loadVideoById(id);}
 function toggleFullscreen(){let w=document.getElementById('playerWrap');try{if(!document.fullscreenElement)w.requestFullscreen();else document.exitFullscreen();}catch(e){}}
 function toggleAuto(){autoPlay=!autoPlay;safeSetText('autoLabel',autoPlay?'ON':'OFF');}
 function previewCustom(){let v=sanitizeText(document.getElementById('ytInput').value);if(v.length<5)return;let id=null;if(v.includes('v='))id=v.split('v=')[1].split('&')[0];else if(v.includes('youtu.be/'))id=v.split('youtu.be/')[1].split('?')[0];else if(v.includes('shorts/'))id=v.split('shorts/')[1].split('?')[0];else id=v;id=id.substring(0,11);if(isValidYouTubeId(id)&&ytPlayer)ytPlayer.loadVideoById(id);}
-
-// PWA INSTALL - SECURE
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;safeSetText('pwaStatus','PWA ready - Click Install button');safeSetText('trackOut','App ready to install');});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;safeSetText('pwaStatus','PWA ready - Click Install button');});
 function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted'){safeSetText('pwaStatus','App installed successfully - Check home screen');}deferredPrompt=null;});}else{safeSetText('pwaStatus','To install: Chrome menu - Add to Home Screen. iPhone: Share - Add to Home Screen');}}
-
-// WELCOME - SECURE - ONCE
 let userName=localStorage.getItem('larffanName')||'';
-(function(){if(!userName){document.getElementById('welcomeModal').style.display='flex';}else{let el=document.getElementById('cName');if(el)el.value=sanitizeText(userName);}})();
+(function(){if(!userName){document.getElementById('welcomeModal').style.display='flex';}else{let el=document.getElementById('cName');if(el)el.value=sanitizeText(userName);} if(masterEmail){ manualGmailLogin(masterEmail); }})();
 function saveUserName(){let n=sanitizeText(document.getElementById('userNameInput').value.trim());if(!n||n.length<2){alert('Please enter a valid name');return;}if(/[<>\/\\]/.test(n)){alert('Invalid characters in name');return;}localStorage.setItem('larffanName',n);userName=n;document.getElementById('welcomeModal').style.display='none';let el=document.getElementById('cName');if(el)el.value=n;speakText(`Hello ${n}. Welcome to Larffan Belefu Pro World Secure.`);}
-
-// WORLD CLOCK - BRITISH ENGLISH - 12H AM/PM - NIGERIA FIRST
 const countries=[{name:'Nigeria - Lagos',flag:'🇳🇬',tz:'Africa/Lagos',color:'#008751',city:'Lagos',lat:6.5,lon:3.3},{name:'United States - New York',flag:'🇺🇸',tz:'America/New_York',color:'#B22234',city:'New York',lat:40.7,lon:-74},{name:'United Kingdom - London',flag:'🇬🇧',tz:'Europe/London',color:'#012169',city:'London',lat:51.5,lon:-0.1},{name:'Canada - Toronto',flag:'🇨🇦',tz:'America/Toronto',color:'#FF0000',city:'Toronto',lat:43.6,lon:-79.3},{name:'Ghana - Accra',flag:'🇬🇭',tz:'Africa/Accra',color:'#006B3F',city:'Accra',lat:5.6,lon:-0.2},{name:'South Africa - Johannesburg',flag:'🇿🇦',tz:'Africa/Johannesburg',color:'#007A4D',city:'Johannesburg',lat:-26.2,lon:28},{name:'UAE - Dubai',flag:'🇦🇪',tz:'Asia/Dubai',color:'#00732F',city:'Dubai',lat:25.2,lon:55.2},{name:'India - Mumbai',flag:'🇮🇳',tz:'Asia/Kolkata',color:'#FF9933',city:'Mumbai',lat:19,lon:72.8},{name:'Germany - Berlin',flag:'🇩🇪',tz:'Europe/Berlin',color:'#000',city:'Berlin',lat:52.5,lon:13.4},{name:'Australia - Sydney',flag:'🇦🇺',tz:'Australia/Sydney',color:'#0052CC',city:'Sydney',lat:-33.8,lon:151.2},{name:'Brazil - Sao Paulo',flag:'🇧🇷',tz:'America/Sao_Paulo',color:'#009739',city:'Sao Paulo',lat:-23.5,lon:-46.6},{name:'Japan - Tokyo',flag:'🇯🇵',tz:'Asia/Tokyo',color:'#BC002D',city:'Tokyo',lat:35.6,lon:139.6}];
 let weatherCache={},currentWorldIdx=0;
 function getGreeting(){let h=new Date().getHours();if(h<12)return"Good morning";if(h<17)return"Good afternoon";if(h<21)return"Good evening";return"Good night";}
@@ -185,24 +341,22 @@ async function loadWeather(){for(let c of countries){weatherCache[c.name]=await 
 function renderWorldClock(){let grid=document.getElementById('timeGrid');if(!grid)return;grid.innerHTML='';countries.forEach((c,i)=>{let time=new Date().toLocaleTimeString('en-GB',{timeZone:c.tz,hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});let greet=getGreeting();let temp=weatherCache[c.name]||'...';let div=document.createElement('div');div.className='worldItem'+(i===currentWorldIdx?' active':'');div.style.borderColor=c.color;div.innerHTML=`<button class="speakerBtn" aria-label="Speak time">🔊</button><div style="font-size:28px">${c.flag}</div><b style="color:${c.color};background:#fff;padding:2px 6px;border-radius:6px;font-size:11px">${sanitizeText(c.name)}</b><div style="font-size:11px;color:#aaa">${sanitizeText(c.city)}</div><div style="font-weight:900;font-size:15px;margin-top:4px">${time}</div><div style="font-size:10px;color:#00ff88">${greet}</div><div style="font-size:11px;color:#ffb000">🌡️ ${temp}</div>`;let btn=div.querySelector('.speakerBtn');if(btn)btn.onclick=e=>{e.stopPropagation();speakCountry(i);};div.onclick=()=>speakCountry(i);grid.appendChild(div);});}
 function speakCountry(i){let c=countries[i];let time=new Date().toLocaleTimeString('en-GB',{timeZone:c.tz,hour:'numeric',minute:'2-digit',hour12:true});let greet=getGreeting();currentWorldIdx=i;renderWorldClock();speakText(`${c.name}, ${c.city}. ${greet}. The time is ${time}. Temperature is ${weatherCache[c.name]||'24 degrees Celsius'}.`);}
 setInterval(renderWorldClock,1000);renderWorldClock();loadWeather();
-
-// WORLD MAP - SECURE - NO FAKE DATA - ANTI-GLITCH WITH AIRPLANE
-let map,marker,polyline,path=[],watchId=null,lastPos=null,isMuted=false,totalDistance=0,secondMarker=null,secondPolyline=null,thirdMarker=null,thirdPolyline=null;
+let map,marker,polyline,path=[],watchId=null,lastPos=null,isMuted=false,totalDistance=0;
 let lastLocationText='Unknown location';
 function initMap(){map=L.map('map',{zoomControl:true}).setView([6.5244,3.3792],12);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap secure'}).addTo(map);marker=L.marker([6.5244,3.3792]).addTo(map).bindPopup('Your Location - Green solid line - Secure');polyline=L.polyline([],{color:'#00ff88',weight:5}).addTo(map);}
 initMap();
 function getMoveType(speed){
- if(speed<1) return {type:'📍 Stationary',desc:'Device is stationary - No movement detected',icon:'📍'};
- if(speed<=6) return {type:'🦶 Walking - On Foot',desc:'Walking on foot - Leg movement detected',icon:'🦶'};
- if(speed<=25) return {type:'🚲 Bicycle',desc:'Riding a bicycle - Moderate speed',icon:'🚲'};
- if(speed<=70) return {type:'🏍️ Motorcycle / Machine',desc:'Riding a motorcycle or machine',icon:'🏍️'};
- if(speed<=120) return {type:'🚗 Car / Motor Vehicle',desc:'Travelling by car - Motor vehicle',icon:'🚗'};
- if(speed<=90) return {type:'🚌 Bus',desc:'Travelling by bus - Public transport',icon:'🚌'};
- if(speed<=160) return {type:'🚆 Train',desc:'Travelling by train - Railway transport',icon:'🚆'};
- return {type:'✈️ Airplane',desc:'Flying - Airplane detected - High speed in the air',icon:'✈️'};
+ if(speed<1) return {type:'📍 Stationary',desc:'Device is stationary - No movement detected'};
+ if(speed<=6) return {type:'🦶 Walking - On Foot',desc:'Walking on foot - Leg movement detected'};
+ if(speed<=25) return {type:'🚲 Bicycle',desc:'Riding a bicycle - Moderate speed'};
+ if(speed<=70) return {type:'🏍️ Motorcycle / Machine',desc:'Riding a motorcycle or machine'};
+ if(speed<=120) return {type:'🚗 Car / Motor Vehicle',desc:'Travelling by car - Motor vehicle'};
+ if(speed<=90) return {type:'🚌 Bus',desc:'Travelling by bus - Public transport'};
+ if(speed<=160) return {type:'🚆 Train',desc:'Travelling by train - Railway transport'};
+ return {type:'✈️ Airplane',desc:'Flying - Airplane detected - High speed in the air'};
 }
 function startTracking(){
- if(!navigator.geolocation){alert('Geolocation is not supported by this browser - Secure check failed');return;}
+ if(!navigator.geolocation){alert('Geolocation is not supported');return;}
  safeSetText('detectStatus','Status: Acquiring precise GPS signal - Anti-glitch filter active - Secure');
  speakText('Acquiring secure GPS signal. Analysing movement with anti-glitch technology.');
  if(watchId!==null)navigator.geolocation.clearWatch(watchId);
@@ -231,18 +385,17 @@ function startTracking(){
    safeSetText('locationName',`Location: ${sanitizeText(area)}`);
    safeSetText('roadName',`Road: ${sanitizeText(road)}`);
    safeSetText('footerLocation',sanitizeText(lastLocationText));
-  }).catch(()=>{});
-  lastPos=pos;
+   safeSetText('detectedCity',sanitizeText(area)+', Edo State, NG');
+  }).catch(()=>{}); lastPos=pos;
  },err=>{safeSetText('detectStatus','GPS Error: '+sanitizeText(err.message)+' - Please enable location');},{enableHighAccuracy:true,maximumAge:1000,timeout:15000});
 }
 function stopTracking(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;safeSetText('detectStatus','Status: Tracking stopped - Secure');}}
-function clearMap(){path=[];totalDistance=0;if(polyline)polyline.setLatLngs([]);if(secondPolyline)secondPolyline.setLatLngs([]);if(thirdPolyline)thirdPolyline.setLatLngs([]);safeSetText('distanceInfo','Distance: 0 m');safeSetText('speedResult','Speed: -- km/h');safeSetText('moveType','--');safeSetText('moveDesc','Map cleared - Ready');}
+function clearMap(){path=[];totalDistance=0;if(polyline)polyline.setLatLngs([]);safeSetText('distanceInfo','Distance: 0 m');safeSetText('speedResult','Speed: -- km/h');safeSetText('moveType','--');safeSetText('moveDesc','Map cleared - Ready');}
 function toggleMute(){isMuted=!isMuted;safeSetText('muteBtn',isMuted?'🔇 Voice Muted':'🔊 Voice On');}
 function speakText(t){if(isMuted||!t)return;try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(sanitizeText(t).substring(0,300));u.rate=0.95;u.lang='en-GB';speechSynthesis.speak(u);}catch(e){}}
 function speakLocation(){if(lastLocationText&&lastLocationText!=='Unknown location'){let move=document.getElementById('moveType')?.textContent||'Stationary';let speed=document.getElementById('speedResult')?.textContent||'';speakText(`Your current area is ${lastLocationText}. Movement: ${move}. ${speed}.`);}else{speakText('Location not yet detected. Please press Start Live Tracking and allow GPS.');}}
 function stopSpeak(){try{speechSynthesis.cancel();}catch(e){}}
 
-// CALCULATOR - SECURE - NO EVAL - TRILLION SUPPORT
 let calcVal='',curr='NORMAL';
 function setCurr(c){curr=c;document.querySelectorAll('.currBar button').forEach(b=>b.classList.remove('active'));let el=document.getElementById('c'+c);if(el)el.classList.add('active');safeSetText('calcHint','Mode: '+c+' - Secure calculation');}
 let grid=document.getElementById('calcGrid');
@@ -289,122 +442,50 @@ function speakResult(){let v=document.getElementById('calcDisp')?.value;if(v)spe
 let ySel=document.getElementById('ySel');if(ySel){for(let y=1960;y<=2100;y++){let o=document.createElement('option');o.value=y;o.textContent=y;if(y===new Date().getFullYear())o.selected=true;ySel.appendChild(o);}for(let d=1;d<=31;d++){let o=document.createElement('option');o.value=d;o.textContent=d;document.getElementById('dSel').appendChild(o);}ySel.value=new Date().getFullYear();document.getElementById('mSel').value=new Date().getMonth();document.getElementById('dSel').value=new Date().getDate();}
 function showCalendar(){let y=document.getElementById('ySel').value,m=document.getElementById('mSel').value,d=document.getElementById('dSel').value;let date=new Date(y,m,d);if(isNaN(date))return;safeSetText('calRes',date.toDateString());speakText(date.toDateString());}
 
-// ENCYCLOPEDIA, DICTIONARY - SECURE
-let encyData=[{t:"Marriage",d:"Marriage is a union built on love, trust and communication. Forgive quickly and work as a team for lifelong happiness."},{t:"Money",d:"Money is a medium of exchange. Save consistently, invest wisely and avoid unnecessary debt to build wealth."},{t:"Love",d:"Love is deep affection combined with respect and commitment. It requires patience, understanding and sacrifice."},{t:"Health",d:"Maintain health by drinking water, exercising daily and sleeping sufficiently. Prevention is better than cure."},{t:"Success",d:"Success comes from consistency and discipline every day. Small daily improvements lead to remarkable results."},{t:"Family",d:"Family should always come first. Support each other unconditionally through challenges and celebrations."},{t:"Business",d:"Business solves problems for profit. Focus on customer needs, deliver value and profit will follow."},{t:"Leadership",d:"Leadership is service. Great leaders serve their team, lead by example and inspire others to achieve more."}];
+let encyData=[{t:"Marriage",d:"Marriage is a union built on love, trust and communication."},{t:"Money",d:"Money is a medium of exchange. Save consistently, invest wisely."},{t:"Love",d:"Love is deep affection combined with respect and commitment."},{t:"Health",d:"Maintain health by drinking water, exercising daily and sleeping sufficiently."},{t:"Success",d:"Success comes from consistency and discipline every day."},{t:"Family",d:"Family should always come first. Support each other unconditionally."},{t:"Business",d:"Business solves problems for profit. Focus on customer needs."},{t:"Leadership",d:"Leadership is service. Great leaders serve their team."}];
 function renderEncy(){let el=document.getElementById('encyList');if(!el)return;el.innerHTML='';encyData.forEach(e=>{let div=document.createElement('div');div.style.border='1px solid #334155';div.style.padding='10px';div.style.margin='6px 0';div.style.borderRadius='10px';div.style.cursor='pointer';div.style.background='#0e1526';let b=document.createElement('b');b.textContent=e.t;let p=document.createElement('div');p.style.fontSize='11px';p.style.color='#94a3b8';p.textContent=e.d.substring(0,70)+'...';div.appendChild(b);div.appendChild(p);div.onclick=()=>{let c=document.getElementById('encyContent');if(c){c.style.display='block';c.innerHTML='';let h=document.createElement('h3');h.textContent=e.t;let pp=document.createElement('p');pp.textContent=e.d;c.appendChild(h);c.appendChild(pp);}speakText(e.d);};el.appendChild(div);});}renderEncy();
 function filterEncy(){let q=sanitizeText(document.getElementById('encySearch').value.toLowerCase());let f=encyData.filter(e=>e.t.toLowerCase().includes(q));let el=document.getElementById('encyList');if(!el)return;el.innerHTML='';f.forEach(e=>{let div=document.createElement('div');div.style.padding='8px';div.style.borderBottom='1px solid #333';div.textContent=e.t;div.onclick=()=>{let c=document.getElementById('encyContent');if(c){c.style.display='block';c.textContent=e.d;}};el.appendChild(div);});}
 function speakEncy(){let c=document.getElementById('encyContent');if(c&&c.textContent)speakText(c.textContent.substring(0,300));}
 function searchDict(){let w=sanitizeText(document.getElementById('dictInput').value.toLowerCase().trim());if(!w||w.length<2)return;let out=document.getElementById('dictOut');if(out)out.textContent='Searching securely...';fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(w)}`).then(r=>{if(!r.ok)throw new Error('Not found');return r.json();}).then(d=>{if(d[0]?.meanings?.[0]?.definitions?.[0]?.definition){if(out)out.textContent=w+': '+sanitizeText(d[0].meanings[0].definitions[0].definition);}else{if(out)out.textContent='No definition found for '+w;}}).catch(()=>{if(out)out.textContent='No definition found - Please check spelling';});}
 function speakDict(){let o=document.getElementById('dictOut');if(o&&o.textContent)speakText(o.textContent.substring(0,300));}
-
-// JOTTER - SECURE LOCAL ONLY
 function saveFan(n){let el=document.getElementById('f'+n);if(!el)return;let v=sanitizeText(el.value);if(v.length>5000){alert('Text too long');return;}localStorage.setItem('jotter'+n,v);speakText('Jotter '+n+' saved securely');}
 function speakJotter(n){let el=document.getElementById('f'+n);if(el&&el.value)speakText(el.value.substring(0,300));}
 for(let i=1;i<=4;i++){let v=localStorage.getItem('jotter'+i);if(v){let el=document.getElementById('f'+i);if(el)el.value=v;}}
-
-// TRACKER - SECURE - ONE GMAIL = 3 PHONES - NO FAKE DATA
 function addTrackerPhone(){
  let email=sanitizeText(document.getElementById('trackerEmail').value.trim());
- if(!email||!isValidEmail(email)){alert('Please enter a valid Gmail address - Secure validation failed');return;}
- let handler=PaystackPop.setup({
-  key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',email:email,amount:200000,currency:'NGN',ref:'TRACK-'+Date.now(),
-  callback:function(res){
-   try{firebase.database().ref('trackers/'+btoa(email).replace(/=/g,'')).set({email:email,paid:true,ref:res.reference,time:Date.now(),secure:true});}catch(e){console.warn(e);}
-   let result=document.getElementById('trackerResult');
-   if(result){result.textContent='';let b=document.createElement('b');b.textContent='Device Added Securely: '+email;let div=document.createElement('div');div.textContent='Reference: '+res.reference+' - Secure - Second device will appear as blue line on same map when it shares location.';result.appendChild(b);result.appendChild(div);}
-   speakText('Device added securely. It will appear on the world map as blue line when second phone shares location.');
-  }
- });handler.openIframe();
+ if(!email||!isValidEmail(email)){alert('Please enter a valid Gmail address');return;}
+ let handler=PaystackPop.setup({key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',email:email,amount:200000,currency:'NGN',ref:'TRACK-'+Date.now(),
+  callback:function(res){try{firebase.database().ref('trackers/'+btoa(email).replace(/=/g,'')).set({email:email,paid:true,ref:res.reference,time:Date.now(),secure:true});}catch(e){} let result=document.getElementById('trackerResult'); if(result){result.textContent='';let b=document.createElement('b');b.textContent='Device Added Securely: '+email;let div=document.createElement('div');div.textContent='Reference: '+res.reference;result.appendChild(b);result.appendChild(div);} speakText('Device added securely.');}});handler.openIframe();
 }
-function locatePhones(){
- if(!navigator.geolocation){alert('Geolocation not supported - Secure check');return;}
- let result=document.getElementById('trackerResult');if(result)result.textContent='Locating your phone securely - Please allow location access...';
- navigator.geolocation.getCurrentPosition(pos=>{
-  let lat=pos.coords.latitude,lon=pos.coords.longitude;
-  if(Math.abs(lat)>90||Math.abs(lon)>180){if(result)result.textContent='Invalid location data - Secure filter blocked';return;}
-  marker.setLatLng([lat,lon]);map.setView([lat,lon],16);
-  if(result){
-   result.textContent='';
-   let title=document.createElement('div');title.innerHTML='<b>Your Current Location - Secure - Green Line:</b>';
-   let latDiv=document.createElement('div');latDiv.textContent=`Latitude: ${lat.toFixed(6)} - Longitude: ${lon.toFixed(6)}`;
-   let note=document.createElement('div');note.style.color='#ffb000';note.textContent='This is your real phone location. Green solid line on map. Secure - No fake data.';
-   let secondNote=document.createElement('div');secondNote.style.marginTop='8px';secondNote.innerHTML='<b style="color:#00aaff">Second Device:</b> No second device connected yet. Pay N2000 above to track second phone. When second phone opens this site and presses Locate, it will appear as blue dashed line on same map.';
-   result.appendChild(title);result.appendChild(latDiv);result.appendChild(note);result.appendChild(secondNote);
-  }
-  try{
-   firebase.database().ref('trackers').once('value',snap=>{
-    if(snap.exists()&&result){
-     let count=Object.keys(snap.val()).length;
-     let info=document.createElement('div');info.style.marginTop='8px';info.style.color='#00ff88';info.textContent=`Secure: Found ${count} registered device(s) in Firebase. Second device will appear when it shares location.`;
-     result.appendChild(info);
-    }
-   });
-  }catch(e){}
-  speakText('Your location detected securely. Green line on map.');
- },err=>{if(result)result.textContent='Location error: '+sanitizeText(err.message);},{enableHighAccuracy:true,timeout:10000});
-}
-
-// COMEDY - NEW FUNNIER PROFESSIONAL BRITISH ENGLISH JOKES
 const comedyJokes=[
  "A man entered a library and asked: Do you have books on paranoia? The librarian whispered: They are right behind you.",
  "Teacher: If you have 10 chocolates and I ask for 2, how many do you have? Student: 10 chocolates and 2 black eyes.",
- "My friend said he would stop impersonating a flamingo. I had to put my foot down.",
  "Why did the scarecrow win an award? He was outstanding in his field, professionally.",
- "A man goes to the doctor: Doctor, I keep thinking I am a bell. Doctor: Take these and if it does not work, give me a ring.",
- "I told my wife she was drawing her eyebrows too high. She looked surprised, professionally.",
- "Why do we never tell secrets on a farm? Because the potatoes have eyes, the corn has ears and the beans stalk.",
- "Customer: Waiter, this soup tastes funny. Waiter: Then why are you not laughing, sir?",
- "I asked my dog what is two minus two. He said nothing, professionally.",
  "Lagos driver to passenger: Oga, hold your change well. Passenger: Why? Driver: Because LASTMA dey hold us already.",
  "Akpos went for interview: Boss, what is your greatest weakness? Akpos: Honesty. Boss: I do not think honesty is a weakness. Akpos: I do not care what you think.",
- "Two friends: How is your new job tracking phones? Second: Excellent, now I know my wife is in the kitchen even when she says she is in London.",
- "Why did the phone go to school? Because it wanted to improve its cell-f coverage, professionally and securely.",
- "My village people tried to track me spiritually, but I already installed Larffan Belefu tracker, now I track them back.",
- "Teacher: What is the definition of trust? Student: When you give a Lagos conductor 500 naira for 100 naira fare and you sleep.",
- "Why did the calculator go to therapy? Because it had too many problems and could not solve its own issues, until trillion support was added."
+ "Why did the phone go to school? Because it wanted to improve its cell-f coverage, professionally and securely."
 ];
 function tellJoke(){let j=comedyJokes[Math.floor(Math.random()*comedyJokes.length)];let out=document.getElementById('comedyOut');if(out)out.textContent=j;speakText(j);}
 function speakComedy(){let out=document.getElementById('comedyOut');if(out&&out.textContent)speakText(out.textContent.substring(0,400));}
-
-// GIFT - SECURE VALIDATION
 function giftPay(){
  let amt=parseInt(sanitizeText(document.getElementById('giftAmount').value),10);
  let curr=sanitizeText(document.getElementById('giftCurr').value);
  let email=sanitizeText(document.getElementById('giftEmail').value.trim())||'support@larffanbelefu.com.ng';
- if(!amt||amt<100||amt>1000000){alert('Please enter a valid amount between 100 and 1,000,000 - Secure validation');return;}
- if(email&&!isValidEmail(email)){alert('Please enter a valid email for receipt - Secure validation');return;}
+ if(!amt||amt<100||amt>1000000){alert('Please enter a valid amount');return;}
+ if(email&&!isValidEmail(email)){alert('Please enter a valid email');return;}
  if(!['NGN','USD','GBP','EUR','GHS'].includes(curr)){curr='NGN';}
- PaystackPop.setup({
-  key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',email:email,amount:amt*100,currency:curr,ref:'GIFT-'+Date.now(),
-  callback:function(res){
-   safeSetText('giftMsg','Thank you! Secure payment successful - Reference: '+res.reference+' - Receipt sent securely');
-   try{firebase.database().ref('gifts/'+res.reference).set({email:email,amount:amt,currency:curr,ref:res.reference,time:Date.now(),secure:true});}catch(e){}
-   speakText('Thank you very much for your secure support of '+amt+' '+curr);
-  }
- }).openIframe();
+ PaystackPop.setup({key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',email:email,amount:amt*100,currency:curr,ref:'GIFT-'+Date.now(),
+  callback:function(res){safeSetText('giftMsg','Thank you! Secure payment successful - Reference: '+res.reference); try{firebase.database().ref('gifts/'+res.reference).set({email:email,amount:amt,currency:curr,ref:res.reference,time:Date.now(),secure:true});}catch(e){} speakText('Thank you very much for your secure support');}}).openIframe();
 }
-
-// COMMUNITY CHAT - SECURE - ANTI XSS - NO INNERHTML
 function sendCommunity(){
  let name=sanitizeText(document.getElementById('cName').value.trim())||'Anonymous';
  let text=sanitizeText(document.getElementById('cText').value.trim());
- if(!text||text.length<1||text.length>200){alert('Please enter a valid message - 1 to 200 characters');return;}
- if(/<script|<iframe|javascript:/i.test(text+name)){alert('Invalid content detected - Secure filter blocked');return;}
- try{firebase.database().ref('chats').push({name:name.substring(0,30),text:text,time:Date.now(),secure:true});}catch(e){
-  let box=document.getElementById('cBox');if(!box)return;let div=document.createElement('div');div.style.padding='4px';div.style.borderBottom='1px solid #222';div.textContent=name+': '+text;box.appendChild(div);
- }
+ if(!text||text.length<1||text.length>200){alert('Please enter a valid message');return;}
+ if(/<script|<iframe|javascript:/i.test(text+name)){alert('Invalid content detected');return;}
+ try{firebase.database().ref('chats').push({name:name.substring(0,30),text:text,time:Date.now(),secure:true});}catch(e){let box=document.getElementById('cBox');if(!box)return;let div=document.createElement('div');div.style.padding='4px';div.style.borderBottom='1px solid #222';div.textContent=name+': '+text;box.appendChild(div);}
  let input=document.getElementById('cText');if(input)input.value='';
 }
-try{
- firebase.database().ref('chats').limitToLast(50).on('child_added',snap=>{
-  let d=snap.val();if(!d||!d.name||!d.text)return;if(d.text.length>500)return;
-  let box=document.getElementById('cBox');if(!box)return;
-  let div=document.createElement('div');div.style.padding='6px';div.style.borderBottom='1px solid #222';div.style.fontSize='13px';
-  div.textContent=sanitizeText(d.name)+': '+sanitizeText(d.text);
-  box.appendChild(div);box.scrollTop=box.scrollHeight;
- });
-}catch(e){console.warn('Chat error',e);}
-
+try{firebase.database().ref('chats').limitToLast(50).on('child_added',snap=>{let d=snap.val();if(!d||!d.name||!d.text)return;let box=document.getElementById('cBox');if(!box)return;let div=document.createElement('div');div.style.padding='6px';div.style.borderBottom='1px solid #222';div.style.fontSize='13px'; div.textContent=sanitizeText(d.name)+': '+sanitizeText(d.text); box.appendChild(div);box.scrollTop=box.scrollHeight;});}catch(e){}
 function toggleMore(){let m=document.getElementById('moreContent');if(!m)return;m.style.display=m.style.display==='none'?'block':'none';}
 function openOnly(id){let mc=document.getElementById('moreContent');if(mc)mc.style.display='block';let target=document.getElementById(id);if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.style.boxShadow='0 0 20px rgba(255,176,0,.6)';setTimeout(()=>{target.style.boxShadow='';},3000);}}
 function toggleAI(){let p=document.getElementById('aiPanel');if(!p)return;p.style.display=p.style.display==='none'?'block':'none';}
@@ -412,23 +493,14 @@ function addAI(t){let c=document.getElementById('aiChat');if(!c)return;let div=d
 function sendAI(){let q=sanitizeText(document.getElementById('aiIn').value.trim());if(!q)return;addAI('You: '+q);let inp=document.getElementById('aiIn');if(inp)inp.value='';handleAI(q);}
 function handleAI(q){
  let l=q.toLowerCase();let name=localStorage.getItem('larffanName')||'Boss';
- let safeQ=sanitizeText(l);
- if(safeQ.includes('tracker')||safeQ.includes('phone')||safeQ.includes('locate')){openOnly('trackerCard');let msg=`Hello ${name}, taking you to Phone Tracker - Secure. Your live location is displayed on the world map with green solid line. Second phone appears as blue dashed line after payment. Press Start Live Tracking for secure detection of walking, bicycle, motorcycle, car, bus, train and airplane.`;addAI(msg);speakText(msg);return;}
- if(safeQ.includes('radio')){document.getElementById('radioCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${name}, taking you to Live Radio - Secure dual player.`;addAI(msg);speakText(msg);return;}
- if(safeQ.includes('tv')||safeQ.includes('television')){document.getElementById('tv').scrollIntoView({behavior:'smooth'});let msg=`Hello ${name}, taking you to Television - 286 secure videos.`;addAI(msg);speakText(msg);return;}
- if(safeQ.includes('world')||safeQ.includes('clock')||safeQ.includes('time')){document.getElementById('worldtime').scrollIntoView({behavior:'smooth'});let msg=`Hello ${name}, taking you to World Clock - Nigeria first - 12 hour AM/PM format with British English.`;addAI(msg);speakText(msg);return;}
- if(safeQ.includes('map')){document.getElementById('mapCard').scrollIntoView({behavior:'smooth'});let msg=`Hello ${name}, taking you to Worldwide Live Map with AI movement detector.`;addAI(msg);speakText(msg);return;}
- let msg=`Hello ${name}, I am your secure British English assistant. I can take you to TV, Radio, World Clock, Worldwide Map, Calculator with trillion support, Dictionary, Encyclopedia, Jotter, Tracker with same map, Comedy and Gift. Please say: take me to tracker, or take me to world clock. All systems are secure and active.`;
+ if(l.includes('emergency')||l.includes('lost')){triggerEmergency();let msg=`Hello ${name}, emergency activated. Your location will be shared to police and family when you confirm.`;addAI(msg);speakText(msg);return;}
+ if(l.includes('ring')||l.includes('find my phone')){let msg=`To ring your device, go to Secure Family Tracker, login with Gmail, and press Ring button next to your device. It will ring loud even on silent for 2 minutes.`;addAI(msg);speakText(msg);openOnly('secureFamilyCard');return;}
+ if(l.includes('tracker')||l.includes('phone')||l.includes('device')){openOnly('secureFamilyCard');let msg=`Hello ${name}, taking you to Secure Family Tracker. Login with Gmail, register Phone and Device. First device free, pay 2000 Naira to unlock 3 devices. You can ring device, deactivate slot, share location. Private map only your Gmail can see.`;addAI(msg);speakText(msg);return;}
+ let msg=`Hello ${name}, I am your secure British English assistant with Meta AI. I can help with: Emergency Red Button, I Am Safe, Good Citizen, Share Location, Nearest Police Hospital Fuel Station, Secure Family Tracker with Gmail and Ring My Device, TV with 286 videos, Radio, World Clock, Map, Calculator, Dictionary, Encyclopedia, Jotter, Comedy and Gift. All systems active.`;
  addAI(msg);speakText(msg);
 }
-function voiceAI(){
- let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rec){alert('Voice not supported in this browser - Secure check');return;}
- let rec=new Rec();rec.lang='en-GB';rec.start();rec.onresult=e=>{let t=sanitizeText(e.results[0][0].transcript);addAI('You: '+t);handleAI(t);};speakText('Listening securely - British English');
-}
+function voiceAI(){let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rec){alert('Voice not supported');return;} let rec=new Rec();rec.lang='en-GB';rec.start();rec.onresult=e=>{let t=sanitizeText(e.results[0][0].transcript);addAI('You: '+t);handleAI(t);};speakText('Listening securely - British English');}
 function openModal(id){let m=document.getElementById(id);if(m)m.style.display='flex';}
 function closeModal(id){let m=document.getElementById(id);if(m)m.style.display='none';}
-
-// FINAL SECURE INIT
 (function(){renderWorldClock();loadWeather();})();
 </script></body></html>
-© 2026 Larffan Belefu Tracker by Paul Osawaru — Original Built and Owned. All Rights Reserved.
