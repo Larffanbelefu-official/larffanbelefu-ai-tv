@@ -18,7 +18,6 @@
 input,textarea,select{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:1px solid #334155;background:#0e1526;color:#fff}
 #playerWrap{position:relative;padding-top:56.25%;background:#000;border-radius:12px;overflow:hidden}
 #playerWrap #ytPlayer{position:absolute;top:0;left:0;width:100%;height:100%}
-/* FIXED SMALL CONTROLS - INSIDE DOWN CORNER - NO BIG AGAIN */
 #fsControls{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.92));padding:6px 8px;display:flex;gap:6px;align-items:center;z-index:20;justify-content:flex-start}
 #fsControls button{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:5px 10px;border-radius:6px;font-weight:700;font-size:12px;flex:0 0 auto;backdrop-filter:blur(4px)}
 #fsControls button:hover{background:var(--orange);color:#000}
@@ -38,6 +37,24 @@ input,textarea,select{width:100%;padding:10px;margin:5px 0;border-radius:10px;bo
 .phoneBox{background:#000;border:2px solid #333;border-radius:12px;padding:10px;margin:6px 0}.phoneBox.active{border-color:var(--green)}.phoneBox.ringing{border-color:var(--red);animation:sirenPulse 0.4s infinite}
 #aiFloat{position:fixed;right:12px;bottom:12px;background:var(--orange);color:#000;width:58px;height:58px;border-radius:50%;border:none;z-index:99;font-weight:900}
 #aiPanel{position:fixed;right:8px;bottom:80px;width:360px;max-width:95vw;background:#0f172a;border:2px solid var(--orange);border-radius:14px;padding:12px;display:none;z-index:99;max-height:70vh;overflow:auto}
+/* LARFFAN NEW RADIO V4 STYLES - NEAT */
+.larffan-device{width:100%;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border:3px solid #333;border-radius:18px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,0.8)}
+.larffan-top{background:#0c1a0c;border-radius:12px;padding:12px;border:2px solid #000;box-shadow:inset 0 0 20px rgba(0,255,100,0.2)}
+.larffan-artist{font-family:monospace;color:#7CFC7C;font-size:18px;line-height:1.1;text-shadow:0 0 8px #00ff66;min-height:50px;font-weight:900}
+.larffan-bars{display:flex;gap:2px;height:50px;margin-top:8px;align-items:flex-end}
+.larffan-bar{flex:1;background:linear-gradient(to top,#00ff66,#aaffaa);border-radius:2px;animation:larffanBounce 0.6s infinite alternate;animation-play-state:paused}
+@keyframes larffanBounce{0%{height:8%}100%{height:100%}}
+.larffan-controls{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.larffan-btn{background:#222;border:2px solid #444;border-radius:10px;color:#ccc;padding:8px 10px;font-weight:700;font-size:11px;cursor:pointer}
+.larffan-btn-play{background:#00ff66;color:#000;border-color:#00cc55}
+.larffan-btn-mic{background:linear-gradient(145deg,#FFD700,#FFA500);color:#000;border-color:#ff8c00;animation:micpulse 2s infinite}
+@keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.7)}50%{box-shadow:0 0 0 10px rgba(255,215,0,0)}}
+.larffan-btn-mic.listening{background:#ff0000;color:#fff;border-color:#ff0000;animation:none}
+.larffan-btn-dl{background:#FF4500;color:#fff;border-color:#ff0000}
+.larffan-status{text-align:center;color:#FFD700;font-size:11px;margin:8px 0;min-height:32px;background:rgba(0,0,0,0.6);border-radius:8px;padding:6px;word-break:break-word}
+.larffan-playlist{background:#0a1510;border-radius:12px;border:2px solid #000;padding:10px;max-height:380px;overflow-y:auto}
+.larffan-track{display:flex;justify-content:space-between;font-family:monospace;font-size:13px;color:#7CFC7C;padding:6px 4px;border-bottom:1px dashed #133313;cursor:pointer}
+.larffan-track.active{background:rgba(0,255,100,0.35);color:#fff;border-radius:6px}
 </style></head><body>
 <div class="header"><h1 style="margin:0;font-size:20px">LARFFAN BELEFU AI WORLD <span style="background:#00ff88;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">SMALL CONTROLS FIXED</span></h1><div style="font-size:11px;color:#9aa5b8">YouTube: LARFFAN BELEFU | larffanbelefu.com.ng | AdSense ca-pub-3962563715594202</div><div style="font-size:10px;color:var(--orange)">Original Built and Owned by Paul Osawaru | All Rights Reserved © 2026</div></div>
 
@@ -82,10 +99,28 @@ input,textarea,select{width:100%;padding:10px;margin:5px 0;border-radius:10px;bo
 <div style="display:flex;gap:5px;margin-top:6px"><button class="btn2" style="width:33%;font-size:11px" onclick="prevInList()">⏮ Prev</button><button class="btn2" style="width:33%;font-size:11px" onclick="toggleFullscreen()">⛶ Expand - Small Corner</button><button class="btn2" style="width:33%;font-size:11px" onclick="toggleAuto()">Auto: <span id="autoLabel">ON</span></button></div>
 <div id="thumbList" class="list"></div><div style="display:flex;gap:5px"><input id="ytInput" placeholder="Paste YouTube link"><button class="btn2" style="width:30%" onclick="previewCustom()">Preview</button></div></div>
 
-<div class="card" id="radioCard"><h2>📻 Live Radio - Dual Player</h2>
-<audio id="radioAudio" controls style="width:100%;height:45px;background:#000;border-radius:8px" preload="none"><source src="https://stream.zeno.fm/larffanbelefu-radio-station" type="audio/mpeg"></audio>
-<div style="display:flex;gap:5px;margin-top:6px"><button class="btn2" style="background:#ffb000;color:#000" onclick="document.getElementById('radioAudio').play()">▶ Play Direct</button><button class="btn2" onclick="document.getElementById('radioAudio').pause()">Pause</button></div>
-<iframe src="https://zeno.fm/player/larffanbelefu-radio-station" style="width:100%;height:120px;border:none;border-radius:10px;background:#000;margin-top:8px"></iframe>
+<div class="card" id="radioCard" style="border:3px solid #00ff88"><h2>📻 LARFFAN BELEFU AI RADIO - 18 TRACKS - ULTRA VOICE + DOWNLOAD - Neat Work by Paul Osawaru</h2>
+<div class="larffan-device">
+<div class="larffan-top">
+<div class="larffan-artist" id="larffanNow">LARFFAN BELEFU AI RADIO<br>V4 ULTRA VOICE - 18 TRACKS READY</div>
+<div class="larffan-bars" id="larffanBars"></div>
+</div>
+<div class="larffan-controls">
+<button class="larffan-btn" onclick="larffanPrev()">◀ PREV</button>
+<button class="larffan-btn larffan-btn-play" onclick="larffanToggle()" id="larffanPlayBtn">▶ PLAY</button>
+<button class="larffan-btn" onclick="larffanNext()">NEXT ▶</button>
+<button class="larffan-btn larffan-btn-mic" id="larffanMicBtn" onclick="larffanStartVoice()">🎤 VOICE</button>
+<button class="larffan-btn larffan-btn-dl" onclick="larffanDownload()">⬇️ DOWNLOAD</button>
+</div>
+<div class="larffan-status" id="larffanStatus">V4 Ultra Active! Tap VOICE and say: "Take me to track 4" or "Take me to Gideon" or "Stop music"</div>
+<div class="larffan-playlist">
+<div id="larffanList"></div>
+<audio id="larffanPlayer" controls crossorigin="anonymous" style="width:100%;margin-top:10px;border-radius:10px"></audio>
+<div id="larffanEmbedBox" style="margin-top:10px;display:none"><iframe id="larffanArchiveFrame" width="100%" height="120" frameborder="0" allow="autoplay"></iframe></div>
+</div>
+<div style="text-align:center;color:#555;font-size:9px;margin-top:8px">LARFFAN BELEFU • 18 TRACKS • ULTRA VOICE AI • DOWNLOAD READY • Built by Paul Osawaru - Highest Technology</div>
+</div>
+<div style="font-size:10px;color:#aaa;text-align:center;margin-top:6px;line-height:1.5">🎤 Voice Commands: "Take me to track 1 to 18" | "Take me to Rambo / Gideon / Star Zi / Wizzy" | "Stop music" | "Play music" | "Next" | "Download"</div>
 </div>
 
 <div class="card" id="trackerCardDown" style="border:3px solid var(--red)"><h2>📱 DOWN DOWN - Phone Lost Tracker - Ring 3 Phones - You Ask</h2>
@@ -121,16 +156,156 @@ All 3 show for SAME MAP up - Each get Ring + Stop + Talk location in English - R
 
 <button id="aiFloat" onclick="toggleAI()">BOT</button><div id="aiPanel"><h3 style="color:orange;margin:0">Larffan AI Assistant - Take Me To... Active</h3><div style="font-size:10px;color:#9aa5b8;margin:4px 0">Type: take me to calculator, engine one, engine two, engine three, tracker, map, radio, world clock, phone 1, phone 2, phone 3</div><div id="aiChat" style="background:#000;padding:8px;border-radius:8px;min-height:100px;max-height:200px;overflow:auto;font-size:12px">AI: Hello! Take me to... is active - Small controls fixed</div><div style="display:flex;gap:5px;margin-top:6px"><input id="aiIn" placeholder="Type: take me to..." style="width:65%" maxlength="200"><button class="btn2" style="width:35%" onclick="sendAI()">Send</button></div><div style="display:flex;gap:5px"><button class="btn2" onclick="voiceAI()">🎤 Voice</button><button class="btn2" onclick="stopSpeak()">Stop</button></div></div>
 
-<footer style="background:#0f172a;padding:20px;text-align:center;margin-top:15px;border-top:3px solid #facc15"><p style="color:#facc15;font-weight:900;margin:0">LARFFAN BELEFU AI WORLD - SMALL CONTROLS FIXED - 100% PERFECT</p><div style="display:flex;gap:10px;justify-content:center;margin:10px 0"><a href="#" onclick="openModal('aboutModal')" style="color:#fff">About Us</a><a href="#" onclick="openModal('contactModal')" style="color:#fff">Contact Us</a><a href="#" onclick="openModal('privacyModal')" style="color:#fff">Privacy Policy</a></div><p style="color:#94a3b8;font-size:11px;margin:0">© 2026 All Rights Reserved - Original Built and Owned by Paul Osawaru - larffanbelefu.com.ng</p><div style="font-size:10px;color:#9aa5b8;margin-top:4px">YouTube: LARFFAN BELEFU | WhatsApp: 09138222908 | AdSense: ca-pub-3962563715594202 | Brand: LARFFAN BELEFU</div><div style="font-size:10px;margin-top:4px">Live: <span id="footerLocation">Press Start Tracking</span> | PWA Install Works 100% | Small Controls Inside Down Corner | English Voice Guidance | Engine 1,2,3 As You Like</div></footer>
+<footer style="background:#0f172a;padding:20px;text-align:center;margin-top:15px;border-top:3px solid #facc15"><p style="color:#facc15;font-weight:900;margin:0">LARFFAN BELEFU AI WORLD - SMALL CONTROLS FIXED - 100% PERFECT - RADIO 18 TRACKS ULTRA VOICE</p><div style="display:flex;gap:10px;justify-content:center;margin:10px 0"><a href="#" onclick="openModal('aboutModal')" style="color:#fff">About Us</a><a href="#" onclick="openModal('contactModal')" style="color:#fff">Contact Us</a><a href="#" onclick="openModal('privacyModal')" style="color:#fff">Privacy Policy</a></div><p style="color:#94a3b8;font-size:11px;margin:0">© 2026 All Rights Reserved - Original Built and Owned by Paul Osawaru - larffanbelefu.com.ng</p><div style="font-size:10px;color:#9aa5b8;margin-top:4px">YouTube: LARFFAN BELEFU | WhatsApp: 09138222908 | AdSense: ca-pub-3962563715594202 | Brand: LARFFAN BELEFU</div><div style="font-size:10px;margin-top:4px">Live: <span id="footerLocation">Press Start Tracking</span> | PWA Install Works 100% | Small Controls Inside Down Corner | English Voice Guidance | Engine 1,2,3 As You Like | Radio 18 Tracks Ultra Voice Download</div></footer>
 
-<div id="aboutModal" class="modal" onclick="closeModal('aboutModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">About Us</h2><p style="font-size:12px;line-height:1.7">Welcome to LARFFAN BELEFU AI WORLD. Brand LARFFAN BELEFU means Laugh and Belefu - Homeboy brand. Official YouTube is LARFFAN BELEFU - search with space. Original Built and Owned by Paul Osawaru, Lagos Nigeria worldwide. We provide live TV Engine 1 286, Engine 2 14 shorts, Engine 3 Ambassador WrJcGgyC9iQ, live radio, world clock Nigeria first, worldwide map with voice guidance siren with stop button auto stop when you reach, phone tracker for 3 phones same Gmail Green Blue Red each with Ring Stop Talk location in English for lost phone, calculator with trillion and chart, gift support and chat. Highest V Technology. Contact support@larffanbelefu.com.ng</p><button class="btn2" onclick="closeModal('aboutModal')">Close</button></div></div>
+<div id="aboutModal" class="modal" onclick="closeModal('aboutModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">About Us</h2><p style="font-size:12px;line-height:1.7">Welcome to LARFFAN BELEFU AI WORLD. Brand LARFFAN BELEFU means Laugh and Belefu - Homeboy brand. Official YouTube is LARFFAN BELEFU - search with space. Original Built and Owned by Paul Osawaru, Lagos Nigeria worldwide. We provide live TV Engine 1 286, Engine 2 14 shorts, Engine 3 Ambassador WrJcGgyC9iQ, live radio 18 tracks ultra voice with download, world clock Nigeria first, worldwide map with voice guidance siren with stop button auto stop when you reach, phone tracker for 3 phones same Gmail Green Blue Red each with Ring Stop Talk location in English for lost phone, calculator with trillion and chart, gift support and chat. Highest V Technology. Contact support@larffanbelefu.com.ng</p><button class="btn2" onclick="closeModal('aboutModal')">Close</button></div></div>
 <div id="contactModal" class="modal" onclick="closeModal('contactModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Contact Us</h2><p style="font-size:12px;line-height:1.7">Owner: Paul Osawaru<br>Brand: LARFFAN BELEFU AI WORLD<br>YouTube: LARFFAN BELEFU<br>Email: support@larffanbelefu.com.ng<br>WhatsApp: 09138222908<br>Website: larffanbelefu.com.ng<br>AdSense: ca-pub-3962563715594202<br>We respond within 24 hours. Original Built and Owned by Paul Osawaru - All Rights Reserved.</p><button class="btn2" onclick="closeModal('contactModal')">Close</button></div></div>
-<div id="privacyModal" class="modal" onclick="closeModal('privacyModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Privacy Policy</h2><p style="font-size:11px;line-height:1.7">We respect your privacy at LARFFAN BELEFU AI WORLD. We collect name stored locally, jotter notes stored locally, tracker email stored securely in Firebase for 3 phones same Gmail tracking Green Blue Red, gift payment handled by Paystack, location only when you press Start Tracking. Green solid is you, blue dashed second, red dashed third. Siren tracking with voice guidance in English for motor people with stop button auto stop when you reach location. Down down phone lost tracker with ring stop talk location in English for each phone separate and ring all. PWA install fixed works 100%. © 2026 All Rights Reserved - Original Built and Owned by Paul Osawaru.</p><button class="btn2" onclick="closeModal('privacyModal')">Close</button></div></div>
+<div id="privacyModal" class="modal" onclick="closeModal('privacyModal')"><div class="modalBox" onclick="event.stopPropagation()"><h2 style="color:#ffb000">Privacy Policy</h2><p style="font-size:11px;line-height:1.7">We respect your privacy at LARFFAN BELEFU AI WORLD. We collect name stored locally, jotter notes stored locally, tracker email stored securely in Firebase for 3 phones same Gmail tracking Green Blue Red, gift payment handled by Paystack, location only when you press Start Tracking. Green solid is you, blue dashed second, red dashed third. Siren tracking with voice guidance in English for motor people with stop button auto stop when you reach location. Down down phone lost tracker with ring stop talk location in English for each phone separate and ring all. PWA install fixed works 100%. Radio 18 tracks ultra voice with download. © 2026 All Rights Reserved - Original Built and Owned by Paul Osawaru.</p><button class="btn2" onclick="closeModal('privacyModal')">Close</button></div></div>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+// LARFFAN RADIO V4 ULTRA VOICE - INTEGRATED - NO CONFLICT
+const larffanTracks = [
+{ident:"star-zi-o-g-to-god", title:"STAR ZI - O G TO GOD", keys:["star zi o g","o g to god","god"]},
+{ident:"wizzy-ns-my-blood", title:"WIZZY NS - MY BLOOD", keys:["wizzy","my blood","wizzy ns"]},
+{ident:"star-zi-my-guy", title:"STAR ZI - MY GUY", keys:["my guy"]},
+{ident:"a-message-to-jagaban-amb-gideon-nigeria", title:"AMB GIDEON - MESSAGE TO JAGABAN", keys:["gideon","jagaban","message to jagaban","amb gideon","young music"]},
+{ident:"star-zi-kukerwa", title:"STAR ZI - KUKERWA", keys:["kukerwa"]},
+{ident:"rambo-attention-nakamura", title:"RAMBO - ATTENTION NAKAMURA", keys:["rambo","attention","nakamura"]},
+{ident:"star-zi-baby-1", title:"STAR ZI - BABY", keys:["baby","star zi baby"]},
+{ident:"revelation-17-engkjvn-2-da", title:"REVELATION 17", keys:["revelation"]},
+{ident:"aud-20261028-wa-0005-1", title:"AUD - 0005-1", keys:["0005-1"]},
+{ident:"aud-20261027-wa-0024", title:"AUD - 0024", keys:["0024"]},
+{ident:"aud-20261027-wa-0025", title:"AUD - 0025", keys:["0025"]},
+{ident:"aud-20261028-wa-0000", title:"AUD - 0000", keys:["0000"]},
+{ident:"aud-20261028-wa-0001", title:"AUD - 0001", keys:["0001"]},
+{ident:"aud-20261028-wa-0002", title:"AUD - 0002", keys:["0002"]},
+{ident:"aud-20261028-wa-0003", title:"AUD - 0003", keys:["0003"]},
+{ident:"aud-20261028-wa-0004", title:"AUD - 0004", keys:["0004"]},
+{ident:"aud-20261028-wa-0005", title:"AUD - 0005", keys:["0005"]},
+{ident:"aud-20261028-wa-0006", title:"AUD - 0006", keys:["0006"]}
+];
+let larffanCurrent=0, larffanOrder=larffanTracks.map((_,i)=>i), larffanDownloadUrl='';
+const larffanPlayer=document.getElementById('larffanPlayer');
+const larffanNowEl=document.getElementById('larffanNow');
+const larffanStatusEl=document.getElementById('larffanStatus');
+const larffanListEl=document.getElementById('larffanList');
+const larffanEmbedBox=document.getElementById('larffanEmbedBox');
+const larffanArchiveFrame=document.getElementById('larffanArchiveFrame');
+const larffanMicBtn=document.getElementById('larffanMicBtn');
+
+for(let i=0;i<28;i++){let b=document.createElement('div');b.className='larffan-bar';b.style.animationDelay=(Math.random()*0.6)+'s';document.getElementById('larffanBars').appendChild(b);}
+function larffanUpdateBars(p){document.querySelectorAll('.larffan-bar').forEach(b=>b.style.animationPlayState=p?'running':'paused');}
+function larffanRenderList(){
+  larffanListEl.innerHTML='';
+  larffanOrder.forEach((realIdx,displayIdx)=>{
+    const t=larffanTracks[realIdx];
+    const div=document.createElement('div');
+    div.className='larffan-track'+(realIdx===larffanCurrent?' active':'');
+    div.innerHTML='<span>'+(displayIdx+1)+'. '+t.title+'</span><span>▶ '+(realIdx+1)+'</span>';
+    div.onclick=()=>larffanPlayReal(realIdx);
+    larffanListEl.appendChild(div);
+  });
+}
+function larffanWordToNumber(word){
+  const map={"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,"ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,"sixteen":16,"seventeen":17,"eighteen":18,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18};
+  return map[word.toLowerCase()]||null;
+}
+async function larffanPlayReal(idx){
+  larffanCurrent=idx; const t=larffanTracks[idx];
+  larffanNowEl.innerHTML=t.title+'<br><span style="font-size:13px;color:#FFD700">TRACK '+(idx+1)+' / 18 LOADING...</span>';
+  larffanStatusEl.innerHTML='🔍 Loading: <b>'+t.title+'</b>...'; larffanUpdateBars(false); larffanRenderList(); larffanEmbedBox.style.display='none'; larffanPlayer.style.display='block';
+  try{
+    const metaRes = await fetch('https://archive.org/metadata/'+t.ident);
+    const meta = await metaRes.json();
+    const files = meta.files||[];
+    let audioFile = files.find(f=>f.name && (f.name.toLowerCase().endsWith('.mp3')||f.name.toLowerCase().endsWith('.m4a')||f.name.toLowerCase().endsWith('.ogg')||f.name.toLowerCase().endsWith('.opus')) && !f.name.includes('_thumb') && !f.name.includes('spectrogram'));
+    if(!audioFile) audioFile = files.find(f=>f.source==='original' && f.name.match(/\.(mp3|m4a|ogg)$/i));
+    if(audioFile){
+      const url='https://archive.org/download/'+t.ident+'/'+encodeURIComponent(audioFile.name);
+      larffanDownloadUrl=url;
+      larffanPlayer.src=url; await larffanPlayer.play();
+      document.getElementById('larffanPlayBtn').innerText='❚❚ PAUSE'; larffanUpdateBars(true);
+      larffanStatusEl.innerHTML='🔊 PLAYING NOW: <b>'+t.title+'</b> ✅<br>🎤 Voice active - say "Stop music" or "Take me to track X"';
+      larffanNowEl.innerHTML=t.title+'<br><span style="font-size:13px;color:#00ff66">TRACK '+(idx+1)+' PLAYING • VOICE 100% • DOWNLOAD READY</span>';
+      return;
+    } else throw new Error();
+  }catch(e){
+    larffanDownloadUrl='https://archive.org/details/'+t.ident;
+    larffanArchiveFrame.src='https://archive.org/embed/'+t.ident+'?autoplay=1'; larffanEmbedBox.style.display='block'; larffanPlayer.style.display='none';
+    larffanNowEl.innerHTML=t.title+'<br><span style="font-size:13px;color:#FFD700">TRACK '+(idx+1)+' PLAYING (EMBED)</span>';
+    larffanStatusEl.innerHTML='🔊 PLAYING NOW: <b>'+t.title+'</b> (Embed) ✅<br>🎤 Voice still active!'; larffanUpdateBars(true);
+  }
+}
+function larffanDownload(){
+  if(!larffanDownloadUrl){larffanStatusEl.innerHTML='Play a track first before downloading!';return;}
+  const t=larffanTracks[larffanCurrent];
+  if(larffanDownloadUrl.includes('/details/')){
+    window.open(larffanDownloadUrl,'_blank');
+    larffanStatusEl.innerHTML='Opening Archive page for download: '+t.title;
+  } else {
+    const a=document.createElement('a'); a.href=larffanDownloadUrl; a.download=t.title+'.mp3'; a.target='_blank'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    larffanStatusEl.innerHTML='⬇️ Downloading: <b>'+t.title+'</b> - Check your Downloads folder!';
+  }
+}
+function larffanToggle(){if(larffanPlayer.style.display==='none'){larffanStatusEl.innerHTML='Use player controls in embed box';return;} if(larffanPlayer.paused){larffanPlayer.play();document.getElementById('larffanPlayBtn').innerText='❚❚ PAUSE';larffanUpdateBars(true); larffanStatusEl.innerHTML='🔊 PLAYING NOW: <b>'+larffanTracks[larffanCurrent].title+'</b> ✅';}else{larffanPlayer.pause();document.getElementById('larffanPlayBtn').innerText='▶ PLAY';larffanUpdateBars(false); larffanStatusEl.innerHTML='⏸️ PAUSED: <b>'+larffanTracks[larffanCurrent].title+'</b> ❌ E NO DEY PLAY<br>Say "Play music" to resume';}}
+function larffanNext(){let pos=larffanOrder.indexOf(larffanCurrent);let np=(pos+1)%larffanOrder.length;larffanPlayReal(larffanOrder[np]);}
+function larffanPrev(){let pos=larffanOrder.indexOf(larffanCurrent);let pp=(pos-1+larffanOrder.length)%larffanOrder.length;larffanPlayReal(larffanOrder[pp]);}
+function larffanFindTrackByName(text){
+  text=text.toLowerCase();
+  for(let i=0;i<larffanTracks.length;i++){
+    if(text.includes(larffanTracks[i].title.toLowerCase())) return i;
+    for(let k of larffanTracks[i].keys){ if(text.includes(k)) return i; }
+  }
+  return null;
+}
+function larffanStartVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){larffanStatusEl.innerHTML='❌ Voice need Chrome browser';return;}
+  const rec=new SR(); rec.lang='en-NG'; rec.continuous=false; rec.interimResults=false;
+  rec.onstart=()=>{larffanMicBtn.classList.add('listening'); larffanMicBtn.innerText='🔴 LISTENING...'; larffanStatusEl.innerHTML='🎤 LISTENING... Say:<br>"Take me to track 5" or "Take me to Gideon" or "Stop music"';};
+  rec.onend=()=>{larffanMicBtn.classList.remove('listening'); larffanMicBtn.innerText='🎤 VOICE';};
+  rec.onerror=(e)=>{larffanMicBtn.classList.remove('listening'); larffanMicBtn.innerText='🎤 VOICE'; larffanStatusEl.innerHTML='❌ Voice error: '+e.error+' - Tap again';};
+  rec.onresult=(e)=>{
+    const raw=e.results[0][0].transcript;
+    const text=raw.toLowerCase();
+    larffanStatusEl.innerHTML='🗣️ You said: "<b>'+raw+'</b>"<br>Processing...';
+    setTimeout(()=>{
+      if(text.includes('stop') && (text.includes('music')||text.includes('play')||text.trim()==='stop')){
+        if(!larffanPlayer.paused){larffanPlayer.pause(); document.getElementById('larffanPlayBtn').innerText='▶ PLAY'; larffanUpdateBars(false); larffanStatusEl.innerHTML='⏸️ PAUSED: <b>'+larffanTracks[larffanCurrent].title+'</b> ❌<br>Music Stopped - Say "Play music" to play';} else {larffanStatusEl.innerHTML='⏸️ Already stopped';}
+        return;
+      }
+      if((text.includes('play') && text.includes('music')) || text.trim()==='play' || text.includes('continue') || text.includes('resume')){
+        if(larffanPlayer.paused && larffanPlayer.src){larffanPlayer.play(); document.getElementById('larffanPlayBtn').innerText='❚❚ PAUSE'; larffanUpdateBars(true); larffanStatusEl.innerHTML='🔊 PLAYING NOW: <b>'+larffanTracks[larffanCurrent].title+'</b> ✅';} else {larffanStatusEl.innerHTML='▶️ Already playing';}
+        return;
+      }
+      if(text.includes('download')){larffanDownload(); return;}
+      if(text.includes('next')){larffanNext(); return;}
+      if(text.includes('previous')||text.includes('prev')||text.includes('go back')){larffanPrev(); return;}
+      let m=text.match(/track\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen)/i);
+      if(m){
+        let numStr=m[1].toLowerCase();
+        let num=parseInt(numStr); if(isNaN(num)) num=larffanWordToNumber(numStr);
+        if(num>=1 && num<=larffanTracks.length){larffanPlayReal(num-1); return;}
+      }
+      let m2=text.match(/(?:take me to|go to|play)\s+(\d+)/);
+      if(m2){let num=parseInt(m2[1]); if(num>=1 && num<=larffanTracks.length){larffanPlayReal(num-1); return;}}
+      let found=larffanFindTrackByName(text);
+      if(found!==null){larffanPlayReal(found); return;}
+      if(text.includes('young music')||text.includes('young')){larffanPlayReal(3); return;}
+      larffanStatusEl.innerHTML='❓ I hear: "<b>'+raw+'</b>"<br>Try: "Take me to track 4" or "Take me to Rambo" or "Stop music"';
+    },400);
+  };
+  rec.start();
+}
+larffanRenderList(); larffanUpdateBars(false);
+larffanPlayer.addEventListener('ended',larffanNext);
+// Auto load first track after 1 sec
+setTimeout(()=>larffanPlayReal(0),1000);
+</script>
 <script>
 if('serviceWorker' in navigator){let swCode=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>self.clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response('Offline'))));`;let blob=new Blob([swCode],{type:'text/javascript'});let swUrl=URL.createObjectURL(blob);navigator.serviceWorker.register(swUrl).then(()=>{document.getElementById('pwaStatus').textContent='PWA Registered - Install App now works 100% - Fixed';});}
 var firebaseConfig={apiKey:"AIzaSyAucmj1JQqkX5CqSgFbuo6H34ZBCaPVliY",authDomain:"larffanbelefu-ai-tv.firebaseapp.com",projectId:"larffanbelefu-ai-tv",storageBucket:"larffanbelefu-ai-tv.firebasestorage.app",messagingSenderId:"96721446215",appId:"1:96721446215:web:9da4e2491b7d5b7cc09862",databaseURL:"https://larffanbelefu-ai-tv-default-rtdb.firebaseio.com"};
@@ -221,7 +396,7 @@ if(safeQ.includes('take me to')||safeQ.includes('carry me go')){
  if(safeQ.includes('engine three')||safeQ.includes('engine 3')||safeQ.includes('ambassador')){document.getElementById('tv').scrollIntoView({behavior:'smooth'});engine3();let msg=`Hello ${name}, I dey carry you go Engine Three - Ambassador WrJcGgyC9iQ - Independent - As you like am`;addAI(msg);speakText(msg);return;}
  if(safeQ.includes('tracker')||safeQ.includes('phone')||safeQ.includes('lost')){openOnly('trackerCardDown');let msg=`Hello ${name}, I dey carry you go Down Down Tracker - Phone lost - 3 phones same Gmail - Each Ring Stop Talk English`;addAI(msg);speakText(msg);return;}
  if(safeQ.includes('map')||safeQ.includes('navigation')){openOnly('mapCard');let msg=`Hello ${name}, I dey carry you go Live Map - Voice guidance in English - Siren near map with Stop button - When you reach e go stop`;addAI(msg);speakText(msg);return;}
- if(safeQ.includes('radio')){openOnly('radioCard');let msg=`Hello ${name}, I dey carry you go Live Radio`;addAI(msg);speakText(msg);return;}
+ if(safeQ.includes('radio')){openOnly('radioCard');let msg=`Hello ${name}, I dey carry you go Live Radio - 18 Tracks Ultra Voice`;addAI(msg);speakText(msg);return;}
  if(safeQ.includes('world')||safeQ.includes('clock')||safeQ.includes('time')){openOnly('worldtime');let msg=`Hello ${name}, I dey carry you go World Clock - Nigeria first`;addAI(msg);speakText(msg);return;}
  if(safeQ.includes('phone 1')){openOnly('trackerCardDown');speakPhoneLocation(1);let msg=`Hello ${name}, Phone 1 - Green main - This location - Ring Stop Talk English`;addAI(msg);speakText(msg);return;}
  if(safeQ.includes('phone 2')){openOnly('trackerCardDown');speakPhoneLocation(2);let msg=`Hello ${name}, Phone 2 - Blue second same Gmail - That location`;addAI(msg);speakText(msg);return;}
