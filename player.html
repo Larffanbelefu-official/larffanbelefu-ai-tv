@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LARFFAN BELEFU AI VOICE PLAYER - 18 Tracks</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@700&display=swap');
+body{background:#050505;color:#fff;font-family:'Space Mono',monospace;margin:0;padding:15px;display:flex;justify-content:center}
+.device{width:100%;max-width:460px;background:linear-gradient(145deg,#2a2a2a,#151515);border:4px solid #333;border-radius:20px;padding:18px;box-shadow:0 20px 80px rgba(0,0,0,0.9)}
+.top{background:#0c1a0c;border-radius:14px;padding:14px;border:3px solid #000;box-shadow:inset 0 0 25px rgba(0,255,100,0.25)}
+.artist{font-family:'VT323',monospace;color:#7CFC7C;font-size:24px;line-height:1;text-shadow:0 0 10px #00ff66;min-height:60px}
+.bars{display:flex;gap:2px;height:60px;margin-top:10px;align-items:flex-end}
+.bar{flex:1;background:linear-gradient(to top,#00ff66,#aaffaa);border-radius:2px;animation:bounce 0.7s infinite alternate;animation-play-state:paused}
+@keyframes bounce{0%{height:10%}100%{height:100%}}
+.controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.btn{background:#222;border:2px solid #444;border-radius:10px;color:#ccc;padding:9px 12px;font-weight:700;font-size:11px;cursor:pointer}
+.btn-mic{background:#FFD700;color:#000;border-color:#ffaa00;font-size:13px}
+.btn-ai{background:#8B0000;color:#fff;border-color:#ff2222}
+.status{text-align:center;color:#FFD700;font-size:11px;margin:8px 0;min-height:20px}
+.playlist{background:#0a1510;border-radius:14px;border:3px solid #000;padding:12px;max-height:420px;overflow-y:auto}
+.ptitle{color:#FFD700;font-size:14px;margin-bottom:8px;display:flex;justify-content:space-between}
+.track{display:flex;justify-content:space-between;font-family:'VT323',monospace;font-size:15px;color:#7CFC7C;padding:6px 4px;border-bottom:1px dashed #133313;cursor:pointer}
+.track.active{background:rgba(0,255,100,0.25);color:#fff}
+audio{width:100%;margin-top:10px}
+.footer{text-align:center;color:#555;font-size:9px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="device">
+<div class="top">
+<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>18 TRACKS READY - NO DOUBLE</div>
+<div class="bars" id="bars"></div>
+</div>
+
+<div class="controls">
+<button class="btn" onclick="prev()">◀ PREV</button>
+<button class="btn" onclick="toggle()" id="playBtn">▶ PLAY</button>
+<button class="btn" onclick="next()">NEXT ▶</button>
+<button class="btn" id="shuffleBtn" onclick="toggleShuffle()">🔀 SHUFFLE OFF</button>
+<button class="btn btn-mic" onclick="startVoice()">🎤 VOICE</button>
+</div>
+
+<div class="status" id="status">Say: "Take me to track 5" or "Take me to Rambo" or "Take me to Gideon"</div>
+
+<div class="playlist">
+<div class="ptitle"><span>PLAYLIST - 18 TRACKS (SHUFFLED MIX)</span><span id="count"></span></div>
+<div id="list"></div>
+<audio id="player" controls></audio>
+</div>
+
+<div class="footer">LARFFAN BELEFU • larffanbelefu.com.ng<br>Voice: "Take me to track [number]" or "Take me to [name]"<br>GitHub File: larffan-voice-player-18-tracks.html</div>
+</div>
+
+<script>
+const tracks = [
+{ident:"star-zi-o-g-to-god", title:"01 STAR ZI - O G TO GOD"},
+{ident:"wizzy-ns-my-blood", title:"02 WIZZY NS - MY BLOOD"},
+{ident:"star-zi-my-guy", title:"03 STAR ZI - MY GUY"},
+{ident:"a-message-to-jagaban-amb-gideon-nigeria", title:"04 AMB GIDEON - MESSAGE TO JAGABAN"},
+{ident:"star-zi-kukerwa", title:"05 STAR ZI - KUKERWA"},
+{ident:"rambo-attention-nakamura", title:"06 RAMBO - ATTENTION NAKAMURA"},
+{ident:"star-zi-baby-1", title:"07 STAR ZI - BABY"},
+{ident:"revelation-17-engkjvn-2-da", title:"08 REVELATION 17"},
+{ident:"aud-20261028-wa-0005-1", title:"09 AUD - 0005-1"},
+{ident:"aud-20261027-wa-0024", title:"10 AUD - 0024"},
+{ident:"aud-20261027-wa-0025", title:"11 AUD - 0025"},
+{ident:"aud-20261028-wa-0000", title:"12 AUD - 0000"},
+{ident:"aud-20261028-wa-0001", title:"13 AUD - 0001"},
+{ident:"aud-20261028-wa-0002", title:"14 AUD - 0002"},
+{ident:"aud-20261028-wa-0003", title:"15 AUD - 0003"},
+{ident:"aud-20261028-wa-0004", title:"16 AUD - 0004"},
+{ident:"aud-20261028-wa-0005", title:"17 AUD - 0005"},
+{ident:"aud-20261028-wa-0006", title:"18 AUD - 0006"}
+];
+
+let current=0;
+let shuffle=false;
+let order=tracks.map((_,i)=>i);
+const player=document.getElementById('player');
+const nowEl=document.getElementById('now');
+const statusEl=document.getElementById('status');
+const listEl=document.getElementById('list');
+const barsEl=document.getElementById('bars');
+for(let i=0;i<28;i++){let b=document.createElement('div');b.className='bar';b.style.animationDelay=(Math.random()*0.7)+'s';barsEl.appendChild(b);}
+function updateBars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused');}
+function renderList(){
+  listEl.innerHTML='';
+  order.forEach((realIdx,displayIdx)=>{
+    const t=tracks[realIdx];
+    const div=document.createElement('div');
+    div.className='track'+(realIdx===current?' active':'');
+    div.innerHTML='<span>'+(displayIdx+1)+'. '+t.title+'</span><span>TRACK '+(realIdx+1)+'</span>';
+    div.onclick=()=>playReal(realIdx);
+    listEl.appendChild(div);
+  });
+}
+function playReal(idx){
+  current=idx;
+  const t=tracks[idx];
+  nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#FFD700">TRACK '+(idx+1)+' / '+tracks.length+'</span>';
+  player.src='https://archive.org/download/'+t.ident+'/'+t.ident+'.mp3';
+  player.play().catch(()=>{
+    player.src='https://archive.org/download/'+t.ident+'/'+t.ident+'_512kb.mp3';
+    player.play().catch(()=>{
+      statusEl.innerText='Opening Archive page for: '+t.title;
+      window.open('https://archive.org/details/'+t.ident,'_blank');
+    });
+  });
+  document.getElementById('playBtn').innerText='❚❚ PAUSE';
+  updateBars(true);
+  renderList();
+  statusEl.innerText='Now Playing: '+t.title;
+}
+function toggle(){if(player.paused){player.play();document.getElementById('playBtn').innerText='❚❚ PAUSE';updateBars(true);}else{player.pause();document.getElementById('playBtn').innerText='▶ PLAY';updateBars(false);}}
+function next(){let pos=order.indexOf(current);let np=(pos+1)%order.length;playReal(order[np]);}
+function prev(){let pos=order.indexOf(current);let pp=(pos-1+order.length)%order.length;playReal(order[pp]);}
+function toggleShuffle(){
+  shuffle=!shuffle;
+  if(shuffle){order=[...order].sort(()=>Math.random()-0.5);document.getElementById('shuffleBtn').innerText='🔀 SHUFFLE ON';}
+  else{order=tracks.map((_,i)=>i);document.getElementById('shuffleBtn').innerText='🔀 SHUFFLE OFF';}
+  renderList();
+}
+function startVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){statusEl.innerText='Voice not supported - use Chrome';return;}
+  const rec=new SR();
+  rec.lang='en-NG';
+  rec.onstart=()=>{statusEl.innerText='🎤 Listening... Say "Take me to track 5" or "Take me to Rambo"';};
+  rec.onresult=(e)=>{
+    const text=e.results[0][0].transcript.toLowerCase();
+    statusEl.innerText='You said: "'+text+'"';
+    let m=text.match(/track\s+(\d+)/);
+    if(m){let num=parseInt(m[1]);if(num>=1&&num<=tracks.length){playReal(num-1);statusEl.innerText='✅ Taking you to Track '+num;return;}}
+    if(text.includes('rambo')){playReal(tracks.findIndex(t=>t.ident.includes('rambo')));return;}
+    if(text.includes('gideon')||text.includes('jagaban')){playReal(tracks.findIndex(t=>t.ident.includes('gideon')));return;}
+    if(text.includes('wizzy')||text.includes('blood')){playReal(tracks.findIndex(t=>t.ident.includes('wizzy')));return;}
+    if(text.includes('star')&&text.includes('baby')){playReal(tracks.findIndex(t=>t.ident==='star-zi-baby-1'));return;}
+    if(text.includes('my guy')){playReal(tracks.findIndex(t=>t.ident==='star-zi-my-guy'));return;}
+    if(text.includes('kukerwa')){playReal(tracks.findIndex(t=>t.ident==='star-zi-kukerwa'));return;}
+    if(text.includes('o g')||text.includes('og to god')){playReal(0);return;}
+    if(text.includes('next')){next();return;}
+    if(text.includes('previous')||text.includes('prev')){prev();return;}
+    if(text.includes('shuffle')){toggleShuffle();return;}
+    statusEl.innerText='❌ No match - try "Take me to track 2" or "Take me to Rambo"';
+  };
+  rec.start();
+}
+renderList();
+updateBars(false);
+player.addEventListener('ended',next);
+</script>
+</body>
+</html>
