@@ -3,52 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LARFFAN BELEFU AI VOICE PLAYER - V2 FIXED</title>
+<title>LARFFAN BELEFU AI RADIO V3 - DOWNLOAD + FIXED</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@700&display=swap');
 body{background:#050505;color:#fff;font-family:'Space Mono',monospace;margin:0;padding:15px;display:flex;justify-content:center}
 .device{width:100%;max-width:460px;background:linear-gradient(145deg,#2a2a2a,#151515);border:4px solid #333;border-radius:20px;padding:18px;box-shadow:0 20px 80px rgba(0,0,0,0.9)}
 .top{background:#0c1a0c;border-radius:14px;padding:14px;border:3px solid #000;box-shadow:inset 0 0 25px rgba(0,255,100,0.25)}
-.artist{font-family:'VT323',monospace;color:#7CFC7C;font-size:24px;line-height:1;text-shadow:0 0 10px #00ff66;min-height:60px}
-.bars{display:flex;gap:2px;height:60px;margin-top:10px;align-items:flex-end}
+.artist{font-family:'VT323',monospace;color:#7CFC7C;font-size:22px;line-height:1.1;text-shadow:0 0 10px #00ff66;min-height:60px}
+.bars{display:flex;gap:2px;height:55px;margin-top:10px;align-items:flex-end}
 .bar{flex:1;background:linear-gradient(to top,#00ff66,#aaffaa);border-radius:2px;animation:bounce 0.7s infinite alternate;animation-play-state:paused}
 @keyframes bounce{0%{height:10%}100%{height:100%}}
-.controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
-.btn{background:#222;border:2px solid #444;border-radius:10px;color:#ccc;padding:9px 12px;font-weight:700;font-size:11px;cursor:pointer}
-.btn-mic{background:#FFD700;color:#000;border-color:#ffaa00;font-size:13px}
-.status{text-align:center;color:#FFD700;font-size:11px;margin:8px 0;min-height:20px;word-break:break-all}
-.playlist{background:#0a1510;border-radius:14px;border:3px solid #000;padding:12px;max-height:420px;overflow-y:auto}
-.ptitle{color:#FFD700;font-size:14px;margin-bottom:8px;display:flex;justify-content:space-between}
-.track{display:flex;justify-content:space-between;font-family:'VT323',monospace;font-size:15px;color:#7CFC7C;padding:6px 4px;border-bottom:1px dashed #133313;cursor:pointer}
-.track.active{background:rgba(0,255,100,0.25);color:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0}
+.btn{background:#222;border:2px solid #444;border-radius:10px;color:#ccc;padding:9px 10px;font-weight:700;font-size:11px;cursor:pointer}
+.btn-play{background:#00ff66;color:#000;border-color:#00cc55;font-size:12px}
+.btn-mic{background:#FFD700;color:#000;border-color:#ffaa00}
+.btn-dl{background:#FF4500;color:#fff;border-color:#ff0000;font-size:12px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.status{text-align:center;color:#FFD700;font-size:11px;margin:8px 0;min-height:18px;word-break:break-all}
+.playlist{background:#0a1510;border-radius:14px;border:3px solid #000;padding:12px;max-height:450px;overflow-y:auto}
+.track{display:flex;justify-content:space-between;font-family:'VT323',monospace;font-size:14px;color:#7CFC7C;padding:7px 4px;border-bottom:1px dashed #133313;cursor:pointer}
+.track.active{background:rgba(0,255,100,0.3);color:#fff;border-radius:6px}
 audio{width:100%;margin-top:10px}
 .footer{text-align:center;color:#555;font-size:9px;margin-top:10px}
 .loading{color:#00ff66;animation:blink 1s infinite}
 @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0.3}}
+.dl-info{font-size:10px;color:#aaa;text-align:center;margin-top:4px}
 </style>
 </head>
 <body>
 <div class="device">
 <div class="top">
-<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>18 TRACKS FIXED - AUDIO OK!</div>
+<div class="artist" id="now">LARFFAN BELEFU AI RADIO V3<br>18 TRACKS + DOWNLOAD FIXED!</div>
 <div class="bars" id="bars"></div>
 </div>
+
 <div class="controls">
 <button class="btn" onclick="prev()">◀ PREV</button>
-<button class="btn" onclick="toggle()" id="playBtn">▶ PLAY</button>
+<button class="btn btn-play" onclick="toggle()" id="playBtn">▶ PLAY</button>
 <button class="btn" onclick="next()">NEXT ▶</button>
-<button class="btn" id="shuffleBtn" onclick="toggleShuffle()">🔀 SHUFFLE OFF</button>
+<button class="btn" id="shuffleBtn" onclick="toggleShuffle()">🔀 SHUFFLE</button>
 <button class="btn btn-mic" onclick="startVoice()">🎤 VOICE</button>
+<button class="btn btn-dl" onclick="downloadCurrent()">⬇️ DOWNLOAD THIS TRACK</button>
 </div>
-<div class="status" id="status">Fixed! Auto-finds real mp3 file</div>
+
+<div class="status" id="status">V3 Ready! Track 4 fixed + Download added!</div>
+<div class="dl-info" id="dlInfo"></div>
+
 <div class="playlist">
-<div class="ptitle"><span>PLAYLIST - 18 TRACKS FIXED</span></div>
 <div id="list"></div>
 <audio id="player" controls crossorigin="anonymous"></audio>
 <div id="embedBox" style="margin-top:10px;display:none"><iframe id="archiveFrame" width="100%" height="120" frameborder="0"></iframe></div>
 </div>
-<div class="footer">LARFFAN BELEFU • larffanbelefu.com.ng<br>Voice: "Take me to track [number]"</div>
+
+<div class="footer">LARFFAN BELEFU • larffanbelefu.com.ng • 18 TRACKS • DOWNLOAD OK!</div>
 </div>
+
 <script>
 const tracks = [
 {ident:"star-zi-o-g-to-god", title:"01 STAR ZI - O G TO GOD"},
@@ -70,15 +79,16 @@ const tracks = [
 {ident:"aud-20261028-wa-0005", title:"17 AUD - 0005"},
 {ident:"aud-20261028-wa-0006", title:"18 AUD - 0006"}
 ];
-let current=0, shuffle=false, order=tracks.map((_,i)=>i);
+let current=0, shuffle=false, order=tracks.map((_,i)=>i), currentDownloadUrl='';
 const player=document.getElementById('player');
 const nowEl=document.getElementById('now');
 const statusEl=document.getElementById('status');
+const dlInfoEl=document.getElementById('dlInfo');
 const listEl=document.getElementById('list');
-const barsEl=document.getElementById('bars');
 const embedBox=document.getElementById('embedBox');
 const archiveFrame=document.getElementById('archiveFrame');
-for(let i=0;i<28;i++){let b=document.createElement('div');b.className='bar';b.style.animationDelay=(Math.random()*0.7)+'s';barsEl.appendChild(b);}
+
+for(let i=0;i<28;i++){let b=document.createElement('div');b.className='bar';b.style.animationDelay=(Math.random()*0.7)+'s';document.getElementById('bars').appendChild(b);}
 function updateBars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused');}
 function renderList(){
   listEl.innerHTML='';
@@ -86,64 +96,77 @@ function renderList(){
     const t=tracks[realIdx];
     const div=document.createElement('div');
     div.className='track'+(realIdx===current?' active':'');
-    div.innerHTML='<span>'+(displayIdx+1)+'. '+t.title+'</span><span>TRACK '+(realIdx+1)+'</span>';
+    div.innerHTML='<span>'+(displayIdx+1)+'. '+t.title+'</span><span>▶ TRACK '+(realIdx+1)+'</span>';
     div.onclick=()=>playReal(realIdx);
     listEl.appendChild(div);
   });
 }
+
 async function playReal(idx){
   current=idx;
   const t=tracks[idx];
-  nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#FFD700">TRACK '+(idx+1)+' / '+tracks.length+' <span class="loading">LOADING...</span></span>';
-  statusEl.innerText='Finding real mp3 for '+t.ident+'...';
+  nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#FFD700">TRACK '+(idx+1)+' / 18 <span class="loading">LOADING...</span></span>';
+  statusEl.innerText='Finding file for '+t.ident+'...';
   updateBars(false); renderList(); embedBox.style.display='none'; player.style.display='block';
   try{
     const metaRes = await fetch('https://archive.org/metadata/'+t.ident);
     const meta = await metaRes.json();
     const files = meta.files || [];
-    let audioFile = files.find(f=>f.name && (f.name.toLowerCase().endsWith('.mp3') || f.name.toLowerCase().endsWith('.m4a') || f.name.toLowerCase().endsWith('.ogg')) && !f.name.includes('_thumb') && !f.name.includes('spectrogram'));
-    if(!audioFile) audioFile = files.find(f=>f.source==='original' && f.name.match(/\.(mp3|m4a|ogg|wav)$/i));
+    let audioFile = files.find(f=>f.name && (f.name.toLowerCase().endsWith('.mp3') || f.name.toLowerCase().endsWith('.m4a') || f.name.toLowerCase().endsWith('.ogg') || f.name.toLowerCase().endsWith('.opus')) && !f.name.includes('_thumb') && !f.name.includes('spectrogram') && !f.name.includes('.jpg') && !f.name.includes('.png'));
+    if(!audioFile) audioFile = files.find(f=>f.source==='original');
     if(audioFile){
       const url = 'https://archive.org/download/'+t.ident+'/'+encodeURIComponent(audioFile.name);
+      currentDownloadUrl = url;
       player.src=url; await player.play();
       document.getElementById('playBtn').innerText='❚❚ PAUSE'; updateBars(true);
-      statusEl.innerText='Now Playing: '+t.title+' | File: '+audioFile.name;
-      nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#FFD700">TRACK '+(idx+1)+' PLAYING</span>';
+      statusEl.innerText='✅ Now Playing: '+t.title;
+      dlInfoEl.innerText='Download file: '+audioFile.name+' - Click DOWNLOAD button!';
+      nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#00ff66">TRACK '+(idx+1)+' PLAYING • DOWNLOAD READY</span>';
       return;
-    } else { throw new Error('No audio'); }
+    } else { throw new Error('No file'); }
   } catch(e){
-    statusEl.innerText='Using embed player - still plays!';
+    currentDownloadUrl = 'https://archive.org/details/'+t.ident;
+    statusEl.innerText='Embed mode - download go still work!';
+    dlInfoEl.innerText='Click DOWNLOAD to go Archive page to download';
     archiveFrame.src='https://archive.org/embed/'+t.ident+'?autoplay=1'; embedBox.style.display='block';
-    player.style.display='none'; nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#00ff66">TRACK '+(idx+1)+' - EMBED MODE</span>'; updateBars(true);
+    player.style.display='none'; nowEl.innerHTML=t.title+'<br><span style="font-size:16px;color:#FFD700">TRACK '+(idx+1)+' - EMBED + DOWNLOAD</span>'; updateBars(true);
   }
 }
-function toggle(){if(player.style.display==='none'){statusEl.innerText='Use embed player controls';return;} if(player.paused){player.play();document.getElementById('playBtn').innerText='❚❚ PAUSE';updateBars(true);}else{player.pause();document.getElementById('playBtn').innerText='▶ PLAY';updateBars(false);}}
+
+function downloadCurrent(){
+  if(!currentDownloadUrl){statusEl.innerText='Play a track first before downloading!';return;}
+  const t=tracks[current];
+  if(currentDownloadUrl.includes('/details/')){
+    window.open(currentDownloadUrl,'_blank');
+    statusEl.innerText='Opening Archive page for download: '+t.title;
+  } else {
+    const a=document.createElement('a'); a.href=currentDownloadUrl; a.download=t.title+'.mp3'; a.target='_blank'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    statusEl.innerText='⬇️ Downloading: '+t.title+' - Check your Downloads folder!';
+  }
+}
+function toggle(){if(player.style.display==='none'){statusEl.innerText='Use embed controls';return;} if(player.paused){player.play();document.getElementById('playBtn').innerText='❚❚ PAUSE';updateBars(true);}else{player.pause();document.getElementById('playBtn').innerText='▶ PLAY';updateBars(false);}}
 function next(){let pos=order.indexOf(current);let np=(pos+1)%order.length;playReal(order[np]);}
 function prev(){let pos=order.indexOf(current);let pp=(pos-1+order.length)%order.length;playReal(order[pp]);}
 function toggleShuffle(){shuffle=!shuffle;if(shuffle){order=[...order].sort(()=>Math.random()-0.5);document.getElementById('shuffleBtn').innerText='🔀 SHUFFLE ON';}else{order=tracks.map((_,i)=>i);document.getElementById('shuffleBtn').innerText='🔀 SHUFFLE OFF';}renderList();}
 function startVoice(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){statusEl.innerText='Voice not supported - use Chrome';return;}
+  if(!SR){statusEl.innerText='Use Chrome for voice';return;}
   const rec=new SR(); rec.lang='en-NG';
-  rec.onstart=()=>{statusEl.innerText='Listening... Say "Take me to track 5" or "Take me to Rambo"';};
+  rec.onstart=()=>{statusEl.innerText='🎤 Listening... "Take me to track 5"';};
   rec.onresult=(e)=>{
     const text=e.results[0][0].transcript.toLowerCase();
     statusEl.innerText='You said: "'+text+'"';
     let m=text.match(/track\s+(\d+)/);
-    if(m){let num=parseInt(m[1]);if(num>=1&&num<=tracks.length){playReal(num-1);statusEl.innerText='Taking you to Track '+num;return;}}
-    if(text.includes('rambo')){playReal(tracks.findIndex(t=>t.ident.includes('rambo')));return;}
-    if(text.includes('gideon')||text.includes('jagaban')){playReal(tracks.findIndex(t=>t.ident.includes('gideon')));return;}
-    if(text.includes('wizzy')){playReal(tracks.findIndex(t=>t.ident.includes('wizzy')));return;}
-    if(text.includes('baby')){playReal(tracks.findIndex(t=>t.ident==='star-zi-baby-1'));return;}
-    if(text.includes('my guy')){playReal(tracks.findIndex(t=>t.ident==='star-zi-my-guy'));return;}
-    if(text.includes('kukerwa')){playReal(tracks.findIndex(t=>t.ident==='star-zi-kukerwa'));return;}
+    if(m){let num=parseInt(m[1]);if(num>=1&&num<=tracks.length){playReal(num-1);return;}}
+    if(text.includes('rambo')){playReal(5);return;}
+    if(text.includes('gideon')||text.includes('jagaban')){playReal(3);return;}
+    if(text.includes('download')){downloadCurrent();return;}
     if(text.includes('next')){next();return;}
     if(text.includes('previous')){prev();return;}
-    if(text.includes('shuffle')){toggleShuffle();return;}
-    statusEl.innerText='No match - try "Take me to track 2"';
   }; rec.start();
 }
 renderList(); updateBars(false); player.addEventListener('ended',next);
+playReal(0);
 </script>
 </body>
 </html>
