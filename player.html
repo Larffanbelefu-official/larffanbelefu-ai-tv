@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>LARFFAN BELEFU AI RADIO - V11 + PAYSTACK LIVE</title>
+<title>LARFFAN BELEFU AI RADIO - V11.1 + PICTURE INSIDE</title>
 <style>
 body{margin:0;background:#070a12;color:#fff;font-family:system-ui,Arial}
 .header{background:#000;text-align:center;padding:16px;border-bottom:4px solid #ffb000}
@@ -26,14 +26,17 @@ body{margin:0;background:#070a12;color:#fff;font-family:system-ui,Arial}
 .flagBtn{font-size:28px;background:#222;border:2px solid #444;border-radius:10px;padding:5px 9px}
 .flagBtn.active{border-color:#00ff88;background:#00ff88}
 input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#000;color:#fff;margin:6px 0;box-sizing:border-box}
-.artistImg{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #00ff66;box-shadow:0 0 25px #00ff66;margin:8px auto;display:block}
-.artistImg.playing{animation:glow 1s infinite alternate}
-@keyframes glow{0%{box-shadow:0 0 10px #00ff66}100%{box-shadow:0 0 35px #00ff66,0 0 55px #ffb000}}
+/* PICTURE BUILT INSIDE CODE - NO EXTERNAL IMAGE NEEDED */
+.artistCircle{width:120px;height:120px;border-radius:50%;margin:10px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:4px solid #00ff66;box-shadow:0 0 25px #00ff66;font-weight:900;position:relative}
+.artistCircle.playing{animation:glowPulse 0.8s infinite alternate}
+@keyframes glowPulse{0%{box-shadow:0 0 10px #00ff66;transform:scale(1)}100%{box-shadow:0 0 40px #00ff66,0 0 60px #ffb000;transform:scale(1.05)}}
+.artistEmoji{font-size:42px;line-height:1}
+.artistNameSmall{font-size:12px;margin-top:4px;padding:0 8px;line-height:1.2}
 </style>
 </head>
 <body>
 <div class="header">
-<h1 style="margin:0;font-size:22px">LARFFAN BELEFU AI RADIO <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:10px;font-size:11px">V11 + PAYSTACK LIVE</span></h1>
+<h1 style="margin:0;font-size:22px">LARFFAN BELEFU AI RADIO <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:10px;font-size:11px">V11.1 + PAYSTACK LIVE</span></h1>
 <div style="font-size:12px">larffanbelefu.com.ng | Owner: Paul Osawaru</div>
 <button class="btn" id="installBtn" style="background:#ffb000;color:#000;display:none;margin-top:10px" onclick="doInstall()">📲 INSTALL RADIO TO HOME SCREEN - PRESS HERE</button>
 <div style="font-size:12px;color:#FFD700;margin-top:6px">For iPhone: Press Share then Add to Home Screen</div>
@@ -43,8 +46,12 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;backgroun
 <div class="nowBox">
 <div id="bigFlag" style="font-size:56px">🇳🇬</div>
 <div id="countryName" style="color:#FFD700;font-weight:900">NIGERIA - NAIJA</div>
-<img id="artistImg" class="artistImg" src="https://archive.org/download/star-zi-o-g-to-god/STAR%20ZI.jpg" onerror="this.style.display='none'" alt="Artist">
-<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>V11 - 21 TRACKS READY</div>
+<!-- PICTURE DEY HERE - E GO SHOW ALWAYS -->
+<div id="artistCircle" class="artistCircle" style="background:linear-gradient(135deg,#00ff66,#003300)">
+<div id="artistEmoji" class="artistEmoji">🎤</div>
+<div id="artistNameSmall" class="artistNameSmall">LARFFAN BELEFU</div>
+</div>
+<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>V11.1 - 21 TRACKS READY</div>
 <div class="bars" id="bars"></div>
 <div id="whoIsPlaying" style="margin-top:8px;font-weight:900;color:#ffb000">⏹️ NOTHING DEY PLAY NOW</div>
 </div>
@@ -76,7 +83,7 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;backgroun
 <div id="modeLabel" style="text-align:center;color:#00ff88;font-weight:900;font-size:13px">MODE NOW: ROTATE ALL</div>
 </div>
 
-<div id="status" style="text-align:center;color:#FFD700;font-size:13px;background:#000;border-radius:8px;padding:8px">V11 Ready! Press PLAY or press any track.</div>
+<div id="status" style="text-align:center;color:#FFD700;font-size:13px;background:#000;border-radius:8px;padding:8px">V11.1 Ready! Press PLAY or press any track.</div>
 <div id="flagsRow" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;background:#000;padding:8px;border-radius:10px;margin:8px 0"></div>
 <div style="background:#0a1510;border-radius:12px;padding:10px;max-height:500px;overflow-y:auto"><div id="list"></div><audio id="player" controls style="width:100%;margin-top:10px" preload="metadata" playsinline></audio></div>
 </div>
@@ -93,7 +100,7 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;backgroun
 <a href="https://larffanbelefu.com.ng" style="display:block;background:gold;color:#000;padding:12px;border-radius:10px;font-weight:900;text-decoration:none;margin-top:8px">CLICK HERE 👇👇👇<br>larffanbelefu.com.ng</a>
 </div></div>
 
-<footer style="background:#0f172a;padding:20px;text-align:center"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI RADIO - V11 + PAYSTACK LIVE</p><p style="font-size:11px">© 2026 Paul Osawaru - larffanbelefu.com.ng</p></footer>
+<footer style="background:#0f172a;padding:20px;text-align:center"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI RADIO - V11.1 + PAYSTACK LIVE</p><p style="font-size:11px">© 2026 Paul Osawaru - larffanbelefu.com.ng</p></footer>
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
@@ -117,44 +124,47 @@ onClose:function(){document.getElementById('payMsg').textContent='Payment window
 handler.openIframe();
 }
 let playMode='all', current=0, dlUrl='', who='none', isLoading=false;
-const tracks=[
-{id:"star-zi-o-g-to-god",t:"STAR ZI - O G TO GOD",img:"starzi",artist:"STAR ZI O G"},
-{id:"wizzy-ns-my-blood",t:"WIZZY NS - MY BLOOD",img:"wizzy",artist:"WIZZY NS"},
-{id:"star-zi-my-guy",t:"STAR ZI - MY GUY",img:"starzi",artist:"STAR ZI O G"},
-{id:"a-message-to-jagaban-amb-gideon-nigeria",t:"AMB GIDEON - MESSAGE TO JAGABAN",img:"gideon",artist:"AMB. GIDEON"},
-{id:"star-zi-kukerwa",t:"STAR ZI - KUKERWA",img:"starzi",artist:"STAR ZI O G"},
-{id:"rambo-attention-nakamura",t:"RAMBO - ATTENTION NAKAMURA",img:"rambo",artist:"RAMBO"},
-{id:"star-zi-baby-1",t:"STAR ZI - BABY",img:"starzi",artist:"STAR ZI O G"},
-{id:"revelation-17-engkjvn-2-da",t:"REVELATION 17",img:"bible",artist:"HOLY BIBLE"},
-{id:"aud-20261028-wa-0005-1",t:"AMB. GIDEON - MESSAGE 9",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261027-wa-0024",t:"AMB. GIDEON - MESSAGE 10",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261027-wa-0025",t:"AMB. GIDEON - MESSAGE 11",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0000",t:"AMB. GIDEON - MESSAGE 12",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0001",t:"AMB. GIDEON - MESSAGE 13",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0002",t:"AMB. GIDEON - MESSAGE 14",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0003",t:"AMB. GIDEON - MESSAGE 15",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0004",t:"AMB. GIDEON - MESSAGE 16",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0005",t:"AMB. GIDEON - MESSAGE 17",img:"gideon",artist:"AMB. GIDEON"},
-{id:"aud-20261028-wa-0006",t:"AMB. GIDEON - MESSAGE 18",img:"gideon",artist:"AMB. GIDEON"},
-{id:"star-zi",t:"STAR ZI O G - WHEN I GIVE THEM",img:"starzi",artist:"STAR ZI O G"},
-{id:"star-zi-alone-1",t:"STAR ZI O G - IF I GET PLENTY MONEY",img:"starzi",artist:"STAR ZI O G"},
-{id:"aud-20261106-wa-0139",t:"AMB. GIDEON - MESSAGE TO THE WORLD",img:"gideon",artist:"AMB. GIDEON"}
-];
-const IMG_MAP={
-starzi:"https://archive.org/download/star-zi-o-g-to-god/STAR%20ZI.jpg",
-wizzy:"https://archive.org/download/wizzy-ns-my-blood/WIZZY.jpg",
-gideon:"https://archive.org/download/a-message-to-jagaban-amb-gideon-nigeria/AMB%20GIDEON.jpg",
-rambo:"https://archive.org/download/rambo-attention-nakamura/RAMBO.jpg",
-bible:"https://archive.org/download/revelation-17-engkjvn-2-da/BIBLE.jpg"
+// PICTURE STYLE BUILT INSIDE - NO EXTERNAL IMAGE
+const ARTISTS={
+starzi:{emoji:"🎤",label:"STAR ZI O G",bg:"linear-gradient(135deg,#00ff66,#003300)",border:"#00ff66"},
+gideon:{emoji:"🙏",label:"AMB. GIDEON",bg:"linear-gradient(135deg,#ff0000,#330000)",border:"#ff6666"},
+wizzy:{emoji:"🎵",label:"WIZZY NS",bg:"linear-gradient(135deg,#00aaff,#000033)",border:"#00aaff"},
+rambo:{emoji:"🔥",label:"RAMBO",bg:"linear-gradient(135deg,#ff8800,#330000)",border:"#ffb000"},
+bible:{emoji:"📖",label:"HOLY BIBLE",bg:"linear-gradient(135deg,#FFD700,#553300)",border:"#FFD700"},
+default:{emoji:"🎤",label:"LARFFAN BELEFU",bg:"linear-gradient(135deg,#00ff66,#003300)",border:"#00ff66"}
 };
+const tracks=[
+{id:"star-zi-o-g-to-god",t:"STAR ZI - O G TO GOD",a:"starzi"},
+{id:"wizzy-ns-my-blood",t:"WIZZY NS - MY BLOOD",a:"wizzy"},
+{id:"star-zi-my-guy",t:"STAR ZI - MY GUY",a:"starzi"},
+{id:"a-message-to-jagaban-amb-gideon-nigeria",t:"AMB GIDEON - MESSAGE TO JAGABAN",a:"gideon"},
+{id:"star-zi-kukerwa",t:"STAR ZI - KUKERWA",a:"starzi"},
+{id:"rambo-attention-nakamura",t:"RAMBO - ATTENTION NAKAMURA",a:"rambo"},
+{id:"star-zi-baby-1",t:"STAR ZI - BABY",a:"starzi"},
+{id:"revelation-17-engkjvn-2-da",t:"REVELATION 17",a:"bible"},
+{id:"aud-20261028-wa-0005-1",t:"AMB. GIDEON - MESSAGE 9",a:"gideon"},
+{id:"aud-20261027-wa-0024",t:"AMB. GIDEON - MESSAGE 10",a:"gideon"},
+{id:"aud-20261027-wa-0025",t:"AMB. GIDEON - MESSAGE 11",a:"gideon"},
+{id:"aud-20261028-wa-0000",t:"AMB. GIDEON - MESSAGE 12",a:"gideon"},
+{id:"aud-20261028-wa-0001",t:"AMB. GIDEON - MESSAGE 13",a:"gideon"},
+{id:"aud-20261028-wa-0002",t:"AMB. GIDEON - MESSAGE 14",a:"gideon"},
+{id:"aud-20261028-wa-0003",t:"AMB. GIDEON - MESSAGE 15",a:"gideon"},
+{id:"aud-20261028-wa-0004",t:"AMB. GIDEON - MESSAGE 16",a:"gideon"},
+{id:"aud-20261028-wa-0005",t:"AMB. GIDEON - MESSAGE 17",a:"gideon"},
+{id:"aud-20261028-wa-0006",t:"AMB. GIDEON - MESSAGE 18",a:"gideon"},
+{id:"star-zi",t:"STAR ZI O G - WHEN I GIVE THEM",a:"starzi"},
+{id:"star-zi-alone-1",t:"STAR ZI O G - IF I GET PLENTY MONEY",a:"starzi"},
+{id:"aud-20261106-wa-0139",t:"AMB. GIDEON - MESSAGE TO THE WORLD",a:"gideon"}
+];
 const countries=[{f:"🇳🇬",n:"NIGERIA - NAIJA"},{f:"🇬🇭",n:"GHANA"},{f:"🇺🇸",n:"USA"},{f:"🇬🇧",n:"UK - LONDON"},{f:"🇨🇦",n:"CANADA"},{f:"🇿🇦",n:"SOUTH AFRICA"},{f:"🇦🇪",n:"DUBAI - UAE"},{f:"🇮🇳",n:"INDIA"}];
 let cIdx=0;
-const player=document.getElementById('player'), nowEl=document.getElementById('now'), statusEl=document.getElementById('status'), listEl=document.getElementById('list'), whoEl=document.getElementById('whoIsPlaying'), artistImg=document.getElementById('artistImg');
+const player=document.getElementById('player'), nowEl=document.getElementById('now'), statusEl=document.getElementById('status'), listEl=document.getElementById('list'), whoEl=document.getElementById('whoIsPlaying'), circle=document.getElementById('artistCircle'), emojiEl=document.getElementById('artistEmoji'), nameEl=document.getElementById('artistNameSmall');
+function setArtist(key){let a=ARTISTS[key]||ARTISTS.default; emojiEl.textContent=a.emoji; nameEl.textContent=a.label; circle.style.background=a.bg; circle.style.borderColor=a.border;}
 function speak(t){try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang='en-GB';speechSynthesis.speak(u)}catch(e){}}
 function setMode(m){playMode=m;['mOne','mAll','mRep','mPlayAll'].forEach(id=>document.getElementById(id).classList.remove('on'));if(m==='one'){document.getElementById('mOne').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: PLAY ONE'}if(m==='all'){document.getElementById('mAll').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: ROTATE ALL'}if(m==='repeat'){document.getElementById('mRep').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: REPEAT ONE'}if(m==='playall'){document.getElementById('mPlayAll').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: PLAY ALL'}}
 function renderFlags(){let r=document.getElementById('flagsRow');r.innerHTML='';countries.forEach((c,i)=>{let b=document.createElement('button');b.className='flagBtn'+(i===cIdx?' active':'');b.innerHTML=c.f;b.onclick=()=>{cIdx=i;document.getElementById('bigFlag').textContent=c.f;document.getElementById('countryName').textContent=c.n;renderFlags()};r.appendChild(b)})}
 for(let i=0;i<28;i++){let b=document.createElement('div');b.className='bar';document.getElementById('bars').appendChild(b)}
-function bars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused'); if(artistImg) artistImg.classList.toggle('playing',!!p)}
+function bars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused'); circle.classList.toggle('playing',!!p)}
 function renderList(){listEl.innerHTML='';tracks.forEach((t,i)=>{let d=document.createElement('div');d.className='track'+(i===current?' active':'');d.innerHTML='<span>'+(i+1)+'. '+t.t+'</span><span>▶ '+(i+1)+'</span>';d.onclick=()=>playReal(i,'✋ HAND');listEl.appendChild(d)})}
 function stopAll(){player.pause();bars(false);document.getElementById('playBtn').innerText='▶ PLAY';who='none';whoEl.textContent='⏹️ NOTHING DEY PLAY NOW';}
 async function findAudioUrl(id){
@@ -174,18 +184,18 @@ async function playReal(idx, by){
   isLoading = true;
   current = idx;
   let t = tracks[idx];
+  setArtist(t.a);
   nowEl.innerHTML = t.t + '<br>TRACK '+(idx+1)+' / '+tracks.length+' LOADING...';
   statusEl.innerHTML = 'Loading: '+t.t+'... Please wait';
   bars(false);
-  if(IMG_MAP[t.img]){artistImg.src=IMG_MAP[t.img]; artistImg.style.display='block';}
   renderList();
   who = by || '✋ HAND';
   whoEl.textContent = by==='🎤 AI' ? '🎤 AI DEY PLAY NOW' : '✋ HAND DEY PLAY NOW - LOADING...';
-  if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title:t.t, artist:t.artist, album:'larffanbelefu.com.ng'}); }catch(e){} }
+  if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title:t.t, artist:(ARTISTS[t.a]||{}).label||'Larffan Belefu', album:'larffanbelefu.com.ng'}); }catch(e){} }
   try{
     let url = await findAudioUrl(t.id);
     if(!url){
-      statusEl.innerHTML = '❌ Track '+ (idx+1) +' not found on Archive.org. Trying next in 2 sec... ID: '+t.id;
+      statusEl.innerHTML = '❌ Track '+ (idx+1) +' not found. Trying next... ID: '+t.id;
       isLoading = false;
       setTimeout(()=>{ if(playMode==='all' || playMode==='playall') playReal((current+1)%tracks.length, by); }, 2000);
       return;
@@ -201,7 +211,7 @@ async function playReal(idx, by){
       nowEl.innerHTML = t.t+'<br>TRACK '+(idx+1)+' PLAYING - '+by;
       whoEl.textContent = by==='🎤 AI' ? '🎤 AI DEY PLAY NOW' : '✋ HAND DEY PLAY NOW';
     }catch(playErr){
-      statusEl.innerHTML = '⚠️ Press PLAY again to start sound - Browser blocked it once. Track ready: '+t.t;
+      statusEl.innerHTML = '⚠️ Press PLAY again - Browser blocked it once. Track ready: '+t.t;
       document.getElementById('playBtn').innerText='▶ PLAY';
     }
   }catch(e){
@@ -230,7 +240,7 @@ function onEnded(){
   if(playMode==='playall'){ playReal((current+1)%tracks.length, who); return; }
 }
 player.addEventListener('ended', onEnded);
-player.addEventListener('error', ()=>{ statusEl.innerHTML='❌ Player error - This file cannot play. Trying next...'; if(playMode==='all'||playMode==='playall'){ setTimeout(()=>playReal((current+1)%tracks.length, who), 1200); } });
+player.addEventListener('error', ()=>{ statusEl.innerHTML='❌ Player error - Trying next...'; if(playMode==='all'||playMode==='playall'){ setTimeout(()=>playReal((current+1)%tracks.length, who), 1200); } });
 player.addEventListener('playing', ()=>{ bars(true); document.getElementById('playBtn').innerText='❚❚ PAUSE'; });
 player.addEventListener('pause', ()=>{ if(!player.ended) bars(false); });
 function startVoice(){
@@ -263,7 +273,7 @@ function startVoice(){
   };
   rec.start();
 }
-renderFlags(); renderList(); bars(false);
+renderFlags(); renderList(); bars(false); setArtist('default');
 if('mediaSession' in navigator){
   try{
     navigator.mediaSession.setActionHandler('play', ()=>manualToggle());
