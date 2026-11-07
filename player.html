@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>LARFFAN BELEFU AI RADIO - V11.2 + REAL PICTURE</title>
+<title>LARFFAN BELEFU AI RADIO - V12 PICTURE INSIDE</title>
 <style>
 body{margin:0;background:#070a12;color:#fff;font-family:system-ui,Arial}
 .header{background:#000;text-align:center;padding:16px;border-bottom:4px solid #ffb000}
@@ -26,7 +26,7 @@ body{margin:0;background:#070a12;color:#fff;font-family:system-ui,Arial}
 .flagBtn{font-size:28px;background:#222;border:2px solid #444;border-radius:10px;padding:5px 9px}
 .flagBtn.active{border-color:#00ff88;background:#00ff88}
 input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#000;color:#fff;margin:6px 0;box-sizing:border-box}
-/* REAL PICTURE - GLOW + VIBRATE */
+/* PICTURE INSIDE CIRCLE - GLOW + VIBRATE */
 .artistImg{width:125px;height:125px;border-radius:50%;object-fit:cover;border:4px solid #00ff66;box-shadow:0 0 25px #00ff66;margin:8px auto;display:block}
 .artistImg.playing{animation:glowPulse 0.7s infinite alternate}
 @keyframes glowPulse{0%{box-shadow:0 0 10px #00ff66;transform:scale(1)}100%{box-shadow:0 0 40px #00ff66,0 0 60px #ffb000;transform:scale(1.06)}}
@@ -36,251 +36,60 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;backgroun
 </head>
 <body>
 <div class="header">
-<h1 style="margin:0;font-size:22px">LARFFAN BELEFU AI RADIO <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:10px;font-size:11px">V11.2 + PAYSTACK LIVE</span></h1>
-<div style="font-size:12px">larffanbelefu.com.ng | Owner: Paul Osawaru</div>
-<button class="btn" id="installBtn" style="background:#ffb000;color:#000;display:none;margin-top:10px" onclick="doInstall()">📲 INSTALL RADIO TO HOME SCREEN - PRESS HERE</button>
-<div style="font-size:12px;color:#FFD700;margin-top:6px">For iPhone: Press Share then Add to Home Screen</div>
+<h1 style="margin:0;font-size:22px">LARFFAN BELEFU AI RADIO <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:10px;font-size:11px">V12 PICTURE INSIDE</span></h1>
+<div style="font-size:12px">anbelefu.com.ng | Owner: Paul Osawaru</div>
+<button class="btn" id="installBtn" style="background:#ffb000;color:#000;display:none;margin-top:10px" onclick="doInstall()">📲 INSTALL RADIO TO HOME SCREEN</button>
 </div>
-
 <div class="card">
 <div class="nowBox">
 <div id="bigFlag" style="font-size:56px">🇳🇬</div>
 <div id="countryName" style="color:#FFD700;font-weight:900">NIGERIA - NAIJA</div>
+<!-- PICTURE INSIDE CIRCLE -->
 <img id="artistImg" class="artistImg" src="starzi.jpg" alt="Artist">
 <div id="artistLabel" class="artistLabel">STAR ZI O G - ARTIST</div>
-<div id="bibleVerse" class="bibleVerse">📖 REVELATION 17 - HOLY BIBLE<br>"And there came one of the seven angels... Come hither; I will shew unto thee the judgment of the great whore that sitteth upon many waters." - Rev 17:1 KJV</div>
-<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>V11.2 - 21 TRACKS READY</div>
+<div id="bibleVerse" class="bibleVerse">📖 HOLY BIBLE - REVELATION 17:1 KJV<br>"And there came one of the seven angels... Come hither; I will shew unto thee the judgment of the great whore that sitteth upon many waters."</div>
+<div class="artist" id="now">LARFFAN BELEFU AI RADIO<br>V12 - 21 TRACKS READY</div>
 <div class="bars" id="bars"></div>
 <div id="whoIsPlaying" style="margin-top:8px;font-weight:900;color:#ffb000">⏹️ NOTHING DEY PLAY NOW</div>
 </div>
-
-<div class="box aiBox">
-<div style="text-align:center;font-size:18px;font-weight:900;color:#00ff66">🎤 1. AI VOICE CONTROL</div>
-<div style="text-align:center;font-size:13px">Press RECORD, talk: <b>"Play track 1" / "Play All" / "Rotate All" / "Repeat One" / "Stop"</b></div>
-<button class="btn" style="background:#00ff66;color:#000" id="micBtn" onclick="startVoice()">🎤 PRESS TO RECORD - TALK TO AI</button>
-<div id="aiStatus" style="text-align:center;font-size:13px">AI dey wait...</div>
-</div>
-
-<div class="box handBox">
-<div style="text-align:center;font-size:18px;font-weight:900;color:#ffb000">✋ 2. MANUAL HAND PLAY</div>
-<div style="text-align:center;font-size:13px">Press button with hand: PLAY / NEXT / PREV</div>
-<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0">
-<button class="cBtn" onclick="manualPrev()">◀ PREV</button>
-<button class="cBtn" style="background:#00ff66;color:#000" onclick="manualToggle()" id="playBtn">▶ PLAY</button>
-<button class="cBtn" onclick="manualNext()">NEXT ▶</button>
-<button class="cBtn" style="background:#FF4500;color:#fff" onclick="doDownload()">⬇️ DOWNLOAD</button>
-</div>
-<div style="display:flex;gap:6px;margin:10px 0">
-<button class="modeBtn" id="mOne" onclick="setMode('one')">▶️ PLAY ONE</button>
-<button class="modeBtn" id="mPlayAll" onclick="setMode('playall')">▶️ PLAY ALL</button>
-</div>
-<div style="display:flex;gap:6px;margin:10px 0">
-<button class="modeBtn on" id="mAll" onclick="setMode('all')">🔁 ROTATE ALL</button>
-<button class="modeBtn" id="mRep" onclick="setMode('repeat')">🔂 REPEAT ONE</button>
-</div>
-<div id="modeLabel" style="text-align:center;color:#00ff88;font-weight:900;font-size:13px">MODE NOW: ROTATE ALL</div>
-</div>
-
-<div id="status" style="text-align:center;color:#FFD700;font-size:13px;background:#000;border-radius:8px;padding:8px">V11.2 Ready! Press PLAY or press any track.</div>
+<div class="box aiBox"><div style="text-align:center;font-size:18px;font-weight:900;color:#00ff66">🎤 1. AI VOICE CONTROL</div><div style="text-align:center;font-size:13px">Press RECORD, talk: <b>"Play track 1" / "Play All" / "Rotate All" / "Repeat One" / "Stop"</b></div><button class="btn" style="background:#00ff66;color:#000" id="micBtn" onclick="startVoice()">🎤 PRESS TO RECORD - TALK TO AI</button><div id="aiStatus" style="text-align:center;font-size:13px">AI dey wait...</div></div>
+<div class="box handBox"><div style="text-align:center;font-size:18px;font-weight:900;color:#ffb000">✋ 2. MANUAL HAND PLAY</div><div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0"><button class="cBtn" onclick="manualPrev()">◀ PREV</button><button class="cBtn" style="background:#00ff66;color:#000" onclick="manualToggle()" id="playBtn">▶ PLAY</button><button class="cBtn" onclick="manualNext()">NEXT ▶</button><button class="cBtn" style="background:#FF4500;color:#fff" onclick="doDownload()">⬇️ DOWNLOAD</button></div><div style="display:flex;gap:6px;margin:10px 0"><button class="modeBtn" id="mOne" onclick="setMode('one')">▶️ PLAY ONE</button><button class="modeBtn" id="mPlayAll" onclick="setMode('playall')">▶️ PLAY ALL</button></div><div style="display:flex;gap:6px;margin:10px 0"><button class="modeBtn on" id="mAll" onclick="setMode('all')">🔁 ROTATE ALL</button><button class="modeBtn" id="mRep" onclick="setMode('repeat')">🔂 REPEAT ONE</button></div><div id="modeLabel" style="text-align:center;color:#00ff88;font-weight:900;font-size:13px">MODE NOW: ROTATE ALL</div></div>
+<div id="status" style="text-align:center;color:#FFD700;font-size:13px;background:#000;border-radius:8px;padding:8px">V12 Ready! Press PLAY or press any track.</div>
 <div id="flagsRow" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;background:#000;padding:8px;border-radius:10px;margin:8px 0"></div>
 <div style="background:#0a1510;border-radius:12px;padding:10px;max-height:500px;overflow-y:auto"><div id="list"></div><audio id="player" controls style="width:100%;margin-top:10px" preload="metadata" playsinline></audio></div>
 </div>
-
-<div class="card"><div class="box payBox">
-<div style="font-size:20px;font-weight:900;color:#00ff66">🎁 SUPPORT - GIFT - PAYSTACK</div>
-<p style="font-size:13px">Support Larffan Belefu AI Radio - Paul Osawaru<br>Your gift go help Radio continue 24/7</p>
-<input id="giftName" placeholder="Your Name (e.g. John)">
-<input id="giftAmount" type="number" placeholder="Amount in Naira - e.g. 1000" value="1000">
-<button class="btn" style="background:#00ff66;color:#000;font-size:16px" onclick="payWithPaystack()">💚 GIVE GIFT NOW WITH PAYSTACK 💚</button>
-<div id="payMsg" style="font-size:12px;color:#FFD700;margin-top:6px"></div>
-<p style="font-size:11px;color:#aaa">Secure payment by Paystack - Card / Transfer / Bank</p>
-<button class="btn" style="background:#ffb000;color:#000" onclick="doInstall()">📲 INSTALL RADIO TO HOME SCREEN</button>
-<a href="https://larffanbelefu.com.ng" style="display:block;background:gold;color:#000;padding:12px;border-radius:10px;font-weight:900;text-decoration:none;margin-top:8px">CLICK HERE 👇👇👇<br>larffanbelefu.com.ng</a>
-</div></div>
-
-<footer style="background:#0f172a;padding:20px;text-align:center"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI RADIO - V11.2 + PAYSTACK LIVE</p><p style="font-size:11px">© 2026 Paul Osawaru - larffanbelefu.com.ng</p></footer>
-
+<div class="card"><div class="box payBox"><div style="font-size:20px;font-weight:900;color:#00ff66">🎁 SUPPORT - GIFT - PAYSTACK</div><p style="font-size:13px">Support Larffan Belefu AI Radio - Paul Osawaru</p><input id="giftName" placeholder="Your Name"><input id="giftAmount" type="number" placeholder="Amount in Naira - e.g. 1000" value="1000"><button class="btn" style="background:#00ff66;color:#000;font-size:16px" onclick="payWithPaystack()">💚 GIVE GIFT NOW WITH PAYSTACK 💚</button><div id="payMsg" style="font-size:12px;color:#FFD700;margin-top:6px"></div><button class="btn" style="background:#ffb000;color:#000" onclick="doInstall()">📲 INSTALL RADIO TO HOME SCREEN</button><a href="https://anbelefu.com.ng" style="display:block;background:gold;color:#000;padding:12px;border-radius:10px;font-weight:900;text-decoration:none;margin-top:8px">CLICK HERE 👇👇👇<br>anbelefu.com.ng</a></div></div>
+<footer style="background:#0f172a;padding:20px;text-align:center"><p style="color:#facc15;font-weight:900">LARFFAN BELEFU AI RADIO - V12 PICTURE INSIDE</p><p style="font-size:11px">© 2026 Paul Osawaru - anbelefu.com.ng</p></footer>
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBtn').style.display='block';});
+let deferredPrompt=null;window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBtn').style.display='block';});
 function doInstall(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}else{alert('For Android Chrome: Press 3 dots top right, then Add to Home screen. For iPhone: Press Share, then Add to Home Screen');}}
-function payWithPaystack(){
-let name=document.getElementById('giftName').value||'Radio Listener';
-let amt=parseInt(document.getElementById('giftAmount').value||'1000');
-if(amt<100){document.getElementById('payMsg').textContent='Amount must be at least ₦100';return}
-let handler=PaystackPop.setup({
-key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',
-email:'listener@larffanbelefu.com.ng',
-amount:amt*100,
-currency:'NGN',
-ref:''+Math.floor(Math.random()*1000000000+1),
-metadata:{custom_fields:[{display_name:"Listener Name",variable_name:"listener_name",value:name},{display_name:"For",variable_name:"for",value:"LARFFAN BELEFU AI RADIO GIFT"}]},
-callback:function(r){document.getElementById('payMsg').textContent='✅ Thank you '+name+'! Gift received! God bless you! Ref: '+r.reference;},
-onClose:function(){document.getElementById('payMsg').textContent='Payment window closed. Thank you!';}
-});
-handler.openIframe();
-}
+function payWithPaystack(){let name=document.getElementById('giftName').value||'Radio Listener';let amt=parseInt(document.getElementById('giftAmount').value||'1000');if(amt<100){document.getElementById('payMsg').textContent='Amount must be at least ₦100';return}let handler=PaystackPop.setup({key:'pk_live_61a3aee4123c44e0e122aa986ff76d70cf94ad38',email:'listener@larffanbelefu.com.ng',amount:amt*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),metadata:{custom_fields:[{display_name:"Listener Name",variable_name:"listener_name",value:name}]},callback:function(r){document.getElementById('payMsg').textContent='✅ Thank you '+name+'! Gift received! God bless you! Ref: '+r.reference;},onClose:function(){document.getElementById('payMsg').textContent='Payment window closed. Thank you!';}});handler.openIframe();}
 let playMode='all', current=0, dlUrl='', who='none', isLoading=false;
-// REAL PICTURES - FILES MUST BE IN SAME FOLDER
-const ARTISTS={
-starzi:{img:"starzi.jpg",label:"STAR ZI O G - ARTIST",border:"#00ff66"},
-gideon:{img:"gideon.jpg",label:"AMB. GIDEON - GOSPEL ARTIST",border:"#ff6666"},
-wizzy:{img:"wizzy.jpg",label:"WIZZY NS aka YOUNG WIZZY - ARTIST",border:"#00aaff"},
-rambo:{img:"rambo.jpg",label:"RAMBO NAKAMURA - ARTIST & STAND-UP COMEDIAN",border:"#ffb000"},
-bible:{img:"bible.jpg",label:"HOLY BIBLE - STORY OF THE BIBLE",border:"#FFD700"}
-};
-const tracks=[
-{id:"star-zi-o-g-to-god",t:"STAR ZI - O G TO GOD",a:"starzi"},
-{id:"wizzy-ns-my-blood",t:"WIZZY NS - MY BLOOD",a:"wizzy"},
-{id:"star-zi-my-guy",t:"STAR ZI - MY GUY",a:"starzi"},
-{id:"a-message-to-jagaban-amb-gideon-nigeria",t:"AMB GIDEON - MESSAGE TO JAGABAN",a:"gideon"},
-{id:"star-zi-kukerwa",t:"STAR ZI - KUKERWA",a:"starzi"},
-{id:"rambo-attention-nakamura",t:"RAMBO - ATTENTION NAKAMURA",a:"rambo"},
-{id:"star-zi-baby-1",t:"STAR ZI - BABY",a:"starzi"},
-{id:"revelation-17-engkjvn-2-da",t:"REVELATION 17",a:"bible"},
-{id:"aud-20261028-wa-0005-1",t:"AMB. GIDEON - MESSAGE 9",a:"gideon"},
-{id:"aud-20261027-wa-0024",t:"AMB. GIDEON - MESSAGE 10",a:"gideon"},
-{id:"aud-20261027-wa-0025",t:"AMB. GIDEON - MESSAGE 11",a:"gideon"},
-{id:"aud-20261028-wa-0000",t:"AMB. GIDEON - MESSAGE 12",a:"gideon"},
-{id:"aud-20261028-wa-0001",t:"AMB. GIDEON - MESSAGE 13",a:"gideon"},
-{id:"aud-20261028-wa-0002",t:"AMB. GIDEON - MESSAGE 14",a:"gideon"},
-{id:"aud-20261028-wa-0003",t:"AMB. GIDEON - MESSAGE 15",a:"gideon"},
-{id:"aud-20261028-wa-0004",t:"AMB. GIDEON - MESSAGE 16",a:"gideon"},
-{id:"aud-20261028-wa-0005",t:"AMB. GIDEON - MESSAGE 17",a:"gideon"},
-{id:"aud-20261028-wa-0006",t:"AMB. GIDEON - MESSAGE 18",a:"gideon"},
-{id:"star-zi",t:"STAR ZI O G - WHEN I GIVE THEM",a:"starzi"},
-{id:"star-zi-alone-1",t:"STAR ZI O G - IF I GET PLENTY MONEY",a:"starzi"},
-{id:"aud-20261106-wa-0139",t:"AMB. GIDEON - MESSAGE TO THE WORLD",a:"gideon"}
-];
+const ARTISTS={starzi:{img:"starzi.jpg",label:"STAR ZI O G - ARTIST",border:"#00ff66"},gideon:{img:"gideon.jpg",label:"AMB. GIDEON - GOSPEL ARTIST",border:"#ff6666"},wizzy:{img:"wizzy.jpg",label:"WIZZY NS aka YOUNG WIZZY - ARTIST",border:"#00aaff"},rambo:{img:"rambo.jpg",label:"RAMBO NAKAMURA - ARTIST & STAND-UP COMEDIAN",border:"#ffb000"},bible:{img:"bible.jpg",label:"HOLY BIBLE - STORY OF THE BIBLE",border:"#FFD700"}};
+const tracks=[{id:"star-zi-o-g-to-god",t:"STAR ZI - O G TO GOD",a:"starzi"},{id:"wizzy-ns-my-blood",t:"WIZZY NS - MY BLOOD",a:"wizzy"},{id:"star-zi-my-guy",t:"STAR ZI - MY GUY",a:"starzi"},{id:"a-message-to-jagaban-amb-gideon-nigeria",t:"AMB GIDEON - MESSAGE TO JAGABAN",a:"gideon"},{id:"star-zi-kukerwa",t:"STAR ZI - KUKERWA",a:"starzi"},{id:"rambo-attention-nakamura",t:"RAMBO - ATTENTION NAKAMURA",a:"rambo"},{id:"star-zi-baby-1",t:"STAR ZI - BABY",a:"starzi"},{id:"revelation-17-engkjvn-2-da",t:"REVELATION 17",a:"bible"},{id:"aud-20261028-wa-0005-1",t:"AMB. GIDEON - MESSAGE 9",a:"gideon"},{id:"aud-20261027-wa-0024",t:"AMB. GIDEON - MESSAGE 10",a:"gideon"},{id:"aud-20261027-wa-0025",t:"AMB. GIDEON - MESSAGE 11",a:"gideon"},{id:"aud-20261028-wa-0000",t:"AMB. GIDEON - MESSAGE 12",a:"gideon"},{id:"aud-20261028-wa-0001",t:"AMB. GIDEON - MESSAGE 13",a:"gideon"},{id:"aud-20261028-wa-0002",t:"AMB. GIDEON - MESSAGE 14",a:"gideon"},{id:"aud-20261028-wa-0003",t:"AMB. GIDEON - MESSAGE 15",a:"gideon"},{id:"aud-20261028-wa-0004",t:"AMB. GIDEON - MESSAGE 16",a:"gideon"},{id:"aud-20261028-wa-0005",t:"AMB. GIDEON - MESSAGE 17",a:"gideon"},{id:"aud-20261028-wa-0006",t:"AMB. GIDEON - MESSAGE 18",a:"gideon"},{id:"star-zi",t:"STAR ZI O G - WHEN I GIVE THEM",a:"starzi"},{id:"star-zi-alone-1",t:"STAR ZI O G - IF I GET PLENTY MONEY",a:"starzi"},{id:"aud-20261106-wa-0139",t:"AMB. GIDEON - MESSAGE TO THE WORLD",a:"gideon"}];
 const countries=[{f:"🇳🇬",n:"NIGERIA - NAIJA"},{f:"🇬🇭",n:"GHANA"},{f:"🇺🇸",n:"USA"},{f:"🇬🇧",n:"UK - LONDON"},{f:"🇨🇦",n:"CANADA"},{f:"🇿🇦",n:"SOUTH AFRICA"},{f:"🇦🇪",n:"DUBAI - UAE"},{f:"🇮🇳",n:"INDIA"}];
-let cIdx=0;
-const player=document.getElementById('player'), nowEl=document.getElementById('now'), statusEl=document.getElementById('status'), listEl=document.getElementById('list'), whoEl=document.getElementById('whoIsPlaying'), artistImg=document.getElementById('artistImg'), artistLabel=document.getElementById('artistLabel'), bibleVerse=document.getElementById('bibleVerse');
-function setArtist(key){let a=ARTISTS[key]||ARTISTS.starzi; artistImg.src=a.img; artistImg.style.borderColor=a.border; artistLabel.textContent=a.label; bibleVerse.style.display=(key==='bible')?'block':'none';}
+let cIdx=0;const player=document.getElementById('player'), nowEl=document.getElementById('now'), statusEl=document.getElementById('status'), listEl=document.getElementById('list'), whoEl=document.getElementById('whoIsPlaying'), artistImg=document.getElementById('artistImg'), artistLabel=document.getElementById('artistLabel'), bibleVerse=document.getElementById('bibleVerse');
+function setArtist(key){let a=ARTISTS[key]||ARTISTS.starzi;artistImg.src=a.img;artistImg.style.borderColor=a.border;artistLabel.textContent=a.label;bibleVerse.style.display=(key==='bible')?'block':'none';}
 function speak(t){try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang='en-GB';speechSynthesis.speak(u)}catch(e){}}
 function setMode(m){playMode=m;['mOne','mAll','mRep','mPlayAll'].forEach(id=>document.getElementById(id).classList.remove('on'));if(m==='one'){document.getElementById('mOne').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: PLAY ONE'}if(m==='all'){document.getElementById('mAll').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: ROTATE ALL'}if(m==='repeat'){document.getElementById('mRep').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: REPEAT ONE'}if(m==='playall'){document.getElementById('mPlayAll').classList.add('on');document.getElementById('modeLabel').textContent='MODE NOW: PLAY ALL'}}
 function renderFlags(){let r=document.getElementById('flagsRow');r.innerHTML='';countries.forEach((c,i)=>{let b=document.createElement('button');b.className='flagBtn'+(i===cIdx?' active':'');b.innerHTML=c.f;b.onclick=()=>{cIdx=i;document.getElementById('bigFlag').textContent=c.f;document.getElementById('countryName').textContent=c.n;renderFlags()};r.appendChild(b)})}
 for(let i=0;i<28;i++){let b=document.createElement('div');b.className='bar';document.getElementById('bars').appendChild(b)}
-function bars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused'); artistImg.classList.toggle('playing',!!p)}
+function bars(p){document.querySelectorAll('.bar').forEach(b=>b.style.animationPlayState=p?'running':'paused');artistImg.classList.toggle('playing',!!p)}
 function renderList(){listEl.innerHTML='';tracks.forEach((t,i)=>{let d=document.createElement('div');d.className='track'+(i===current?' active':'');d.innerHTML='<span>'+(i+1)+'. '+t.t+'</span><span>▶ '+(i+1)+'</span>';d.onclick=()=>playReal(i,'✋ HAND');listEl.appendChild(d)})}
 function stopAll(){player.pause();bars(false);document.getElementById('playBtn').innerText='▶ PLAY';who='none';whoEl.textContent='⏹️ NOTHING DEY PLAY NOW';}
-async function findAudioUrl(id){
-  try{
-    let mr = await fetch('https://archive.org/metadata/'+id);
-    if(mr.ok){
-      let meta = await mr.json();
-      let files = meta.files || [];
-      let af = files.find(f=>f.name && /\.mp3$/i.test(f.name)) || files.find(f=>f.name && /\.(m4a|ogg|opus|wav)$/i.test(f.name)) || files.find(f=>f.name && f.format && f.format.toLowerCase().includes('audio'));
-      if(af && af.name){ return 'https://archive.org/download/'+id+'/'+encodeURIComponent(af.name); }
-    }
-  }catch(e){}
-  return null;
-}
-async function playReal(idx, by){
-  if(isLoading) return;
-  isLoading = true;
-  current = idx;
-  let t = tracks[idx];
-  setArtist(t.a);
-  nowEl.innerHTML = t.t + '<br>TRACK '+(idx+1)+' / '+tracks.length+' LOADING...';
-  statusEl.innerHTML = 'Loading: '+t.t+'... Please wait';
-  bars(false);
-  renderList();
-  who = by || '✋ HAND';
-  whoEl.textContent = by==='🎤 AI' ? '🎤 AI DEY PLAY NOW' : '✋ HAND DEY PLAY NOW - LOADING...';
-  if('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title:t.t, artist:ARTISTS[t.a].label, album:'larffanbelefu.com.ng'}); }catch(e){} }
-  try{
-    let url = await findAudioUrl(t.id);
-    if(!url){
-      statusEl.innerHTML = '❌ Track '+ (idx+1) +' not found. Trying next... ID: '+t.id;
-      isLoading = false;
-      setTimeout(()=>{ if(playMode==='all' || playMode==='playall') playReal((current+1)%tracks.length, by); }, 2000);
-      return;
-    }
-    dlUrl = url;
-    player.src = url;
-    player.load();
-    try{
-      await player.play();
-      document.getElementById('playBtn').innerText='❚❚ PAUSE';
-      bars(true);
-      statusEl.innerHTML = (by||'')+' PLAYING: '+t.t;
-      nowEl.innerHTML = t.t+'<br>TRACK '+(idx+1)+' PLAYING - '+by;
-      whoEl.textContent = by==='🎤 AI' ? '🎤 AI DEY PLAY NOW' : '✋ HAND DEY PLAY NOW';
-    }catch(playErr){
-      statusEl.innerHTML = '⚠️ Press PLAY again - Browser blocked it once. Track ready: '+t.t;
-      document.getElementById('playBtn').innerText='▶ PLAY';
-    }
-  }catch(e){
-    statusEl.innerHTML = '❌ Error: '+e.message+' - Trying next...';
-    setTimeout(()=>{ if(playMode==='all' || playMode==='playall') playReal((current+1)%tracks.length, by); }, 1500);
-  }
-  isLoading = false;
-}
-function manualToggle(){
-  if(player.paused){
-    if(!player.src || player.src===''){ playReal(current,'✋ HAND'); return; }
-    player.play().then(()=>{ document.getElementById('playBtn').innerText='❚❚ PAUSE'; bars(true); whoEl.textContent='✋ HAND DEY PLAY NOW'; }).catch(()=>{ statusEl.innerHTML='Press PLAY again - Browser need your tap'; });
-  } else {
-    player.pause();
-    document.getElementById('playBtn').innerText='▶ PLAY';
-    bars(false);
-  }
-}
-function manualNext(){ playReal((current+1)%tracks.length,'✋ HAND'); }
-function manualPrev(){ playReal((current-1+tracks.length)%tracks.length,'✋ HAND'); }
-function doDownload(){ if(!dlUrl){ statusEl.innerHTML='Play a track first!'; return; } let a=document.createElement('a'); a.href=dlUrl; a.download=tracks[current].t+'.mp3'; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove(); }
-function onEnded(){
-  if(playMode==='repeat'){ playReal(current, who); return; }
-  if(playMode==='one'){ stopAll(); return; }
-  if(playMode==='all'){ let n=Math.floor(Math.random()*tracks.length); if(n===current) n=(n+1)%tracks.length; playReal(n, who); return; }
-  if(playMode==='playall'){ playReal((current+1)%tracks.length, who); return; }
-}
-player.addEventListener('ended', onEnded);
-player.addEventListener('error', ()=>{ statusEl.innerHTML='❌ Player error - Trying next...'; if(playMode==='all'||playMode==='playall'){ setTimeout(()=>playReal((current+1)%tracks.length, who), 1200); } });
-player.addEventListener('playing', ()=>{ bars(true); document.getElementById('playBtn').innerText='❚❚ PAUSE'; });
-player.addEventListener('pause', ()=>{ if(!player.ended) bars(false); });
-function startVoice(){
-  let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ document.getElementById('aiStatus').innerHTML='Voice need Chrome'; return; }
-  let rec=new SR(); rec.lang='en-NG'; rec.interimResults=false; rec.continuous=false;
-  rec.onstart=()=>{ document.getElementById('micBtn').innerText='🔴 AI DEY LISTEN...'; document.getElementById('aiStatus').innerHTML='🎤 AI dey listen...'; };
-  rec.onend=()=>{ document.getElementById('micBtn').innerText='🎤 PRESS TO RECORD - TALK TO AI'; };
-  rec.onresult=(e)=>{
-    let raw=''; for(let i=0;i<e.results.length;i++){ for(let j=0;j<e.results[i].length;j++){ raw+=' '+e.results[i][j].transcript } }
-    let text=' '+raw.toLowerCase().replace(/[^a-z0-9 ]/g,' ')+' ';
-    document.getElementById('aiStatus').innerHTML='🗣️ AI hear: <b>'+raw+'</b>';
-    let map={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,twentyone:21};
-    if(text.includes(' stop ')||text.includes(' pause ')){ stopAll(); speak('Radio stopped'); return; }
-    if(text.includes(' repeat one ')||text.includes(' repeat ')){ setMode('repeat'); speak('Repeat one'); return; }
-    if(text.includes(' play all ')){ setMode('playall'); playReal(0,'🎤 AI'); return; }
-    if(text.includes(' rotate ')||text.includes(' shuffle ')){ setMode('all'); playReal(current,'🎤 AI'); return; }
-    if(text.includes(' play one ')){ setMode('one'); return; }
-    if(text.includes(' next ')){ playReal((current+1)%tracks.length,'🎤 AI'); return; }
-    if(text.includes(' previous ')||text.includes(' back ')){ playReal((current-1+tracks.length)%tracks.length,'🎤 AI'); return; }
-    let n=null; let m=text.match(/(track|song|play)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twentyone)/);
-    if(m){ let w=m[2]; n=isNaN(parseInt(w))?map[w]:parseInt(w); }
-    if(n!==null && n>=1 && n<=21){ playReal(n-1,'🎤 AI'); return; }
-    if(text.includes(' gideon ')){ playReal(3,'🎤 AI'); return; }
-    if(text.includes(' rambo ')){ playReal(5,'🎤 AI'); return; }
-    if(text.includes(' plenty money ')){ playReal(19,'🎤 AI'); return; }
-    if(text.includes(' give them ')){ playReal(18,'🎤 AI'); return; }
-    if(text.includes(' world ')){ playReal(20,'🎤 AI'); return; }
-    if(text.includes(' play ')){ playReal(current,'🎤 AI'); return; }
-  };
-  rec.start();
-}
-renderFlags(); renderList(); bars(false); setArtist('starzi');
-if('mediaSession' in navigator){
-  try{
-    navigator.mediaSession.setActionHandler('play', ()=>manualToggle());
-    navigator.mediaSession.setActionHandler('pause', ()=>manualToggle());
-    navigator.mediaSession.setActionHandler('nexttrack', ()=>manualNext());
-    navigator.mediaSession.setActionHandler('previoustrack', ()=>manualPrev());
-  }catch(e){}
-}
-async function tryWakeLock(){ try{ if('wakeLock' in navigator){ await navigator.wakeLock.request('screen'); } }catch(e){} }
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryWakeLock(); });
+async function findAudioUrl(id){try{let mr=await fetch('https://archive.org/metadata/'+id);if(mr.ok){let meta=await mr.json();let files=meta.files||[];let af=files.find(f=>f.name&&/\.mp3$/i.test(f.name))||files.find(f=>f.name&&/\.(m4a|ogg|opus|wav)$/i.test(f.name));if(af&&af.name){return 'https://archive.org/download/'+id+'/'+encodeURIComponent(af.name);}}}catch(e){}return null;}
+async function playReal(idx,by){if(isLoading)return;isLoading=true;current=idx;let t=tracks[idx];setArtist(t.a);nowEl.innerHTML=t.t+'<br>TRACK '+(idx+1)+' / '+tracks.length+' LOADING...';statusEl.innerHTML='Loading: '+t.t+'... Please wait';bars(false);renderList();who=by||'✋ HAND';whoEl.textContent=by==='🎤 AI'?'🎤 AI DEY PLAY NOW':'✋ HAND DEY PLAY NOW - LOADING...';if('mediaSession' in navigator){try{navigator.mediaSession.metadata=new MediaMetadata({title:t.t,artist:ARTISTS[t.a].label,album:'anbelefu.com.ng'});}catch(e){}}try{let url=await findAudioUrl(t.id);if(!url){statusEl.innerHTML='❌ Track '+(idx+1)+' not found. Trying next...';isLoading=false;setTimeout(()=>{if(playMode==='all'||playMode==='playall')playReal((current+1)%tracks.length,by);},2000);return;}dlUrl=url;player.src=url;player.load();try{await player.play();document.getElementById('playBtn').innerText='❚❚ PAUSE';bars(true);statusEl.innerHTML=(by||'')+' PLAYING: '+t.t;nowEl.innerHTML=t.t+'<br>TRACK '+(idx+1)+' PLAYING - '+by;whoEl.textContent=by==='🎤 AI'?'🎤 AI DEY PLAY NOW':'✋ HAND DEY PLAY NOW';}catch(playErr){statusEl.innerHTML='⚠️ Press PLAY again - Browser blocked it once. Track ready: '+t.t;document.getElementById('playBtn').innerText='▶ PLAY';}}catch(e){statusEl.innerHTML='❌ Error: '+e.message+' - Trying next...';setTimeout(()=>{if(playMode==='all'||playMode==='playall')playReal((current+1)%tracks.length,by);},1500);}isLoading=false;}
+function manualToggle(){if(player.paused){if(!player.src||player.src===''){playReal(current,'✋ HAND');return;}player.play().then(()=>{document.getElementById('playBtn').innerText='❚❚ PAUSE';bars(true);whoEl.textContent='✋ HAND DEY PLAY NOW';}).catch(()=>{statusEl.innerHTML='Press PLAY again - Browser need your tap';});}else{player.pause();document.getElementById('playBtn').innerText='▶ PLAY';bars(false);}}
+function manualNext(){playReal((current+1)%tracks.length,'✋ HAND');}
+function manualPrev(){playReal((current-1+tracks.length)%tracks.length,'✋ HAND');}
+function doDownload(){if(!dlUrl){statusEl.innerHTML='Play a track first!';return;}let a=document.createElement('a');a.href=dlUrl;a.download=tracks[current].t+'.mp3';a.target='_blank';document.body.appendChild(a);a.click();a.remove();}
+function onEnded(){if(playMode==='repeat'){playReal(current,who);return;}if(playMode==='one'){stopAll();return;}if(playMode==='all'){let n=Math.floor(Math.random()*tracks.length);if(n===current)n=(n+1)%tracks.length;playReal(n,who);return;}if(playMode==='playall'){playReal((current+1)%tracks.length,who);return;}}
+player.addEventListener('ended',onEnded);player.addEventListener('error',()=>{statusEl.innerHTML='❌ Player error - Trying next...';if(playMode==='all'||playMode==='playall'){setTimeout(()=>playReal((current+1)%tracks.length,who),1200);}});player.addEventListener('playing',()=>{bars(true);document.getElementById('playBtn').innerText='❚❚ PAUSE';});player.addEventListener('pause',()=>{if(!player.ended)bars(false);});
+function startVoice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('aiStatus').innerHTML='Voice need Chrome';return;}let rec=new SR();rec.lang='en-NG';rec.interimResults=false;rec.continuous=false;rec.onstart=()=>{document.getElementById('micBtn').innerText='🔴 AI DEY LISTEN...';document.getElementById('aiStatus').innerHTML='🎤 AI dey listen...';};rec.onend=()=>{document.getElementById('micBtn').innerText='🎤 PRESS TO RECORD - TALK TO AI';};rec.onresult=(e)=>{let raw='';for(let i=0;i<e.results.length;i++){for(let j=0;j<e.results[i].length;j++){raw+=' '+e.results[i][j].transcript}}let text=' '+raw.toLowerCase().replace(/[^a-z0-9 ]/g,' ')+' ';document.getElementById('aiStatus').innerHTML='🗣️ AI hear: <b>'+raw+'</b>';let map={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,twentyone:21};if(text.includes(' stop ')||text.includes(' pause ')){stopAll();speak('Radio stopped');return;}if(text.includes(' repeat one ')||text.includes(' repeat ')){setMode('repeat');speak('Repeat one');return;}if(text.includes(' play all ')){setMode('playall');playReal(0,'🎤 AI');return;}if(text.includes(' rotate ')||text.includes(' shuffle ')){setMode('all');playReal(current,'🎤 AI');return;}if(text.includes(' play one ')){setMode('one');return;}if(text.includes(' next ')){playReal((current+1)%tracks.length,'🎤 AI');return;}if(text.includes(' previous ')||text.includes(' back ')){playReal((current-1+tracks.length)%tracks.length,'🎤 AI');return;}let n=null;let m=text.match(/(track|song|play)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twentyone)/);if(m){let w=m[2];n=isNaN(parseInt(w))?map[w]:parseInt(w);}if(n!==null&&n>=1&&n<=21){playReal(n-1,'🎤 AI');return;}if(text.includes(' gideon ')){playReal(3,'🎤 AI');return;}if(text.includes(' rambo ')){playReal(5,'🎤 AI');return;}if(text.includes(' plenty money ')){playReal(19,'🎤 AI');return;}if(text.includes(' give them ')){playReal(18,'🎤 AI');return;}if(text.includes(' world ')){playReal(20,'🎤 AI');return;}if(text.includes(' play ')){playReal(current,'🎤 AI');return;}};rec.start();}
+renderFlags();renderList();bars(false);setArtist('starzi');
+if('mediaSession' in navigator){try{navigator.mediaSession.setActionHandler('play',()=>manualToggle());navigator.mediaSession.setActionHandler('pause',()=>manualToggle());navigator.mediaSession.setActionHandler('nexttrack',()=>manualNext());navigator.mediaSession.setActionHandler('previoustrack',()=>manualPrev());}catch(e){}}
+async function tryWakeLock(){try{if('wakeLock' in navigator){await navigator.wakeLock.request('screen');}}catch(e){}}document.addEventListener('visibilitychange',()=>{if(!document.hidden)tryWakeLock();});
 </script>
 </body>
 </html>
